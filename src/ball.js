@@ -14,7 +14,6 @@ export default class Ball extends Entity {
 	// get top() { return this.pos.y - this.size.x / 2; }
 
 	collides(side, target) {
-
 		switch(side) {
 			case COLLISION.LEFT:
 				this.vel.x *= -1;
@@ -32,47 +31,6 @@ export default class Ball extends Entity {
 				this.vel.y *= -1;
 				break;
 		}
-		// let hitStr= "";
-		// if(hit & 0b0001)
-		// 	hitStr+= "left ";
-		// if(hit & 0b0010)
-		// 	hitStr+= "right ";
-		// if(hit & 0b0100)
-		// 	hitStr+= "top ";
-		// if(hit & 0b1000)
-		// 	hitStr+= "bottom";
-
-		// console.log(hitStr, " side=",side); 
-
-		// console.group("ball before"); 
-		// console.log(this.left, this.top, this.right, this.bottom);
-		// console.groupEnd(); 
-
-		// if(hit & 0b0001) {
-		// 	this.vel.x *= -1;
-		// 	this.pos.x-= this.right - target.left + 1;
-		// }
-		// if(hit & 0b0010) {
-		// 	this.vel.x *= -1;
-		// 	this.pos.x= target.right + 1;
-		// }
-		// if(hit & 0b0100) {
-		// 	this.vel.y *= -1;
-		// 	this.pos.y= target.bottom + 1;
-		// }
-		// if(hit & 0b1000) {
-		// 	this.vel.y *= -1;
-		// 	this.pos.y-= this.bottom - target.top + 1;
-		// }
-
-		// console.log(intersectRect(this, target) ? "YES" : "NO"); 
-		// console.group("ball after"); 
-		// 	console.log(this.left, this.top, this.right, this.bottom);
-		// console.groupEnd(); 
-		// console.group("target"); 
-		// 	console.log(target.left, target.top, target.right, target.bottom);
-		// console.groupEnd(); 
-
 	}
 
 	update(dt) {

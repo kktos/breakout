@@ -9,16 +9,7 @@ export default class Paddle extends Entity {
 		this.speed= 100;
 	}
 
-	collides(hit, entity) {
-
-		// this.vel.x= 0;
-		
-		// if(hit & 0b0001) {
-		// 	this.pos.x= -1;
-		// }
-		// if(hit & 0b0010) {
-		// 	this.pos.x= 550;
-		// }
+	collides(side, target) {
 	}
 
 	move(x) {
