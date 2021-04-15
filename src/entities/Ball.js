@@ -29,7 +29,7 @@ export default class Ball extends Entity {
 		// ctx.fillStyle = 'red';
 		// ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.x);
 
-		ctx.font = '14px sans-serif';
-		ctx.fillText(`POS= ${this.pos.x|0},${this.pos.y|0} VEL= ${this.vel.x},${this.vel.y}`, 100, 600-10);
+		// ctx.font = '14px sans-serif';
+		// ctx.fillText(`POS= ${this.pos.x|0},${this.pos.y|0} VEL= ${this.vel.x},${this.vel.y}`, 100, 600-10);
 	}
 }

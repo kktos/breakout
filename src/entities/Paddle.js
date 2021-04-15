@@ -1,6 +1,7 @@
 import Entity from "./Entity.js";
 import Audio from "../Audio.js";
 import Sticky from "../traits/trait-sticky.js";
+import PlayerTrait from "../traits/player.trait.js";
 
 export default class Paddle extends Entity {
 
@@ -14,6 +15,7 @@ export default class Paddle extends Entity {
 		this.setSprite("large-0");
 
 		this.addTrait(new Sticky());
+		this.addTrait(new PlayerTrait());
 
 	}
 
@@ -31,9 +33,9 @@ export default class Paddle extends Entity {
 
 		// ctx.strokeStyle= "white";
 		// ctx.strokeRect(this.pos.x-2, this.pos.y-2, this.size.x+2, this.size.y+2);
-		const sticky= this.traits.get(Sticky);
-		ctx.font = '14px sans-serif';
-		ctx.fillText(`ball ${sticky.glued ? "GLUED" : "FREE"}`, 600-200, 600-10);		
-		ctx.fillText(`${sticky.vel.x},${sticky.vel.y}`, 600-100, 600-10);		
+		// const sticky= this.traits.get(Sticky);
+		// ctx.font = '14px sans-serif';
+		// ctx.fillText(`ball ${sticky.glued ? "GLUED" : "FREE"}`, 600-200, 600-10);		
+		// ctx.fillText(`${sticky.vel.x},${sticky.vel.y}`, 600-100, 600-10);		
 	}	
 }

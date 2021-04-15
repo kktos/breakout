@@ -21,10 +21,13 @@ export default class Level {
 		const level= new Level(id, gameContext);
 
 		level.addLayer(new LayerBackground(gameContext, sheet.background));
+
 		if(sheet.bricks)
 			level.addLayer(new LayerBricks(gameContext, level.entities, sheet.bricks));
+
 		level.addLayer(new LayerEntities(gameContext, level.entities));
-		level.addLayer(new LayerDashboard(gameContext, level.entities));
+
+		level.addLayer(new LayerDashboard(gameContext, level.entities, level.paddle));
 
 		return level;
 	}

@@ -1,15 +1,25 @@
-import Layer from "./layer.js";
-import Wall from "../entities/Wall.js";
 import ENV from "../env.js";
+import Layer from "./layer.js";
+import SpriteSheet from "../Spritesheet.js";
+import Wall from "../entities/Wall.js";
+import PlayerTrait from "../traits/player.trait.js";
 
 export default class LayerDashboard extends Layer {
 	
-	constructor(gameContext, entities) {
+	constructor(gameContext, entities, entity) {
 		super(gameContext);
-		
-		this.width= gameContext.screen.canvas.width;
-		let wall;
 
+		this.width= gameContext.screen.canvas.width;
+		this.spritesheet= SpriteSheet.retrieve("paddles.json");
+        this.playerTrait= entity.traits.get(PlayerTrait);
+
+		const lifeSize= this.spritesheet.spriteSize("life");
+		this.lifeY= 600 - lifeSize.y - 5;
+		this.lifeW= lifeSize.x+2;
+		
+
+		
+		let wall;
 		wall= new Wall("wallTop", 0, ENV.WALL_TOP);
 		entities.push(wall);
 
@@ -24,6 +34,9 @@ export default class LayerDashboard extends Layer {
 	render({screen:{ctx}}) {
 		ctx.fillStyle= "#000";
 		ctx.fillRect(0, 0, this.width, ENV.WALL_TOP);
+
+		for(let idx= 0; idx<this.playerTrait.lives; idx++)
+			this.spritesheet.draw("life", ctx, 20+(idx*this.lifeW), this.lifeY);
 	}	
 
 }

@@ -1,5 +1,6 @@
 import Level from "./Level.js";
 import ResourceManager from "./ResourceManager.js";
+import SpriteSheet from "./Spritesheet.js";
 
 let lastTime= 0;
 let acc= 0;
