@@ -1,0 +1,12 @@
+{
+	"spritesheets": [
+		"bricks.json",
+		"paddles.json",
+		"backgrounds.json"
+	],
+	"audiosheets": [
+		"bricks.json",
+		"paddle.json",
+		"level.json"
+	]
+}

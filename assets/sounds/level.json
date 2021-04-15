@@ -1,0 +1,11 @@
+{
+	"new_game": {
+		"sound": "new_game.ogg"
+	},
+	"new_level": {
+		"sound": "new_level.ogg"
+	},
+	"game_over": {
+		"sound": "game_over.ogg"
+	}
+}

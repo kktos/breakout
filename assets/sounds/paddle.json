@@ -1,0 +1,9 @@
+{
+	"pong": {
+		"sound0": "tic.ogg",
+		"sound": "pong.ogg"
+	},
+	"die": {
+		"sound": "die.ogg"
+	}
+}

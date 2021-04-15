@@ -1,0 +1,12 @@
+{
+	"name": "warmup",
+	"background": 3,
+	"bricks": [
+		"-oooo ooooo oooo-",
+		"o---- ----- ----o",
+		"x--Bb ----- bB--x",
+		"x---- -rrr- ----x",
+		"x---- ----- ----x",
+		"x---- -xxx- ----x"
+	]
+}
