@@ -1,8 +1,8 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 import {COLLISION} from '../math.js';
-import Paddle from '../entities/Paddle.js';
+import PaddleEntity from '../entities/paddle.entity.js';
 
-export default class Bounce extends Trait {
+export default class BounceTrait extends Trait {
 
 	constructor() {
 		super();
@@ -14,7 +14,7 @@ export default class Bounce extends Trait {
 		if(!this.isBouncing)
 			return;
 
-		if(target instanceof Paddle) {
+		if(target instanceof PaddleEntity) {
 			target.audio.play("pong")
 		}
 		switch(side) {
@@ -32,7 +32,7 @@ export default class Bounce extends Trait {
 
 			case COLLISION.BOTTOM:
 				entity.vel.y *= -1;
-				if(target instanceof Paddle) {
+				if(target instanceof PaddleEntity) {
 					const center= target.left + target.size.x/2;
 					entity.vel.x= (-10*(center-entity.left))|0;
 				}

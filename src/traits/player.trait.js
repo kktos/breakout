@@ -1,4 +1,4 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 
 export default class PlayerTrait extends Trait {
 

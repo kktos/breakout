@@ -1,12 +1,12 @@
 import ENV from "./env.js";
-import Ball from "./entities/Ball.js";
-import Paddle from "./entities/Paddle.js";
+import BallEntity from "./entities/ball.entity.js";
+import PaddleEntity from "./entities/paddle.entity.js";
 import {collideRect, COLLISION} from "./math.js";
-import LayerEntities from "./layers/layer-entities.js";
-import LayerBackground from "./layers/layer-background.js";
-import LayerDashboard from "./layers/layer-dashboard.js";
-import LayerBricks from "./layers/layer-bricks.js";
-import Sticky from "./traits/trait-sticky.js";
+import EntitiesLayer from "./layers/entities.layer.js";
+import BackgroundLayer from "./layers/background.layer.js";
+import DashboardLayer from "./layers/dashboard.layer.js";
+import BricksLayer from "./layers/bricks.layer.js";
+import StickyTrait from "./traits/sticky.trait.js";
 import {loadJson} from "./loaders.js";
 import Audio from "./Audio.js";
 
@@ -19,14 +19,14 @@ export default class Level {
 
 		const level= new Level(id, gameContext);
 
-		level.addLayer(new LayerBackground(gameContext, sheet.background));
+		level.addLayer(new BackgroundLayer(gameContext, sheet.background));
 
 		if(sheet.bricks)
-			level.addLayer(new LayerBricks(gameContext, level.entities, sheet.bricks));
+			level.addLayer(new BricksLayer(gameContext, level.entities, sheet.bricks));
 
-		level.addLayer(new LayerEntities(gameContext, level.entities));
+		level.addLayer(new EntitiesLayer(gameContext, level.entities));
 
-		level.addLayer(new LayerDashboard(gameContext, level.entities, level.paddle));
+		level.addLayer(new DashboardLayer(gameContext, level.entities, level.paddle));
 
 		return level;
 	}
@@ -44,11 +44,11 @@ export default class Level {
 
 		const canvas= gameContext.screen.canvas;
 
-		this.ball= new Ball(200, 200, 18, ENV.WALL_TOP+12, canvas.width-18, canvas.height);
+		this.ball= new BallEntity(200, 200, 18, ENV.WALL_TOP+12, canvas.width-18, canvas.height);
 		this.entities.push(this.ball);
 		
-		this.paddle= new Paddle(300, 550);
-		const sticky= this.paddle.traits.get(Sticky);
+		this.paddle= new PaddleEntity(300, 550);
+		const sticky= this.paddle.traits.get(StickyTrait);
 		sticky.stickIt(this.ball, this.paddle);
 		sticky.isSticky= true;
 		sticky.removeAfter= 1;
@@ -123,7 +123,7 @@ export default class Level {
 	handleEvent(e) {
 		switch(e.type) {
 			case "click": {
-				this.paddle.traits.get(Sticky).free();
+				this.paddle.traits.get(StickyTrait).free();
 			}
 
 			case "mousemove": {

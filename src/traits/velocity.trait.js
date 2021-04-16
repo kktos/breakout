@@ -1,4 +1,4 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 export default class VelocityTrait extends Trait {
     update(entity, {dt}) {
         entity.pos.x += entity.vel.x * dt;

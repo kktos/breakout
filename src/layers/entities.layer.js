@@ -1,6 +1,6 @@
 import Layer from "./Layer.js";
 
-export default class LayerEntities extends Layer {
+export default class EntitiesLayer extends Layer {
 
 	constructor(gameContext, entities) {
 		super(gameContext);

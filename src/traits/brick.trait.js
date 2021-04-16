@@ -1,4 +1,4 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 import Level from '../Level.js';
 import AnimationTrait from './animation.trait.js';
 

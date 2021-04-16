@@ -1,7 +1,7 @@
 import Background from "../background.js";
 import Layer from "./Layer.js";
 
-export default class LayerBackground extends Layer {
+export default class BackgroundLayer extends Layer {
 
 	constructor(gameContext, id) {
 		super(gameContext);

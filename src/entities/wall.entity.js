@@ -1,6 +1,6 @@
 import Entity from "./Entity.js";
 
-export default class Wall extends Entity {
+export default class WallEntity extends Entity {
 
 	constructor(sprite, x, y) {
 		super(x, y, "backgrounds.json");

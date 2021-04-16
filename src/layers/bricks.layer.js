@@ -1,8 +1,8 @@
 import Layer from "./Layer.js";
-import Brick from "../entities/Brick.js";
+import BrickEntity from "../entities/brick.entity.js";
 import ENV from '../env.js';
 
-export default class LayerBricks extends Layer {
+export default class BricksLayer extends Layer {
 
 	constructor(gameContext, entities, bricks) {
 		super(gameContext);
@@ -30,7 +30,7 @@ export default class LayerBricks extends Layer {
 		
 			const type= getNextBrick();
 			if(type != "-") {
-				const brick= new Brick(ENV.BRICK_LEFT + col, ENV.BRICK_TOP + row, type);
+				const brick= new BrickEntity(ENV.BRICK_LEFT + col, ENV.BRICK_TOP + row, type);
 				this.entities.push(brick);
 			}
 		}		

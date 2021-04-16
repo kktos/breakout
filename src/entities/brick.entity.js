@@ -4,7 +4,7 @@ import Audio from "../Audio.js";
 import BrickTrait from "../traits/brick.trait.js"
 import AnimationTrait from "../traits/animation.trait.js"
 
-export default class Brick extends Entity {
+export default class BrickEntity extends Entity {
 
 	constructor(x, y, type= "g") {
 		super(x, y, "bricks.json");

@@ -1,7 +1,7 @@
-import Trait from '../Trait.js';
-import Bounce from './trait-bounce.js';
+import Trait from './Trait.js';
+import BounceTrait from './bounce.trait.js';
 
-export default class Sticky extends Trait {
+export default class StickyTrait extends Trait {
 
 	constructor() {
 		super();
@@ -29,8 +29,8 @@ export default class Sticky extends Trait {
 		this.gluedTo.vel.x= this.vel.x;
 		this.gluedTo.vel.y= this.vel.y;
 
-		if(this.gluedTo.traits.has(Bounce))
-			this.gluedTo.traits.get(Bounce).isBouncing= true;		
+		if(this.gluedTo.traits.has(BounceTrait))
+			this.gluedTo.traits.get(BounceTrait).isBouncing= true;		
 
 		this.gluedTo= null;
 	}
@@ -58,8 +58,8 @@ export default class Sticky extends Trait {
 		target.vel.x= 0;
 		target.vel.y= 0;
 
-		if(target.traits.has(Bounce))
-			target.traits.get(Bounce).isBouncing= false;
+		if(target.traits.has(BounceTrait))
+			target.traits.get(BounceTrait).isBouncing= false;
 	}
 
 }

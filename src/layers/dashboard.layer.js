@@ -1,10 +1,10 @@
 import ENV from "../env.js";
 import Layer from "./layer.js";
 import SpriteSheet from "../Spritesheet.js";
-import Wall from "../entities/Wall.js";
+import WallEntity from "../entities/wall.entity.js";
 import PlayerTrait from "../traits/player.trait.js";
 
-export default class LayerDashboard extends Layer {
+export default class DashboardLayer extends Layer {
 	
 	constructor(gameContext, entities, entity) {
 		super(gameContext);
@@ -20,13 +20,13 @@ export default class LayerDashboard extends Layer {
 
 		
 		let wall;
-		wall= new Wall("wallTop", 0, ENV.WALL_TOP);
+		wall= new WallEntity("wallTop", 0, ENV.WALL_TOP);
 		entities.push(wall);
 
-		wall= new Wall("wallLeft", 0, ENV.WALL_TOP);
+		wall= new WallEntity("wallLeft", 0, ENV.WALL_TOP);
 		entities.push(wall);
 
-		wall= new Wall("wallRight", 0, ENV.WALL_TOP);
+		wall= new WallEntity("wallRight", 0, ENV.WALL_TOP);
 		wall.pos.x= this.width - wall.size.x;
 		entities.push(wall);
 	}

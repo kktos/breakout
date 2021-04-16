@@ -1,6 +1,6 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 
-export default class BoundingBox extends Trait {
+export default class BoundingBoxTrait extends Trait {
 
 	constructor(bbx, bby, bbdx, bbdy) {
 		super()

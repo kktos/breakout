@@ -1,9 +1,9 @@
 import Entity from "./Entity.js";
 import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBox from "../traits/trait-boundingBox.js";
-import Bounce from "../traits/trait-bounce.js";
+import BoundingBoxTrait from "../traits/boundingBox.trait.js";
+import BounceTrait from "../traits/bounce.trait.js";
 
-export default class Ball extends Entity {
+export default class BallEntity extends Entity {
 	constructor(x, y, bbx, bby, bbdx, bbdy) {
 		super(x, y);
 		this.size= {x: 10, y: 10};
@@ -14,8 +14,8 @@ export default class Ball extends Entity {
 		
 
 		this.addTrait(new VelocityTrait());
-		this.addTrait(new Bounce());
-		this.addTrait(new BoundingBox(bbx, bby, bbdx, bbdy));
+		this.addTrait(new BounceTrait());
+		this.addTrait(new BoundingBoxTrait(bbx, bby, bbdx, bbdy));
 	}
 
 	render({screen:{ctx}}) {

@@ -1,9 +1,9 @@
 import Entity from "./Entity.js";
 import Audio from "../Audio.js";
-import Sticky from "../traits/trait-sticky.js";
+import StickyTrait from "../traits/sticky.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
 
-export default class Paddle extends Entity {
+export default class PaddleEntity extends Entity {
 
 	constructor(x, y) {
 		super(x, y, "paddles.json");
@@ -14,7 +14,7 @@ export default class Paddle extends Entity {
 
 		this.setSprite("large-0");
 
-		this.addTrait(new Sticky());
+		this.addTrait(new StickyTrait());
 		this.addTrait(new PlayerTrait());
 
 	}

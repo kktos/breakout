@@ -1,4 +1,4 @@
-import Trait from '../Trait.js';
+import Trait from './Trait.js';
 import animResolveFrame from '../utils/animResolveFrame.util.js';
 
 export default class AnimationTrait extends Trait {
