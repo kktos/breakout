@@ -1,7 +1,8 @@
 
 import Entity from "./Entity.js";
 import Audio from "../Audio.js";
-import BrickTrait from "../traits/brick-trait.js"
+import BrickTrait from "../traits/brick.trait.js"
+import AnimationTrait from "../traits/animation.trait.js"
 
 export default class Brick extends Entity {
 
@@ -9,57 +10,45 @@ export default class Brick extends Entity {
 		super(x, y, "bricks.json");
 
 		this.audio= Audio.retrieve("bricks.json");
-
-		this.size= {x: 50, y: 20};
 		this.vel= {x: 0, y: 0};
 		this.speed= 0;
 		this.data= 0;
-		this.spriteIdx= 0;
 
 		this.setType(type);
-		this.setSprite("standard-"+this.spriteIdx);
+		this.setSprite(this.spriteName);
 
 		this.addTrait(new BrickTrait());
+		this.addTrait(new AnimationTrait());
 
 	}
 
 	setType(type) {
 		this.type= type;
 		
-		switch(this.type) {
-			case "g":
-				this.spriteIdx= 0;
-				break;
-			case "o":
-				this.spriteIdx= 1;
-				break;
-			case "b":
-				this.spriteIdx= 2;
-				break;
-			case "G":
-				this.spriteIdx= 3;
-				break;
-			case "r":
-				this.spriteIdx= 4;
-				break;
-			case "B":
-				this.spriteIdx= 5;
-				break;
-			case "p":
-				this.spriteIdx= 6;
-				break;
-			case "y":
-				this.spriteIdx= 7;
-				break;
-			case "x":
-				this.spriteIdx= 8;
-				this.data= 4;
-			break;
+		const idx= "gobGrBpy".indexOf(type);
+		if(idx>=0) {
+			this.spriteName= "standard-"+idx;
+			return;
 		}
+
+		switch(type) {
+			case "x":
+				this.spriteName= "silver-0";
+				this.anim= "silver";
+				this.data= 4;
+				break;
+		}		
 
 	}
 
+	routeAnim() {
+		return this.currSprite;
+	}
+
 	render({screen:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		// if(this.type == "x")
+		// 	this.spritesheet.drawAnim("silver", ctx, this.pos.x, this.pos.y, this.lifetime);
+		// else
+		this.spritesheet.draw(this.routeAnim(), ctx, this.pos.x, this.pos.y);
 	}	
 }

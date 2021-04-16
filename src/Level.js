@@ -96,10 +96,14 @@ export default class Level {
 	}
 
 	update(gameContext) {
-		this.ball.update(gameContext);
+
+		this.entities.forEach(entity => {
+			entity.update(gameContext);
+		});
+		// this.ball.update(gameContext);
 		this.collides(gameContext, this.ball);
 	
-		 this.paddle.update(gameContext);
+		//  this.paddle.update(gameContext);
 		// this.collides(paddle);	
 	}
 

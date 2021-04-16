@@ -1,31 +1,7 @@
 import ENV from "./env.js";
 import {loadImage, loadJson} from "./loaders.js";
-
-function createSheet(filename, sheet, img) {
-	const s= new SpriteSheet(img);
-
-	Object.entries(sheet.sprites).forEach(([key, value]) => {
-
-		if(value.imgs)
-			value.imgs.forEach(([x,y,w,h], idx)=> {
-				s.define(key+"-"+idx, x, y, w, h, {scale: value.scale});
-			});
-
-		if(value.img) {
-			const [x,y,w,h]= value.img;
-			s.define(key, x, y, w, h, {scale: value.scale});
-		}
-
-		if(value.sprites) {
-			s.defineComplex(key, value.sprites);
-		}
-
-	});
-
-	SpriteSheet.cache.set(filename, s);
-
-	return s;
-}
+import createSpriteSheet from "./utils/createSpriteSheet.util.js";
+import animResolveFrame from "./utils/animResolveFrame.util.js";
 
 export default class SpriteSheet {
 
@@ -44,12 +20,13 @@ export default class SpriteSheet {
 		return loadJson(ENV.SPRITESHEET_DIR+filename)
 				.then(s => sheet= s)
 				.then(() => loadImage("./assets/"+sheet.img))
-				.then((img) =>createSheet(filename, sheet, img));
+				.then((img) =>createSpriteSheet(filename, sheet, img));
 	}
 
 	constructor(img) {
 		this.img= img;
 		this.sprites= new Map();
+		this.animations= new Map();
 	}	
 
 	define(name, x, y, w, h, {flip, scale}) {
@@ -152,9 +129,12 @@ export default class SpriteSheet {
         this.sprites.set(name, [canvas]);
 	}
 
-	draw(name, ctx, x, y, flip = false) {
-		if(this.sprites.has(name))
-        	ctx.drawImage(this.sprites.get(name)[flip|0], x, y);
+    defineAnim(name, animation) {
+		if(!animation.loop)
+			animation.loop= Infinity;
+		animation.frameIdx= -1;
+		animation.loopInitialValue= animation.loop;
+		this.animations.set(name, animation);
     }
 
 	has(name) {
@@ -168,6 +148,21 @@ export default class SpriteSheet {
 		const sprite= this.sprites.get(name)[0];
 		return {x: sprite.width, y: sprite.height};
 	}
-}
+	
+	animFrame(name, time) {
+        const animation= this.animations.get(name);
+        return animResolveFrame(animation, time);
+	}
 
-window.sscache= SpriteSheet.cache;
+	draw(name, ctx, x, y, flip = false) {
+		if(this.sprites.has(name))
+        	ctx.drawImage(this.sprites.get(name)[flip|0], x, y);
+    }
+
+    drawAnim(name, ctx, x, y, distance) {
+        const animation= this.animations.get(name);
+        this.draw(animResolveFrame(animation, distance), ctx, x, y);
+    }
+
+
+}

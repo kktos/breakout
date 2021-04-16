@@ -9,6 +9,8 @@ export default class Entity {
 		this.speed= 0;
 		this.previousVel= {x: 0, y: 0};
 
+		this.lifetime= 0;
+		this.anim= null;
 		this.traits = new Map();
 
 		this.currSprite= null;
@@ -50,6 +52,7 @@ export default class Entity {
 
 	update(gameContext) {
 		this.traits.forEach(trait => trait.update(this, gameContext));
+		this.lifetime+= gameContext.dt;
 	}
 
 	render(gameContext) {
