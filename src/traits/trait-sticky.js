@@ -7,7 +7,7 @@ export default class Sticky extends Trait {
 		super();
 
 		this.isSticky= false;
-		this.stickyCountdown= Infinity;
+		this.removeAfter= Infinity;
 		this.gluedTo= null;
 		this.offset= {x: 0,y: 0};
 		this.vel= {x: 0,y: 0};
@@ -21,9 +21,9 @@ export default class Sticky extends Trait {
 		if(!this.gluedTo)
 			return;
 
-		if(this.stickyCountdown>0) {
-			this.stickyCountdown--;
-			if(!this.stickyCountdown)
+		if(this.removeAfter>0) {
+			this.removeAfter--;
+			if(!this.removeAfter)
 				this.isSticky= false;
 		}
 		this.gluedTo.vel.x= this.vel.x;

@@ -14,11 +14,13 @@ export default class Brick extends Entity {
 		this.speed= 0;
 		this.data= 0;
 
+		this.animTrait= new AnimationTrait();
+
 		this.setType(type);
-		this.setSprite(this.spriteName);
+		this.setSprite(this.currSprite);
 
 		this.addTrait(new BrickTrait());
-		this.addTrait(new AnimationTrait());
+		this.addTrait(this.animTrait);
 
 	}
 
@@ -27,28 +29,22 @@ export default class Brick extends Entity {
 		
 		const idx= "gobGrBpy".indexOf(type);
 		if(idx>=0) {
-			this.spriteName= "standard-"+idx;
+			this.currSprite= "standard-"+idx;
 			return;
 		}
 
 		switch(type) {
 			case "x":
-				this.spriteName= "silver-0";
-				this.anim= "silver";
+				this.currSprite= "silver-0";
+				this.animTrait.setAnim(this, "silver");
+				this.animTrait.start();
 				this.data= 4;
 				break;
 		}		
 
 	}
 
-	routeAnim() {
-		return this.currSprite;
-	}
-
 	render({screen:{ctx}}) {
-		// if(this.type == "x")
-		// 	this.spritesheet.drawAnim("silver", ctx, this.pos.x, this.pos.y, this.lifetime);
-		// else
-		this.spritesheet.draw(this.routeAnim(), ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 	}	
 }

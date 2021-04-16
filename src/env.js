@@ -5,6 +5,8 @@ const ENV= {
 
 	RESOURCE_DIR: `${rootDir}/`,
 
+	LEVELS_DIR: `${rootDir}/levels/`,
+
 	AUDIO_DIR: `${rootDir}/sounds/`,
 	VOLUME: 50,
 

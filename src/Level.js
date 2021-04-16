@@ -1,3 +1,4 @@
+import ENV from "./env.js";
 import Ball from "./entities/Ball.js";
 import Paddle from "./entities/Paddle.js";
 import {collideRect, COLLISION} from "./math.js";
@@ -9,14 +10,12 @@ import Sticky from "./traits/trait-sticky.js";
 import {loadJson} from "./loaders.js";
 import Audio from "./Audio.js";
 
-const LEVELS_DIR= "./assets/levels/";
-
 export default class Level {
 
 	static REMOVE_ENTITY= Symbol('removeEntity');
 
 	static async Loader(id, gameContext) {
-		const sheet= await loadJson(`${LEVELS_DIR}${id}.json`);
+		const sheet= await loadJson(`${ENV.LEVELS_DIR}${id}.json`);
 
 		const level= new Level(id, gameContext);
 
@@ -44,13 +43,15 @@ export default class Level {
 		this.tasks = [];
 
 		const canvas= gameContext.screen.canvas;
-		this.paddle= new Paddle(300, 550);
-		this.ball= new Ball(200, 200, 0, 0, canvas.width, canvas.height);
 
+		this.ball= new Ball(200, 200, 18, ENV.WALL_TOP+12, canvas.width-18, canvas.height);
+		this.entities.push(this.ball);
+		
+		this.paddle= new Paddle(300, 550);
 		const sticky= this.paddle.traits.get(Sticky);
 		sticky.stickIt(this.ball, this.paddle);
 		sticky.isSticky= true;
-		sticky.stickyCountdown= 1;
+		sticky.removeAfter= 1;
 
 		this.entities.push(this.paddle);
 
@@ -111,7 +112,7 @@ export default class Level {
 
 		this.layers.forEach(layer => layer.render(gameContext));
 
-		this.ball.render(gameContext);
+		// this.ball.render(gameContext);
 
 		// ctx.fillStyle= "#ffffff";
 		// ctx.font = '12px sans-serif';

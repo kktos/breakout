@@ -25,4 +25,5 @@ export default class BoundingBox extends Trait {
 		if(entity.bottom > this.box.dy || entity.pos.y < this.box.y)
 			entity.vel.y *= -1;
     }
+
 }

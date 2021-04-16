@@ -41,7 +41,7 @@
 	"animations": {
 		"silver": {
 			"len": 0.1,
-			"loop": 5,
+			"loop": 2,
 			"frames": [
 				"silver-0",
 				"silver-1",

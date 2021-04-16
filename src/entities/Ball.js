@@ -1,5 +1,5 @@
 import Entity from "./Entity.js";
-import Velocity from "../traits/trait-velocity.js";
+import VelocityTrait from "../traits/velocity.trait.js";
 import BoundingBox from "../traits/trait-boundingBox.js";
 import Bounce from "../traits/trait-bounce.js";
 
@@ -13,7 +13,7 @@ export default class Ball extends Entity {
 		this.radius= this.size.x/2;
 		
 
-		this.addTrait(new Velocity());
+		this.addTrait(new VelocityTrait());
 		this.addTrait(new Bounce());
 		this.addTrait(new BoundingBox(bbx, bby, bbdx, bbdy));
 	}
@@ -29,7 +29,8 @@ export default class Ball extends Entity {
 		// ctx.fillStyle = 'red';
 		// ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.x);
 
-		// ctx.font = '14px sans-serif';
+		ctx.font = '14px sans-serif';
 		// ctx.fillText(`POS= ${this.pos.x|0},${this.pos.y|0} VEL= ${this.vel.x},${this.vel.y}`, 100, 600-10);
+		ctx.fillText(`VEL= ${this.vel.x},${this.vel.y}`, 100, 600-10);
 	}
 }
