@@ -1,7 +1,7 @@
 
 import Entity from "./Entity.js";
 import Audio from "../Audio.js";
-import Bricks from "../traits/trait-bricks.js"
+import BrickTrait from "../traits/brick-trait.js"
 
 export default class Brick extends Entity {
 
@@ -19,7 +19,7 @@ export default class Brick extends Entity {
 		this.setType(type);
 		this.setSprite("standard-"+this.spriteIdx);
 
-		this.addTrait(new Bricks());
+		this.addTrait(new BrickTrait());
 
 	}
 
@@ -57,9 +57,6 @@ export default class Brick extends Entity {
 			break;
 		}
 
-	}
-
-	update(dt) {
 	}
 
 	render({screen:{ctx}}) {
