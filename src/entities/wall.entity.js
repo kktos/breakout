@@ -2,8 +2,8 @@ import Entity from "./Entity.js";
 
 export default class WallEntity extends Entity {
 
-	constructor(sprite, x, y) {
-		super(x, y, "backgrounds.json");
+	constructor(resourceMgr, sprite, x, y) {
+		super(resourceMgr, x, y, "backgrounds.json");
 
 		this.vel= {x: 0, y: 0};
 		this.setSprite(sprite);

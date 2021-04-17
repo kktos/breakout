@@ -1,4 +1,4 @@
-import Background from "../background.js";
+import BackgroundEntity from "../entities/background.entity.js";
 import Layer from "./Layer.js";
 
 export default class BackgroundLayer extends Layer {
@@ -7,7 +7,7 @@ export default class BackgroundLayer extends Layer {
 		super(gameContext);
 
 		const canvas= gameContext.screen.canvas;
-		this.background= new Background(id, canvas.width, canvas.height);
+		this.background= new BackgroundEntity(gameContext.resourceManager, id, canvas.width, canvas.height);
 		const s= this.background.spriteSize();	
 		this.col= canvas.width / s.x;
 		this.row= canvas.height / s.y;		

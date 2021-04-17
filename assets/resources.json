@@ -2,7 +2,8 @@
 	"spritesheets": [
 		"bricks.json",
 		"paddles.json",
-		"backgrounds.json"
+		"backgrounds.json",
+		"powerups.json"
 	],
 	"audiosheets": [
 		"bricks.json",

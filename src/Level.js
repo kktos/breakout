@@ -7,12 +7,13 @@ import BackgroundLayer from "./layers/background.layer.js";
 import DashboardLayer from "./layers/dashboard.layer.js";
 import BricksLayer from "./layers/bricks.layer.js";
 import StickyTrait from "./traits/sticky.trait.js";
-import {loadJson} from "./loaders.js";
-import Audio from "./Audio.js";
+import {loadJson} from "./utils/loaders.util.js";
 
 export default class Level {
 
 	static REMOVE_ENTITY= Symbol('removeEntity');
+	static ADD_ENTITY= Symbol('addEntity');
+	static RESET= Symbol('reset');
 
 	static async Loader(id, gameContext) {
 		const sheet= await loadJson(`${ENV.LEVELS_DIR}${id}.json`);
@@ -32,29 +33,37 @@ export default class Level {
 	}
 
 	constructor(id, gameContext) {
-		this.gameContext= gameContext;
 
-		this.audio= Audio.retrieve("level.json");
-	
+		this.audio= gameContext.resourceManager.get("audio","level.json");
 		this.audio.play("new_level");
+
+		this.gravity= 50;
+
+		const canvas= gameContext.screen.canvas;
+		this.bbox= {x:18, y:ENV.WALL_TOP+12, dx:canvas.width-18, dy:canvas.height};
+		this.screenWidth= canvas.width;
 
 		this.entities= [];
 		this.layers= [];
 		this.tasks = [];
 
-		const canvas= gameContext.screen.canvas;
+		this.ball= new BallEntity(gameContext.resourceManager, 200, 200);
+		this.paddle= new PaddleEntity(gameContext.resourceManager, 300, 550);
 
-		this.ball= new BallEntity(200, 200, 18, ENV.WALL_TOP+12, canvas.width-18, canvas.height);
+		this.entities.push(this.paddle);
+
+		this.reset();
+	}
+
+	reset() {
+
 		this.entities.push(this.ball);
-		
-		this.paddle= new PaddleEntity(300, 550);
+
+		this.paddle.move(300);
 		const sticky= this.paddle.traits.get(StickyTrait);
 		sticky.stickIt(this.ball, this.paddle);
 		sticky.isSticky= true;
 		sticky.removeAfter= 1;
-
-		this.entities.push(this.paddle);
-
 	}
 
 	addLayer(layer) {
@@ -62,7 +71,7 @@ export default class Level {
 	}
 
     addTask(name, ...args) {
-        this.tasks.push({name, args});
+       	this.tasks.push({name, args});
     }
 
 	processTasks() {
@@ -71,14 +80,27 @@ export default class Level {
 
 		this.tasks.forEach(({name, args}) => {
 			switch(name) {
-				case Level.REMOVE_ENTITY:
+				case Level.REMOVE_ENTITY: {
 					const idx= this.entities.indexOf(args[0]);
 					if(idx != -1)
 						this.entities.splice(idx, 1);
 					break;
+				}
+				case Level.ADD_ENTITY: {
+					this.entities.push(args[0]);
+					break;
+				}
+				case Level.RESET: {
+					this.reset();
+					break;
+				}
 			}
 		});
 		this.tasks.length= 0;
+	}
+
+	broadcast(name, ...args) {
+		this.entities.forEach(entity => entity.emit(name, ...args));
 	}
 
 	collides(gameContext, target) {
@@ -93,19 +115,16 @@ export default class Level {
 			}
 		});
 	
-		this.processTasks();
 	}
 
 	update(gameContext) {
+		this.entities.forEach(entity => entity.update(gameContext));
 
-		this.entities.forEach(entity => {
-			entity.update(gameContext);
-		});
-		// this.ball.update(gameContext);
 		this.collides(gameContext, this.ball);
-	
-		//  this.paddle.update(gameContext);
-		// this.collides(paddle);	
+
+        this.entities.forEach(entity => entity.finalize());
+
+		this.processTasks();
 	}
 
 	render(gameContext) {
@@ -127,7 +146,7 @@ export default class Level {
 			}
 
 			case "mousemove": {
-				const paddleX= this.gameContext.screen.canvas.width * e.clientX * 2 /document.body.offsetWidth;
+				const paddleX= this.screenWidth * e.clientX * 2 /document.body.offsetWidth;
 				this.paddle.move(paddleX);
 				break;
 			}

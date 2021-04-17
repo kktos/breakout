@@ -1,29 +1,26 @@
 import Trait from './Trait.js';
+import KillableTrait from "./killable.trait.js";
 
 export default class BoundingBoxTrait extends Trait {
 
-	constructor(bbx, bby, bbdx, bbdy) {
-		super()
-		this.box= {
-			x: bbx,
-			y: bby, 
-			dx: bbdx,
-			dy: bbdy
-		}
-	}
-
-    update(entity) {
-		if(entity.pos.x < this.box.x) {
-			entity.pos.x= this.box.x;
+    update(entity, {level}) {
+		const bbox= level.bbox;
+		if(entity.pos.x < bbox.x) {
+			entity.pos.x= bbox.x;
 			entity.vel.x *= -1;
 		}
-		if(entity.right > this.box.dx) {
-			entity.pos.x= this.box.dx - entity.size.x;
+		if(entity.right > bbox.dx) {
+			entity.pos.x= bbox.dx - entity.size.x;
 			entity.vel.x *= -1;
 		}
 
-		if(entity.bottom > this.box.dy || entity.pos.y < this.box.y)
+		if(entity.pos.y < bbox.y)
 			entity.vel.y *= -1;
+
+		if(entity.bottom > bbox.dy) {
+			if(entity.traits.has(KillableTrait))
+				entity.traits.get(KillableTrait).kill();
+		}
     }
 
 }

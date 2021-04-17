@@ -9,10 +9,10 @@ export default class BricksLayer extends Layer {
 
 		this.entities= entities;
 
-		this.buildBricks(bricks.join(""));
+		this.buildBricks(gameContext.resourceManager, bricks.join(""));
 	}
 
-	buildBricks(bricks) {
+	buildBricks(resourceManager, bricks) {
 		let strCursor= 0;
 		function getNextBrick() {
 			while(bricks.charCodeAt(strCursor)<33)
@@ -30,7 +30,7 @@ export default class BricksLayer extends Layer {
 		
 			const type= getNextBrick();
 			if(type != "-") {
-				const brick= new BrickEntity(ENV.BRICK_LEFT + col, ENV.BRICK_TOP + row, type);
+				const brick= new BrickEntity(resourceManager, ENV.BRICK_LEFT + col, ENV.BRICK_TOP + row, type);
 				this.entities.push(brick);
 			}
 		}		

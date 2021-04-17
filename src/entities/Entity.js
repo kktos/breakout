@@ -1,8 +1,8 @@
-import SpriteSheet from "../Spritesheet.js";
+import EventBuffer from "../EventBuffer.js";
 
 export default class Entity {
 
-	constructor(x, y, sheetFilename= null) {
+	constructor(resourceMgr, x, y, sheetFilename= null) {
 		this.pos= {x, y};
 		this.size= {x: 0, y: 0};
 		this.vel= {x: 0, y: 0};
@@ -11,11 +11,12 @@ export default class Entity {
 
 		this.lifetime= 0;
 		this.anim= null;
-		this.traits = new Map();
+		this.traits= new Map();
+		this.events= new EventBuffer();
 
 		this.currSprite= null;
 		if(sheetFilename) {
-			this.spritesheet= SpriteSheet.retrieve(sheetFilename);
+			this.spritesheet= resourceMgr.get("sprite", sheetFilename);
 		} else
 			this.spritesheet= null;
 	}
@@ -38,6 +39,10 @@ export default class Entity {
         this.traits.set(trait.constructor, trait);
     }
 
+	emit(name, ...args) {
+		this.events.emit(name, ...args);
+	}
+
 	setSprite(name) {
 		if(!this.spritesheet || !this.spritesheet.has(name))
 			throw new Error(`no sprite ${name}`);
@@ -54,6 +59,11 @@ export default class Entity {
 		this.traits.forEach(trait => trait.update(this, gameContext));
 		this.lifetime+= gameContext.dt;
 	}
+
+    finalize() {
+        this.traits.forEach(trait => trait.finalize(this));
+        this.events.clear();
+    }
 
 	render(gameContext) {
 	}

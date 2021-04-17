@@ -1,10 +1,10 @@
 
-import Entity from "./entities/Entity.js";
+import Entity from "./Entity.js";
 
-export default class Background extends Entity {
+export default class BackgroundEntity extends Entity {
 
-	constructor(type, w, h) {
-		super(0, 0, "backgrounds.json");
+	constructor(resourceMgr, type, w, h) {
+		super(resourceMgr, 0, 0, "backgrounds.json");
 
 		this.type= type;
 		this.setSprite("normal-"+this.type);

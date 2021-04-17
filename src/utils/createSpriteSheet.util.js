@@ -26,7 +26,5 @@ export default function createSpriteSheet(filename, sheet, img) {
 			s.defineAnim(name, animDef);
 		});
 
-	SpriteSheet.cache.set(filename, s);
-
 	return s;
 }

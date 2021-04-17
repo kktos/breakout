@@ -1,15 +1,15 @@
 
 import Entity from "./Entity.js";
-import Audio from "../Audio.js";
-import BrickTrait from "../traits/brick.trait.js"
-import AnimationTrait from "../traits/animation.trait.js"
+import BrickTrait from "../traits/brick.trait.js";
+import AnimationTrait from "../traits/animation.trait.js";
+import KillableTrait from "../traits/killable.trait.js";
 
 export default class BrickEntity extends Entity {
 
-	constructor(x, y, type= "g") {
-		super(x, y, "bricks.json");
+	constructor(resourceMgr, x, y, type= "g") {
+		super(resourceMgr, x, y, "bricks.json");
 
-		this.audio= Audio.retrieve("bricks.json");
+		this.audio= resourceMgr.get("audio", "bricks.json");
 		this.vel= {x: 0, y: 0};
 		this.speed= 0;
 		this.data= 0;
@@ -19,6 +19,7 @@ export default class BrickEntity extends Entity {
 		this.setType(type);
 		this.setSprite(this.currSprite);
 
+		this.addTrait(new KillableTrait());
 		this.addTrait(new BrickTrait());
 		this.addTrait(this.animTrait);
 

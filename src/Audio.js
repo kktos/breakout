@@ -1,5 +1,5 @@
 import ENV from "./env.js";
-import {loadJson} from "./loaders.js";
+import {loadJson} from "./utils/loaders.util.js";
 
 function loadSound(context, sound) {
 	return fetch(ENV.AUDIO_DIR + sound)
@@ -9,28 +9,17 @@ function loadSound(context, sound) {
 
 function loadSounds(filename, sheet) {
 	const audio= new Audio();
-	Audio.cache.set(filename, audio);
 	return Promise.all(
 			Object.keys(sheet)
 				.map(name => loadSound(audio.context, sheet[name].sound)
 								.then(buf => audio.add(name, buf))
 				)
-		);
+		).then(()=>audio);
 }
 
 export default class Audio {
 
-	static cache= new Map();
-	static retrieve(name) {
-		return Audio.cache.has(name) ? 
-				Audio.cache.get(name)
-				:
-				null;
-	}
 	static load(filename) {
-		if(Audio.cache.has(filename))
-			throw new Error(`Audiosheet ${filename} was already loaded !`);
-
 		return loadJson(ENV.AUDIO_DIR + filename)
 					.then(sheet => loadSounds(filename, sheet));
 	}

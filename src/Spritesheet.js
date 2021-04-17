@@ -1,21 +1,11 @@
 import ENV from "./env.js";
-import {loadImage, loadJson} from "./loaders.js";
+import {loadImage, loadJson} from "./utils/loaders.util.js";
 import createSpriteSheet from "./utils/createSpriteSheet.util.js";
 import animResolveFrame from "./utils/animResolveFrame.util.js";
 
 export default class SpriteSheet {
 
-	static cache= new Map();
-	static retrieve(name) {
-		if(!SpriteSheet.cache.has(name))
-			throw new Error(`Unable to find Spritesheet ${name}!`);
-
-		return SpriteSheet.cache.get(name);
-	}
 	static load(filename) {
-		if(SpriteSheet.cache.has(filename))
-			throw new Error(`Spritesheet ${filename} was already loaded!`);
-
 		let sheet;
 		return loadJson(ENV.SPRITESHEET_DIR+filename)
 				.then(s => sheet= s)

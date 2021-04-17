@@ -1,14 +1,13 @@
 import Entity from "./Entity.js";
-import Audio from "../Audio.js";
 import StickyTrait from "../traits/sticky.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
 
 export default class PaddleEntity extends Entity {
 
-	constructor(x, y) {
-		super(x, y, "paddles.json");
+	constructor(resourceMgr, x, y) {
+		super(resourceMgr, x, y, "paddles.json");
 
-		this.audio= Audio.retrieve("paddle.json");
+		this.audio= resourceMgr.get("audio", "paddle.json");
 		this.size= {x: 0, y: 0};
 		this.vel= {x: 0, y: 0};
 

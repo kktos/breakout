@@ -2,20 +2,21 @@ import Entity from "./Entity.js";
 import VelocityTrait from "../traits/velocity.trait.js";
 import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
+import KillableTrait from "../traits/killable.trait.js";
 
 export default class BallEntity extends Entity {
-	constructor(x, y, bbx, bby, bbdx, bbdy) {
-		super(x, y);
+	constructor(resourceMgr, x, y) {
+		super(resourceMgr, x, y);
+		
 		this.size= {x: 10, y: 10};
-
 		this.vel= {x: 380, y: 360};
 		this.speed= 1;
 		this.radius= this.size.x/2;
 		
-
 		this.addTrait(new VelocityTrait());
 		this.addTrait(new BounceTrait());
-		this.addTrait(new BoundingBoxTrait(bbx, bby, bbdx, bbdy));
+		this.addTrait(new KillableTrait());
+		this.addTrait(new BoundingBoxTrait());
 	}
 
 	render({screen:{ctx}}) {
