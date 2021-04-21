@@ -5,6 +5,13 @@ export default class BoundingBoxTrait extends Trait {
 
     update(entity, {level}) {
 		const bbox= level.bbox;
+
+		if(entity.bottom > bbox.dy) {
+			if(entity.traits.has(KillableTrait))
+				entity.traits.get(KillableTrait).kill();
+			return;
+		}
+
 		if(entity.pos.x < bbox.x) {
 			entity.pos.x= bbox.x;
 			entity.vel.x *= -1;
@@ -17,10 +24,6 @@ export default class BoundingBoxTrait extends Trait {
 		if(entity.pos.y < bbox.y)
 			entity.vel.y *= -1;
 
-		if(entity.bottom > bbox.dy) {
-			if(entity.traits.has(KillableTrait))
-				entity.traits.get(KillableTrait).kill();
-		}
     }
 
 }

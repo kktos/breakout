@@ -32,3 +32,8 @@ export function collideRect(r1, r2){
 	}
 	return(collision);
 }
+
+export function ptInRect(x, y, r) {
+	return 	r.left <= x && x <= r.right &&
+			r.top <= y && y <= r.bottom;
+}

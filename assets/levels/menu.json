@@ -1,0 +1,87 @@
+{
+	"name": "menu",
+	"background": 3,
+
+	"layout": [
+		{
+			"type": "menu",
+			"items": [
+				{
+					"text": "play",
+					"pos": [300, 410],
+					"size": 3,
+					"align": 2,
+					"scene": "1"
+				},
+				{
+					"text": "level editor",
+					"pos": [300, 470],
+					"size": 3,
+					"align": 2,
+					"scene": "editor"
+				},
+				{
+					"text": "debugger",
+					"pos": [300, 530],
+					"size": 3,
+					"align": 2,
+					"scene": "debug"
+				}
+			]
+		},
+		{
+			"type": "text",
+			"pos": [300, 300],
+			"size": 4,
+			"align": 2,
+			"text": "BREAK IT"
+		},
+		{
+			"type": "sprite",
+			"pos": [500, 280],
+			"zoom": 2,
+			"sprite": "enemies:@portal"
+		},
+		{
+			"type": "sprite",
+			"pos": [50, 280],
+			"zoom": 2,
+			"sprite": "enemies:@portal"
+		},
+		{
+			"type": "sprite",
+			"pos": [15, 50],
+			"range": [9, 1],
+			"sprite": "bricks:standard-0",
+			"zoom": 2
+		},
+		{
+			"type": "sprite",
+			"pos": [15, 82],
+			"range": [9, 1],
+			"sprite": "bricks:standard-1",
+			"zoom": 2
+		},
+		{
+			"type": "sprite",
+			"pos": [15, 114],
+			"range": [9, 1],
+			"sprite": "bricks:standard-2",
+			"zoom": 2
+		},
+		{
+			"type": "sprite",
+			"pos": [15, 146],
+			"range": [9, 1],
+			"sprite": "bricks:standard-3",
+			"zoom": 2
+		},
+		{
+			"type": "sprite",
+			"pos": [15, 178],
+			"range": [9, 1],
+			"sprite": "bricks:standard-4",
+			"zoom": 2
+		}
+	]
+}

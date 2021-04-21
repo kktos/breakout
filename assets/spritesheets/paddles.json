@@ -1,5 +1,5 @@
 {
-	"img": "sprites/paddles.png",
+	"img": "paddles.png",
 	"sprites": {
 		"standard": {
 			"scale": 2,
@@ -7,29 +7,82 @@
 				[0, 64, 64, 16]
 			]
 		},
-		"large": {
+		"normal0": {
 			"scale": 2,
-			"rects":[
-				[0, 104, 96, 16],
-				[48, 104, 96, 16],
-				[96, 104, 96, 16],
-				[144, 104, 96, 16]
-			]
+			"tiles": {
+				"pos": [0, 64],
+				"size": [32, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
 		},
+		"normal1": {
+			"scale": 2,
+			"tiles": {
+				"pos": [32, 64],
+				"size": [32, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"normal2": {
+			"scale": 2,
+			"tiles": {
+				"pos": [64, 64],
+				"size": [32, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"normal3": {
+			"scale": 2,
+			"tiles": {
+				"pos": [96, 64],
+				"size": [32, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+
+		"gun": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 144],
+				"size": [32, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+
 		"life": {
 			"scale":2,
-			"rect": [32, 153, 28, 10]
+			"rect": [32, 153, 32, 14]
+		},
+		"bullets": {
+			"scale":2,
+			"rect": [48, 144, 32, 16]
 		}
 	},
 	"animations": {
-		"large": {
-			"len": 0.2,
-			"frames": [
-				"large-0",
-				"large-1",
-				"large-2",
-				"large-3"
-			]
+		"normal0": {
+			"len": 0.1,
+			"frames": { "name": "normal0", "range": [0, 3] }
+		},
+		"normal1": {
+			"len": 0.1,
+			"frames": { "name": "normal1", "range": [0, 3] }
+		},
+		"normal2": {
+			"len": 0.1,
+			"frames": { "name": "normal2", "range": [0, 3] }
+		},
+		"normal3": {
+			"len": 0.1,
+			"frames": { "name": "normal3", "range": [0, 3] }
+		},
+		"gun": {
+			"len": 0.1,
+			"frames": { "name": "gun", "range": [0, 3] }
 		}
 	}
 }

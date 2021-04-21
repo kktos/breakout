@@ -2,6 +2,7 @@ import ENV from "./env.js";
 import {loadJson} from "./utils/loaders.util.js";
 import SpriteSheet from "./Spritesheet.js";
 import Audio from "./Audio.js";
+import {loadFont} from "./Font.js";
 
 function loadSpritesheets(mgr, sheets) {
 	return sheets.map(filename => SpriteSheet.load(filename).then(r=>mgr.add("sprite", filename, r)));
@@ -11,6 +12,10 @@ function loadAudiosheets(mgr, sheets) {
 	return sheets.map(filename => Audio.load(filename).then(r=>mgr.add("audio", filename, r)));
 }
 
+function loadFonts(mgr, sheets) {
+	return sheets.map(filename => loadFont(filename).then(r=>mgr.add("font", filename, r)));
+}
+
 export default class ResourceManager {
 
 	constructor() {
@@ -18,7 +23,7 @@ export default class ResourceManager {
 	}
 
 	async load() {
-		const sheet= await loadJson(ENV.RESOURCE_DIR+"resources.json");
+		const sheet= await loadJson(ENV.RESOURCES_DIR+"resources.json");
 
 		const jobs= [];
 		const kinds= Object.keys(sheet);
@@ -30,14 +35,17 @@ export default class ResourceManager {
 				case "audiosheets":
 					jobs.push(...loadAudiosheets(this, sheet.audiosheets));
 					break;
+				case "fonts":
+					jobs.push(...loadFonts(this, sheet.fonts));
+					break;
 			}
 		});
 		
-		return Promise.all(jobs);
+		return Promise.all(jobs).then(()=>console.log(this));
 	}
 
 	add(kind, name, rez) {
-		const id= kind+":"+name;
+		const id= (kind+":"+name).replace(/\.json/,'');
 		if(this.cache.has(id))
 			throw new Error(`Duplicate resource ${id}!`);
 		this.cache.set(id, rez);

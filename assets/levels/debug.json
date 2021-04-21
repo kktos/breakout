@@ -1,0 +1,16 @@
+{
+	"name": "debug",
+	"background": 0,
+
+	"debug": 1,
+
+	"texts": [
+		{
+			"type": "text",
+			"pos": [300, 300],
+			"size": 3,
+			"align": 2,
+			"text": "this is a test"
+		}
+	]
+}

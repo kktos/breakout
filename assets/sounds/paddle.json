@@ -5,5 +5,8 @@
 	},
 	"die": {
 		"sound": "die.ogg"
+	},
+	"explosion": {
+		"sound": "explosion.ogg"
 	}
 }

@@ -7,9 +7,9 @@ export default class SpriteSheet {
 
 	static load(filename) {
 		let sheet;
-		return loadJson(ENV.SPRITESHEET_DIR+filename)
+		return loadJson(ENV.SPRITESHEETS_DIR+filename)
 				.then(s => sheet= s)
-				.then(() => loadImage("./assets/"+sheet.img))
+				.then(() => loadImage(sheet.img))
 				.then((img) =>createSpriteSheet(filename, sheet, img));
 	}
 
@@ -19,13 +19,14 @@ export default class SpriteSheet {
 		this.animations= new Map();
 	}	
 
-	define(name, x, y, w, h, {flip, scale}) {
-        const sprites = [false, true].map(flip => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
+	define(name, x, y, w, h, {flip, scale}={}) {
+        const sprites= [false, true].map(flip => {
+            const canvas= document.createElement('canvas');
+            const ctx= canvas.getContext('2d');
+			ctx.imageSmoothingEnabled= false;
 
-			canvas.width = w;
-            canvas.height = h;
+			canvas.width= w;
+            canvas.height= h;
 
 			if(scale)
 				ctx.scale(scale, scale);
@@ -46,8 +47,9 @@ export default class SpriteSheet {
 	}
 
 	defineComplex(name, spriteDef) {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
+		const canvas= document.createElement('canvas');
+		const ctx= canvas.getContext('2d');
+		ctx.imageSmoothingEnabled= false;
 
 		{
 			let width= 0, height= 0;
@@ -124,11 +126,25 @@ export default class SpriteSheet {
 			animation.loop= Infinity;
 		animation.frameIdx= -1;
 		animation.loopInitialValue= animation.loop;
+
+		if(!Array.isArray(animation.frames)) {
+			const framesDef= animation.frames;
+			const frames= [];
+			const [from, to]= framesDef.range;
+			for(let idx= from; idx<=to; idx++)
+				frames.push(framesDef.name+"-"+idx);
+			animation.frames= frames;
+		}
+
 		this.animations.set(name, animation);
     }
 
 	has(name) {
 		return this.sprites.has(name);
+	}
+
+	hasAnim(name) {
+		return this.animations.has(name);
 	}
 
 	spriteSize(name) {
@@ -144,14 +160,17 @@ export default class SpriteSheet {
         return animResolveFrame(animation, time);
 	}
 
-	draw(name, ctx, x, y, flip = false) {
-		if(this.sprites.has(name))
-        	ctx.drawImage(this.sprites.get(name)[flip|0], x, y);
+	draw(name, ctx, x, y, {flip, zoom} = {zoom:1, flip:false}) {
+		if(!this.sprites.has(name))
+			throw new Error(`Unable to find sprite ${name}`);
+
+		const sprite= this.sprites.get(name)[flip|0];
+        ctx.drawImage(sprite, x, y, zoom*sprite.width, zoom*sprite.height);
     }
 
-    drawAnim(name, ctx, x, y, distance) {
+    drawAnim(name, ctx, x, y, distance, {zoom} = {zoom:1}) {
         const animation= this.animations.get(name);
-        this.draw(animResolveFrame(animation, distance), ctx, x, y);
+        this.draw(animResolveFrame(animation, distance), ctx, x, y, {zoom});
     }
 
 

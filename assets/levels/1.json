@@ -1,0 +1,38 @@
+{
+	"name": "warmup",
+	"background": 3,
+	"bricks0": [
+		"----- ----- -----",
+		"----- ----- -----",
+		"----- ----- -----",
+		"----- ----- -----",
+		"----- ----- -----",
+		"o---- ----- -----"
+	],
+	"bricks1": [
+		"-oooo ooooo oooo-",
+		"o---- ----- ----o",
+		"x--Bb ----- bB--x",
+		"x---- -rrr- ----x",
+		"x---- ----- ----x",
+		"xgrrb -xxx- ----x"
+	],
+	"bricks": [
+		"---y- ----- -y---",
+		"---y- ----- -y---",
+		"----y ----- y----",
+		"----y ----- y----",
+		"--xxx xxxxx xxx--",
+		"--xxx xxxxx xxx--",
+		"-xxxr rxxxr rxxx-",
+		"-xxxr rxxxr rxxx-",
+		"xxxxx xxxxx xxxxx",
+		"xxxxx xxxxx xxxxx",
+		"xxxxx xxxxx xxxxx",
+		"x-xxx xxxxx xxx-x",
+		"x-x-- ----- --x-x",
+		"x-x-- ----- --x-x",
+		"---xx x---x xx---",
+		"---xx x---x xx---"
+	]
+}

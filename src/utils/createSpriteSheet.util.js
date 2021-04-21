@@ -19,6 +19,18 @@ export default function createSpriteSheet(filename, sheet, img) {
 			s.defineComplex(key, value.sprites);
 		}
 
+		if(value.tiles) {
+			const tiles= value.tiles;
+			const [x,y]= tiles.pos;
+			const [w,h]= tiles.size;
+			let [dx,dy]= tiles.increment;
+			dx*= w;
+			dy*= h;
+			for(let idx= 0; idx<tiles.count; idx++) {
+				s.define(key+"-"+idx, x+(idx*dx), y+(idx*dy), w*value.scale, h*value.scale, {scale: value.scale});	
+			}
+		}
+
 	});
 
 	if(sheet.animations)

@@ -11,7 +11,7 @@ export default class EventEmitter {
 		this._events[name].push(listener);
 	}
 
-	removeListener(name, listenerToRemove) {
+	off(name, listenerToRemove) {
 		if(!this._events[name]) {
 			throw new Error(`Can't remove a listener. Event "${name}" doesn't exits.`);
 		}
@@ -20,11 +20,11 @@ export default class EventEmitter {
 		this._events[name]= this._events[name].filter(filterListeners);
 	}
 
-	emit(name, data) {
+	emit(name, ...args) {
 		if(!this._events[name]) {
 			throw new Error(`Can't emit an event. Event "${name}" doesn't exits.`);
 		}
 
-		this._events[name].forEach(callback => callback(data));
+		this._events[name].forEach(callback => callback(...args));
 	}
 }

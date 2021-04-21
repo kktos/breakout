@@ -40,12 +40,7 @@ export default class AnimationTrait extends Trait {
 			return;
 
 		const spriteName= animResolveFrame(this.runningAnim, entity.lifetime);
-
-		// console.log(spriteName, entity.lifetime);
-
-		entity.setSprite(
-			spriteName
-		);
+		entity.setSprite(spriteName);
 	}
 	
 }

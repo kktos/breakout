@@ -1,7 +1,7 @@
 
 export default class Layer {
 	
-	constructor(gameContext) {
+	constructor(gc) {
 	}	
 	
 	render(dt) {

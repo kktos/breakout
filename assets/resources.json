@@ -3,11 +3,15 @@
 		"bricks.json",
 		"paddles.json",
 		"backgrounds.json",
-		"powerups.json"
+		"powerups.json",
+		"enemies.json"
 	],
 	"audiosheets": [
 		"bricks.json",
 		"paddle.json",
 		"level.json"
+	],
+	"fonts": [
+		"font.png"
 	]
 }

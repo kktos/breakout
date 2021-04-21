@@ -1,34 +1,33 @@
 import Entity from "./Entity.js";
-import StickyTrait from "../traits/sticky.trait.js";
+import StickyTrait from "../traits/powerups/sticky.trait.js";
+import LaserTrait from "../traits/powerups/laser.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
+import BoundingBoxTrait from "../traits/boundingBox.trait.js";
+import MouseXTrait from "../traits/mouseX.trait.js";
+import PaddleTrait from "../traits/paddle.trait.js";
 
 export default class PaddleEntity extends Entity {
 
 	constructor(resourceMgr, x, y) {
-		super(resourceMgr, x, y, "paddles.json");
+		super(resourceMgr, x, y, "paddles");
 
-		this.audio= resourceMgr.get("audio", "paddle.json");
-		this.size= {x: 0, y: 0};
-		this.vel= {x: 0, y: 0};
+		this.audio= resourceMgr.get("audio", "paddle");
 
-		this.setSprite("large-0");
+		this.poweredBy= null;
 
+		this.setAnim("normal0");
+
+		this.addTrait(new MouseXTrait());
+		this.addTrait(new BoundingBoxTrait());
 		this.addTrait(new StickyTrait());
-		this.addTrait(new PlayerTrait());
+		this.addTrait(new LaserTrait());
+		this.addTrait(new PlayerTrait(this));
+		this.addTrait(new PaddleTrait());
 
-	}
-
-	// collides(side, target) {
-	// 	if(target instanceof Ball)
-	// 		this.audio.play("pong");
-	// }
-
-	move(x) {
-		this.pos.x= x;
 	}
 
 	render({screen:{ctx}}) {
-		this.spritesheet.drawAnim("large", ctx, this.pos.x, this.pos.y, this.lifetime);
+		this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
 
 		// this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 

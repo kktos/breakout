@@ -1,0 +1,222 @@
+{
+	"img": "enemies.png",
+	"sprites": {
+		"3cubes": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 160],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 24
+			}
+		},
+		"blueCone": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 0],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 8
+			}
+		},
+		"greenTriangle": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 16],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 11
+			}
+		},
+		"3coloredBalls": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 32],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 24
+			}
+		},
+		"3greenBalls": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 48],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 18
+			}
+		},
+		"3redBalls": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 64],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 18
+			}
+		},
+		"3blueBalls": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 80],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 18
+			}
+		},
+		"redCube": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 96],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 10
+			}
+		},
+		"planets": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 112],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 12
+			}
+		},
+		"portal": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 128],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 15
+			}
+		},
+		"sphere": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 144],
+				"size": [16, 16],
+				"increment": [1, 0],
+				"count": 10
+			}
+		},
+		"explosion": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 248],
+				"size": [16, 13],
+				"increment": [1, 0],
+				"count": 48
+			}
+		}	
+
+	},
+
+	"animations": {
+		"3cubes": {
+			"len": 0.1,
+			"frames": {
+				"name": "3cubes",
+				"range": [0, 23]
+			}
+		},
+		"blueCone": {
+			"len": 0.1,
+			"frames": {
+				"name": "blueCone",
+				"range": [0, 7]
+			}
+		},
+		"greenTriangle": {
+			"len": 0.1,
+			"frames": {
+				"name": "greenTriangle",
+				"range": [0, 10]
+			}
+		},
+		"3coloredBalls": {
+			"len": 0.1,
+			"frames": {
+				"name": "3coloredBalls",
+				"range": [0, 23]
+			}
+		},
+		"3greenBalls": {
+			"len": 0.1,
+			"frames": {
+				"name": "3greenBalls",
+				"range": [0, 17]
+			}
+		},
+		"3redBalls": {
+			"len": 0.1,
+			"frames": {
+				"name": "3redBalls",
+				"range": [0, 17]
+			}
+		},
+		"3blueBalls": {
+			"len": 0.1,
+			"frames": {
+				"name": "3blueBalls",
+				"range": [0, 11]
+			}
+		},
+		"blueExplosion": {
+			"len": 0.1,
+			"frames": {
+				"name": "3blueBalls",
+				"range": [12, 17]
+			}
+		},
+		"redExplosion": {
+			"len": 0.1,
+			"frames": {
+				"name": "3redBalls",
+				"range": [12, 17]
+			}
+		},
+		"greenExplosion": {
+			"len": 0.1,
+			"frames": {
+				"name": "3greenBalls",
+				"range": [12, 17]
+			}
+		},
+		"redCube": {
+			"len": 0.1,
+			"frames": {
+				"name": "redCube",
+				"range": [0, 9]
+			}
+		},
+		"planets": {
+			"len": 0.1,
+			"frames": {
+				"name": "planets",
+				"range": [0, 11]
+			}
+		},
+		"portal": {
+			"len": 0.1,
+			"frames": {
+				"name": "portal",
+				"range": [0, 14]
+			}
+		},
+		"sphere": {
+			"len": 0.1,
+			"frames": {
+				"name": "sphere",
+				"range": [0, 9]
+			}
+		},
+		"explosion": {
+			"len": 0.03,
+			"frames": {
+				"name": "explosion",
+				"range": [0, 47]
+			}
+		}
+	}
+}

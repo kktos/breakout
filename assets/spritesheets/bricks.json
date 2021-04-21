@@ -1,5 +1,5 @@
 {
-	"img": "sprites/bricks.png",
+	"img": "bricks.png",
 	"sprites": {
 		"standard": {
 			"scale": 2,
@@ -35,7 +35,11 @@
 				[64, 24, 32, 16],
 				[80, 24, 32, 16]
 			]
-		}		
+		},
+		"template": {
+			"scale": 2,
+			"rect":	[64, 0, 32, 16]
+		}
 
 	},
 	"animations": {

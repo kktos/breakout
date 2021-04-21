@@ -3,22 +3,39 @@ import Layer from "./Layer.js";
 
 export default class BackgroundLayer extends Layer {
 
-	constructor(gameContext, id) {
-		super(gameContext);
+	constructor(gc, id= 0) {
+		super(gc);
 
-		const canvas= gameContext.screen.canvas;
-		this.background= new BackgroundEntity(gameContext.resourceManager, id, canvas.width, canvas.height);
-		const s= this.background.spriteSize();	
-		this.col= canvas.width / s.x;
-		this.row= canvas.height / s.y;		
+		const view= gc.screen.canvas;
+
+		this.canvas= document.createElement('canvas');
+		this.canvas.width= view.width;
+		this.canvas.height= view.height;
+        const ctx= this.canvas.getContext('2d');
+		ctx.imageSmoothingEnabled= false;
+
+		const background= new BackgroundEntity(gc.resourceManager, id);
+		const s= background.size;	
+		const w= view.width / s.x;
+		const h= view.height / s.y;
+
+		this.compose(ctx, background, w, h);
+	}
+
+	compose(ctx, background, w, h) {
+		for(let col= 0; col<w; col++) {
+			for(let row= 0; row<h; row++) {
+				background.draw(ctx, col, row);
+			}
+		}
 	}
 
 	render({screen:{ctx}}) {
-		for(let col= 0; col<this.col; col++) {
-			for(let row= 0; row<this.row; row++) {
-				this.background.draw(ctx, col, row);
-			}
-		}		
-		this.background.render(ctx);
+		const w= this.canvas.width;
+		const h= this.canvas.height;
+		ctx.drawImage(
+			this.canvas,
+			0, 0, w, h,
+			0, 0, w, h);
 	}
 }

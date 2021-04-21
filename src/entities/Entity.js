@@ -1,13 +1,32 @@
-import EventBuffer from "../EventBuffer.js";
+import EventBuffer from "../events/EventBuffer.js";
 
+function generateID() {
+	let letters= [];
+	for(let idx= 0; idx <5; idx++)
+		letters.push(65 + Math.random()*26);
+	return String.fromCharCode(...letters);
+}
 export default class Entity {
 
 	constructor(resourceMgr, x, y, sheetFilename= null) {
+		this.id= generateID();
+
+		const m= String(this.constructor).match(/class ([a-zA-Z0-9_]+)/);
+		this.class= m[1];
+
 		this.pos= {x, y};
 		this.size= {x: 0, y: 0};
 		this.vel= {x: 0, y: 0};
 		this.speed= 0;
-		this.previousVel= {x: 0, y: 0};
+		this.mass= 1;
+		this.previousVel= this.vel;
+		this.previousMass= this.mass;
+
+		// a ghost won't interact with the world - only with the paddle/player
+		this.ghost= false;
+
+		// how much killing it will be added to/substracted from the player score
+		this.points= 0;
 
 		this.lifetime= 0;
 		this.anim= null;
@@ -28,11 +47,14 @@ export default class Entity {
 
 	pause() {
 		this.previousVel= this.vel;
+		this.previousMass= this.mass;
 		this.vel= {x: 0, y: 0};
+		this.mass= 0;
 	}
 
 	go() {
 		this.vel= this.previousVel;
+		this.mass= this.previousMass;
 	}
 
 	addTrait(trait) {
@@ -51,13 +73,40 @@ export default class Entity {
 		this.size= this.spritesheet.spriteSize(name);
 	}
 
-    collides(gameContext, side, target) {
-        this.traits.forEach(trait => trait.collides(gameContext, side, this, target));
+	setAnim(name) {
+		if(!this.spritesheet || !this.spritesheet.hasAnim(name))
+			throw new Error(`no animation ${name}`);
+
+		this.currSprite= name;
+		this.size= this.spritesheet.spriteSize(this.spritesheet.animFrame(name, 1));
+	}
+
+    collides(gc, side, target) {
+
+		if(!gc.entities)
+			gc.entities= {};
+		let debug= gc.entities[this.id];
+		if(!debug) {
+			gc.entities[this.id]= {};
+			debug= gc.entities[this.id];
+		}
+		debug.collideID= generateID();
+
+        this.traits.forEach(trait => trait.collides(gc, side, this, target));
     }
 
-	update(gameContext) {
-		this.traits.forEach(trait => trait.update(this, gameContext));
-		this.lifetime+= gameContext.dt;
+	update(gc) {
+		if(!gc.entities)
+			gc.entities= {};
+		let debug= gc.entities[this.id];
+		if(!debug) {
+			gc.entities[this.id]= {};
+			debug= gc.entities[this.id];
+		}
+		debug.updateID= generateID();
+
+		this.traits.forEach(trait => trait.update(this, gc));
+		this.lifetime+= gc.dt;
 	}
 
     finalize() {
@@ -65,6 +114,6 @@ export default class Entity {
         this.events.clear();
     }
 
-	render(gameContext) {
+	render(gc) {
 	}
 }
