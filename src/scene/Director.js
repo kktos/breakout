@@ -22,8 +22,10 @@ export default class Director {
     }
 
     pauseScene() {
-        if(this.currentScene)
-            this.currentScene.pause();
+        if(!this.currentScene)
+            return;
+        this.currentScene.pause();
+        this.currentScene.killOnExit && this.scenes.splice(this.sceneIndex, 1);
     }
 
     runPrevious() {
@@ -31,14 +33,18 @@ export default class Director {
         this.sceneIndex--;
         if(this.sceneIndex<0)
             this.sceneIndex= 0;
-        if(this.currentScene)
+        if(this.currentScene) {
             this.currentScene.init(this.gc);
+            this.currentScene.run();
+        }
     }
     runNext() {
         this.pauseScene();
         this.sceneIndex++;
-        if(this.currentScene)
+        if(this.currentScene) {
             this.currentScene.init(this.gc);
+            this.currentScene.run();
+        }
     }
 
     run(name) {
@@ -46,8 +52,10 @@ export default class Director {
         const sceneIdx= this.scenes.findIndex(scene => scene.name == name);
         if(sceneIdx>=0) {
             this.sceneIndex= sceneIdx;
-            if(this.currentScene)
+            if(this.currentScene) {
                 this.currentScene.init(this.gc);
+                this.currentScene.run();
+            }
             return;
         }
 
@@ -64,7 +72,7 @@ export default class Director {
 
 	}
     update(gc) {
-        if(this.currentScene) {
+        if(this.currentScene && this.currentScene.isRunning) {
             this.currentScene.update(gc);
             this.currentScene.render(gc);
         }

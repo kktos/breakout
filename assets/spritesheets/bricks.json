@@ -54,6 +54,11 @@
 				"silver-4",
 				"silver-5"
 			]
+		},
+		"gold": {
+			"len": 0.1,
+			"loop": 2,
+			"frames": {"name": "gold","range": [0, 5]}
 		}
 	}
 }

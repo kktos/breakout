@@ -3,15 +3,107 @@
 		<style>
 			BODY {
 				background-color: black;
-				display: flex;
+				display: grid;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: 0;
+				grid-template: 1fr auto 1fr / 1fr auto 1fr;
+				font: 12px tahoma;
 			}
 			CANVAS {
 				margin: auto;
 			}
+			#ui {
+				display: grid;
+				grid-auto-flow: column;
+			}
+			.btn {
+				color: white;
+				background: #2668a0;
+				padding: 10px;
+				margin: 2px;
+				cursor: pointer;
+				width: 70px;
+				display: grid;
+				align-content: center;
+				justify-content: center;				
+			}
+			.btn-white {
+				background: white;
+				color: black;
+			}
+			.white-shadow {
+				box-shadow: 1px 1px 1px white, 0px 0px 2px white;				
+			}
+			.black-shadow {
+				box-shadow: 1px 1px 1px black, 0px 0px 2px black;				
+			}
+			.hvcenter {
+				align-self: center;
+				justify-self: center;
+			}
+			.vcenter {
+				align-self: center;
+			}
+			.hright {
+				justify-self: right;
+			}
+			.grid-column {
+				display: grid;
+    			grid-auto-flow: column;
+			}
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #00000094;
+				display: grid;
+				align-content: center;
+				justify-content: center;				
+			}
+			.alert {
+				display: grid;
+				width: 500px;
+				height: 100px;
+				background-color: #ffffff;
+				border: 2px solid #060606;
+				box-shadow: 5px 4px 5px 2px black;
+				top: 131px;
+				padding: 20px;		
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.choose {
+				height: 50vh;
+				grid-gap: 10px;
+				grid-template-rows: 1fr auto;
+			}
+			.list {
+				border: 1px solid #d0cdcd;
+    			font-weight: normal;
+				overflow-y: scroll;
+			}
+			.list-item {
+				padding: 5px;
+				cursor: pointer;
+			}
+			.selected {
+				background: #8ed0ff;
+			}
 		</style>		
 	</head>
 	<body>
-		<canvas id="game"></canvas>
+		<div></div>
+			<div id="ui"></div>
+		<div></div>
+		<div></div>
+			<canvas id="game"></canvas>
+		<div></div>
 		<script type="module" src='src/main.js'></script>
 		<script async src='http://localhost:3000/browser-sync/browser-sync-client.js?v=2.26.14'></script>			
 	</body>

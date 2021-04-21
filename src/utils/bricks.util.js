@@ -1,7 +1,9 @@
 import ENV from '../env.js';
 import BrickEntity from "../entities/brick.entity.js";
 
-export default function createBricks({resourceManager}, bricksDef) {
+const perRow= 15;
+
+export function createBricks({resourceManager}, bricksDef) {
 	const entities= [];
 	const bricks= bricksDef.join("");
 
@@ -14,7 +16,6 @@ export default function createBricks({resourceManager}, bricksDef) {
 		return bricks[strCursor++];
 	}
 	
-	const perRow= 15;
 	let col= 0;
 	let row= 0;
 	let idx= -1;
@@ -34,4 +35,20 @@ export default function createBricks({resourceManager}, bricksDef) {
 
 	}
 	return entities;
+}
+
+export function stringifyBricks(entities) {
+	const bricks= [];
+	let str= "";
+	let idx= 0;
+	while(idx < entities.length) {
+		const entity= entities[idx++];
+		str+= entity.type;
+		if(!(idx%perRow|0)) {
+			bricks.push(str.replaceAll('#', '-'));
+			str= "";
+		}
+	}
+	return bricks;
+
 }

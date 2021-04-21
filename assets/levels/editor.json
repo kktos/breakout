@@ -1,8 +1,9 @@
 {
-	"name": "edito#",
+	"name": "editor",
 	"background": 2,
 
 	"editor": 1,
+	"killOnExit": true,
 
 	"template": [
 		"##### ##### #####",

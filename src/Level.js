@@ -3,16 +3,9 @@ import Events from "./events/Events.js";
 import {collideRect, COLLISION} from "./math.js";
 import Scene from "./scene/Scene.js";
 import TaskList from "./TaskList.js";
-import {loadJson} from "./utils/loaders.util.js";
-import createBricks from "./utils/createBricks.util.js";
 import BallEntity from "./entities/ball.entity.js";
 import PaddleEntity from "./entities/paddle.entity.js";
 import SpawnerEntity from "./entities/spawner.entity.js";
-import EntitiesLayer from "./layers/entities.layer.js";
-import BackgroundLayer from "./layers/background.layer.js";
-import DashboardLayer from "./layers/dashboard.layer.js";
-import DebuggerLayer from "./layers/debugger.layer.js";
-import DisplayLayer from "./layers/display.layer.js";
 import Trait from "./traits/Trait.js";
 import StickyTrait from "./traits/powerups/sticky.trait.js";
 import PlayerTrait from "./traits/player.trait.js";
@@ -23,35 +16,6 @@ export default class Level extends Scene {
 	static REMOVE_ENTITY= Symbol('removeEntity');
 	static ADD_ENTITY= Symbol('addEntity');
 	static RESET= Symbol('reset');
-
-	// static async load(id, gc) {
-	// 	const sheet= await loadJson(`${ENV.LEVELS_DIR}${id}.json`);
-
-	// 	const level= new Level(id, gc);
-
-	// 	level.addLayer(new BackgroundLayer(gc, sheet.background));
-
-	// 	if(sheet.debug) {
-	// 		level.addLayer(new DebuggerLayer(gc));
-	// 	}
-	// 	else
-	// 	if(sheet.texts) {
-	// 		level.addLayer(new DisplayLayer(gc, sheet.texts));
-	// 	}
-	// 	else
-	// 	if(sheet.bricks) {
-	// 		createBricks(gc, level.entities, sheet.bricks)
-	// 		level.addLayer(new EntitiesLayer(gc, level.entities));
-	// 		level.addLayer(new DashboardLayer(gc, level.paddle));	
-	// 	}
-
-	// 	return level;
-	// }
-
-	// static async next(gc, next= null) {
-	// 	next= next!=null ? next : gc.level.id+1;
-	// 	gc.level= await Level.load(next, gc);
-	// }	
 
 	constructor(gc, id) {
 

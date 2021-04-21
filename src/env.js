@@ -15,7 +15,7 @@ const ENV= {
 	IMAGES_DIR: `${rootDir}/images/`,
 
 	BRICK_TOP: 70+16+16,
-	BRICK_LEFT: 55,
+	BRICK_LEFT: 50,
 	WALL_TOP: 50,
 
 	FPS: 1/120

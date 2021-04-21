@@ -19,24 +19,27 @@ export default class Scene {
 		this.screenWidth= gc.screen.canvas.width;
 		this.screenHeight= gc.screen.canvas.height;
 		this.receiver= null;
+		this.isRunning= true;
+		this.killOnExit= false;
 	}
 
-	init(gc) {
-
-	}
+	init(gc) {}
 
 	addLayer(layer) {
 		this.layers.push(layer);
 	}
 
-    update(gc) {
-    }
+    update(gc) {}
 
 	render(gc) {
 		this.layers.forEach(layer => layer.render(gc));
 	}
 
 	pause() {
+		this.isRunning= false;
+	}
+	run() {
+		this.isRunning= true;
 	}
 	
 	handleEvent(gc, e) {
@@ -50,6 +53,8 @@ Scene.load= async function(gc, name) {
 
 	const scene= sheet.bricks ? new Level(gc, name) : new Scene(gc, name);
 
+	scene.killOnExit= sheet.killOnExit ? true : false;
+
 	scene.addLayer(new BackgroundLayer(gc, sheet.background));
 
 	if(sheet.debug)
@@ -60,9 +65,9 @@ Scene.load= async function(gc, name) {
 
 	if(sheet.editor) {
 		const entities= [];
-		scene.addLayer(new EntitiesLayer(gc, entities, sheet.template));
+		scene.addLayer(new EntitiesLayer(gc, entities));
 		scene.addLayer(new DashboardLayer(gc));
-		scene.receiver= new EditorLayer(gc, entities);
+		scene.receiver= new EditorLayer(gc, entities, sheet.template);
 		scene.addLayer(scene.receiver);
 	}
 

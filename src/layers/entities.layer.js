@@ -1,12 +1,13 @@
 import Layer from "./Layer.js";
-import createBricks from "../utils/createBricks.util.js";
+import {createBricks} from "../utils/bricks.util.js";
 
 export default class EntitiesLayer extends Layer {
 
-	constructor(gc, entities, sheet) {
+	constructor(gc, entities, sheet= null) {
 		super(gc);
 
-		entities.push(...createBricks(gc, sheet));
+		if(sheet)
+			entities.push(...createBricks(gc, sheet));
 		this.entities= entities;
 	}
 

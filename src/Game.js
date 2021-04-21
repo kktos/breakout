@@ -25,8 +25,6 @@ class KeyMap {
 }
 
 function handleEvent(gc, e) {
-	e.preventDefault();
-	e.stopPropagation();
 	if(!e.isTrusted)
 		return;
 	switch(e.type) {

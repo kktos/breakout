@@ -13,6 +13,7 @@ class Font {
         this.spriteSize= size;
         this.size= 1;
         this.align= Align.Left;
+        this.cache= new Map();
     }
 
     get height() {
@@ -26,22 +27,29 @@ class Font {
     }
 
     print(context, text, x, y, color="#fff") {
-        const canvas= document.createElement('canvas');
-        const ctx= canvas.getContext('2d');
-        const str= String(text).toUpperCase();
+        const key= JSON.stringify([text,x,y,color]);
+        if(!this.cache.has(key)) {
+            const canvas= document.createElement('canvas');
+            const ctx= canvas.getContext('2d');
+            const str= String(text).toUpperCase();
+    
+            canvas.width= str.length*this.height;
+            canvas.height= this.height;
+    
+            ctx.imageSmoothingEnabled= false;
+            [...str].forEach((char, pos) => {
+                    this.sprites.draw(char, ctx, pos * this.height, 0, {zoom: this.size});
+            });
+            
+            ctx.globalCompositeOperation= "source-in";
+            ctx.fillStyle= color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        canvas.width= str.length*this.height;
-        canvas.height= this.height;
+            this.cache.set(key, canvas);
+        }    
 
-        ctx.imageSmoothingEnabled= false;
-        [...str].forEach((char, pos) => {
-                this.sprites.draw(char, ctx, pos * this.height, 0, {zoom: this.size});
-        });
+        const canvas= this.cache.get(key);
         
-        ctx.globalCompositeOperation= "source-in";
-        ctx.fillStyle= color;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         switch(this.align) {
             case Align.Center:
                 x-= canvas.width / 2;
