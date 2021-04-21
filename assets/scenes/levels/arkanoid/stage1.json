@@ -1,0 +1,23 @@
+{
+    "name": "stage 1",
+    "next": "stage2",
+    "background": 0,
+    "bricks": [
+        "---------------",
+        "---------------",
+        "xxxxxxxxxxxxxxx",
+        "rrrrrrrrrrrrrrr",
+        "yyyyyyyyyyyyyyy",
+        "BBBBBBBBBBBBBBB",
+        "ppppppppppppppp",
+        "GGGGGGGGGGGGGGG",
+        "---------------",
+        "---------------",
+        "---------------",
+        "---------------",
+        "---------------",
+        "---------------",
+        "---------------",
+        "---------------"
+    ]
+}

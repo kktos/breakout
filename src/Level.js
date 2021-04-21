@@ -10,6 +10,7 @@ import Trait from "./traits/Trait.js";
 import StickyTrait from "./traits/powerups/sticky.trait.js";
 import PlayerTrait from "./traits/player.trait.js";
 import PaddleTrait from "./traits/paddle.trait.js";
+import KillableTrait from "./traits/killable.trait.js";
 
 export default class Level extends Scene {
 
@@ -25,6 +26,7 @@ export default class Level extends Scene {
 		this.audio= gc.resourceManager.get("audio","level");
 		this.audio.play("new_level");
 
+		this.breakableCount= 0;
 		this.gravity= 50;
 		this.bbox= {x:18, y:ENV.WALL_TOP+12, dx:this.screenWidth-18, dy:this.screenHeight};
 		this.entities= [];
@@ -33,14 +35,25 @@ export default class Level extends Scene {
 		this.setTaskHandlers(gc);
 
 		this.paddle= new PaddleEntity(gc.resourceManager, 300, 550);
+
 		const trait= new Trait();
-		trait.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
-			if(lives==0) {
-				this.audio.play("game_over");
-				gc.level= await Level.load(0, gc);
-			} else
-				this.reset(gc);
-		});
+
+		trait
+			.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
+				if(lives==0) {
+					this.audio.play("game_over");
+					gc.level= await Level.load(0, gc);
+				} else
+					this.reset(gc);
+			})
+			.on(KillableTrait.EVENT_KILLED, async (entity) => {
+				if(entity.class == "BrickEntity")
+					this.breakableCount--;
+
+				if(this.breakableCount<=0)
+					this.events.emit(Scene.EVENT_COMPLETE, this.next);
+			});
+
 		this.paddle.addTrait(trait);
 		this.entities.push(this.paddle);
 
@@ -52,6 +65,7 @@ export default class Level extends Scene {
 
 	init(gc) {
 		gc.level= this;
+		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.type != "X") ).length;
 	}
 
 	reset(gc) {
@@ -140,34 +154,6 @@ export default class Level extends Scene {
 				this.paddle.emit(Events.EVENT_MOUSECLICK, gc, this.paddle.pos);
 				break;
 			}
-
-			// case "keyup":
-			// 	gc.keys.set(e.key, false);
-			// 	break;
-
-			// case "keydown":
-			// 	gc.keys.set(e.key, true);
-			// 	switch(e.key) {
-			// 		case "r":
-			// 			this.reset(gc);
-			// 			break;
-			// 	}
-			// 	break;
-
-			// case "mousedown": {
-			// 	gc.mouse.down= true;
-			// 	break;
-			// }
-			// case "mouseup": {
-			// 	gc.mouse.down= false;
-			// 	break;
-			// }
-
-			// case "mousemove": {
-			// 	gc.mouse.x= Math.min(this.screenWidth, this.screenWidth * e.clientX /document.body.offsetWidth);
-			// 	gc.mouse.y= 0;
-			// 	break;
-			// }
 		}
 	}
 }

@@ -3,16 +3,18 @@ const rootDir= "./assets";
 
 const ENV= {
 
-	RESOURCES_DIR: `${rootDir}/`,
+	RESOURCES_PATH: `${rootDir}/`,
 
-	LEVELS_DIR: `${rootDir}/levels/`,
+	SCENES_PATH: `${rootDir}/scenes/`,
 
-	SOUNDS_DIR: `${rootDir}/sounds/`,
+	LEVELS_DIR: "/levels/",
+
+	SOUNDS_PATH: `${rootDir}/sounds/`,
 	VOLUME: 50,
 
-	SPRITESHEETS_DIR: `${rootDir}/spritesheets/`,
+	SPRITESHEETS_PATH: `${rootDir}/spritesheets/`,
 
-	IMAGES_DIR: `${rootDir}/images/`,
+	IMAGES_PATH: `${rootDir}/images/`,
 
 	BRICK_TOP: 70+16+16,
 	BRICK_LEFT: 50,

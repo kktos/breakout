@@ -12,7 +12,7 @@ export default class PlayerTrait extends Trait {
         this.name= "UNNAMED";
         this.lives= 3;
         this.score= 0;
-        this.highscore= 50000;
+        this.highscore= localStorage.getItem("highscore")|0;
         this.paddle= paddle;
 
         this.on(KillableTrait.EVENT_KILLED, (entity) => {
@@ -29,6 +29,11 @@ export default class PlayerTrait extends Trait {
                 this.score+= 1/entity.points;
             } else
                 this.score+= entity.points;
+            
+            if(this.score > this.highscore) {
+                this.highscore= this.score
+                localStorage.setItem("highscore", this.highscore);
+            }
 
         });
 	}

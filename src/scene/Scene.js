@@ -21,6 +21,7 @@ export default class Scene {
 		this.receiver= null;
 		this.isRunning= true;
 		this.killOnExit= false;
+		this.next= null;
 	}
 
 	init(gc) {}
@@ -49,13 +50,14 @@ export default class Scene {
 }
 
 Scene.load= async function(gc, name) {
-	const sheet= await loadJson(`${ENV.LEVELS_DIR}${name}.json`);
+	const sheet= await loadJson(`${ENV.SCENES_PATH}${name}.json`);
 
 	const scene= sheet.bricks ? new Level(gc, name) : new Scene(gc, name);
 
 	scene.killOnExit= sheet.killOnExit ? true : false;
 
-	scene.addLayer(new BackgroundLayer(gc, sheet.background));
+	const bkgndLayer= new BackgroundLayer(gc, sheet.background);
+	scene.addLayer(bkgndLayer);
 
 	if(sheet.debug)
 		scene.addLayer(new DebuggerLayer(gc));
@@ -67,7 +69,7 @@ Scene.load= async function(gc, name) {
 		const entities= [];
 		scene.addLayer(new EntitiesLayer(gc, entities));
 		scene.addLayer(new DashboardLayer(gc));
-		scene.receiver= new EditorLayer(gc, entities, sheet.template);
+		scene.receiver= new EditorLayer(gc, entities, sheet.template, bkgndLayer);
 		scene.addLayer(scene.receiver);
 	}
 

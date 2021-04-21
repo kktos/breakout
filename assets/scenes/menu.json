@@ -11,7 +11,7 @@
 					"pos": [300, 410],
 					"size": 3,
 					"align": 2,
-					"scene": "1"
+					"scene": "/levels/arkanoid/stage1"
 				},
 				{
 					"text": "level editor",

@@ -15,7 +15,6 @@ export default class BrickTrait extends Trait {
 
 	resetPowerTimer() {
 		BrickTrait.powerAfter= Math.random()*20|0 + 1;
-		// console.log("BrickTrait.powerAfter", BrickTrait.powerAfter);
 	}
 
 	collides(gc, side, entity, target) {
@@ -26,15 +25,13 @@ export default class BrickTrait extends Trait {
 	
 		switch(entity.type) {
 			case "x":
-				entity.audio.play("ping2");
 				entity.data--;
-				if(entity.data<=0)
-					entity.setType(1)
-				else {
+				if(entity.data>0) {
+					entity.audio.play("ping2");
 					if(entity.traits.has(AnimationTrait))
 						entity.traits.get(AnimationTrait).start();
+					break;
 				}
-				break;
 
 			default:
 				entity.audio.play("ping");
@@ -47,23 +44,8 @@ export default class BrickTrait extends Trait {
 
 				if(BrickTrait.powerAfter <=0) {
 					this.resetPowerTimer();
-		
 					const powerup= new PowerupEntity(resourceManager, entity.pos.x, entity.pos.y);
 					level.addTask(Level.ADD_ENTITY, powerup);
-		
-					// if(!window.ENTITIES)
-					// 	window.ENTITIES= [];
-		
-					// window.ENTITIES.push(entity.id);
-					
-					// console.log(
-					// 	`${gc.entities.MAINLOOP} COLD:${gc.entities[entity.id].collideID}`,
-					// 	"NEW  ",
-					// 	`${powerup.class}(${powerup.type}):${powerup.id}`,
-					// 	"-",
-					// 	`ENTITY:${entity.id} COLD:${gc.entities[entity.id].collideID} DEAD:${entity.traits.get(KillableTrait).isDead?"YES":""}`
-					// );
-		
 				}
 		
 				break;

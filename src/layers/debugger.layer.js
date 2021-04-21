@@ -1,8 +1,8 @@
-import Layer from "./Layer.js";
+import UILayer from "./UILayer.js";
 import {Align} from "../Font.js";
 import animResolveFrame from "../utils/animResolveFrame.util.js";
 
-export default class DebuggerLayer extends Layer {
+export default class DebuggerLayer extends UILayer {
 
 	constructor(gc) {
 		super(gc);
@@ -23,8 +23,6 @@ export default class DebuggerLayer extends Layer {
 	}
 
 	handleKeyboard(gc, keys) {
-		if(keys.get("Escape"))
-			gc.coppola.runPrevious();
 
 		if(!keys.get("ArrowDown") && this.downLatch)
 			this.downLatch= false;

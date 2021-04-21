@@ -7,7 +7,7 @@ export default class BackgroundEntity extends Entity {
 		super(resourceMgr, 0, 0, "backgrounds");
 
 		this.type= type;
-		this.setSprite("normal-"+this.type);
+		this.setSprite(this.type);
 	}
 
 	collides() {}

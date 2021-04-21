@@ -1,0 +1,8 @@
+{
+	"name": "debug",
+	"background": 0,
+
+	"debug": 1,
+	"killOnExit": true
+
+}

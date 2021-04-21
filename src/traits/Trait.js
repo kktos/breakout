@@ -6,6 +6,7 @@ export default class Trait {
 
 	on(name, callback, count = Infinity) {
         this.listeners.push({name, callback, count});
+		return this;
     }
 
     finalize(entity) {

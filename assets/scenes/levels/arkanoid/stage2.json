@@ -1,0 +1,22 @@
+{
+	"name": "stage 2",
+	"background": 1,
+	"bricks": [
+		"gg-------------",
+		"ggoo-----------",
+		"ggoob----------",
+		"ggoobG---------",
+		"ggoobGr--------",
+		"ggoobGrB-------",
+		"ggoobGrBp------",
+		"ggoobGrBpy-----",
+		"ggoobGrBpyg----",
+		"ggoobGrBpygo---",
+		"ggoobGrBpygob--",
+		"ggoobGrBpygobG-",
+		"xxxxxxxxxxxxxxr",
+		"---------------",
+		"---------------",
+		"---------------"
+	]
+}

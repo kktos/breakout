@@ -2,7 +2,7 @@ import ENV from "./env.js";
 import {loadJson} from "./utils/loaders.util.js";
 
 function loadSound(context, sound) {
-	return fetch(ENV.SOUNDS_DIR + sound)
+	return fetch(ENV.SOUNDS_PATH + sound)
 		.then(response => response.arrayBuffer())
 		.then(arrayBuffer => context.decodeAudioData(arrayBuffer));
 }
@@ -20,7 +20,7 @@ function loadSounds(filename, sheet) {
 export default class Audio {
 
 	static load(filename) {
-		return loadJson(ENV.SOUNDS_DIR + filename)
+		return loadJson(ENV.SOUNDS_PATH + filename)
 					.then(sheet => loadSounds(filename, sheet));
 	}
 

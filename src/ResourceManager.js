@@ -23,7 +23,7 @@ export default class ResourceManager {
 	}
 
 	async load() {
-		const sheet= await loadJson(ENV.RESOURCES_DIR+"resources.json");
+		const sheet= await loadJson(ENV.RESOURCES_PATH+"resources.json");
 
 		const jobs= [];
 		const kinds= Object.keys(sheet);

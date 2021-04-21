@@ -28,11 +28,6 @@ function handleEvent(gc, e) {
 	if(!e.isTrusted)
 		return;
 	switch(e.type) {
-		case "click": {
-			gc.coppola.handleEvent(gc, e);
-			// this.paddle.emit(Events.EVENT_MOUSECLICK, gc, this.paddle.pos);
-			break;
-		}
 
 		case "keyup":
 			gc.keys.set(e.key, false);
@@ -40,32 +35,25 @@ function handleEvent(gc, e) {
 
 		case "keydown":
 			gc.keys.set(e.key, true);
-			switch(e.key) {
-				case "r":
-					this.reset(gc);
-					break;
-			}
 			break;
 
 		case "mousedown": {
-			gc.coppola.handleEvent(gc, e);
 			gc.mouse.down= true;
 			break;
 		}
 		case "mouseup": {
-			gc.coppola.handleEvent(gc, e);
 			gc.mouse.down= false;
 			break;
 		}
 
 		case "mousemove": {
-			gc.coppola.handleEvent(gc, e);
 			const w= gc.screen.canvas.width;
 			gc.mouse.x= Math.min(w, w * e.clientX /document.body.offsetWidth);
 			gc.mouse.y= 0;
 			break;
 		}
 	}
+	gc.coppola.handleEvent(gc, e);
 }
 
 export default class Game {

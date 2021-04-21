@@ -7,7 +7,7 @@ export default class SpriteSheet {
 
 	static load(filename) {
 		let sheet;
-		return loadJson(ENV.SPRITESHEETS_DIR+filename)
+		return loadJson(ENV.SPRITESHEETS_PATH+filename)
 				.then(s => sheet= s)
 				.then(() => loadImage(sheet.img))
 				.then((img) =>createSpriteSheet(filename, sheet, img));

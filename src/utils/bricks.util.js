@@ -3,7 +3,7 @@ import BrickEntity from "../entities/brick.entity.js";
 
 const perRow= 15;
 
-export function createBricks({resourceManager}, bricksDef) {
+export function createBricks({resourceManager}, bricksDef, templateMode= false) {
 	const entities= [];
 	const bricks= bricksDef.join("");
 
@@ -24,8 +24,12 @@ export function createBricks({resourceManager}, bricksDef) {
 	
 		idx++;
 
-		if(type == "-")
-			continue;
+		if(type == "-") {
+			if(templateMode)
+				type= "#";
+			else
+				continue;
+		}
 
 		row= ((idx/perRow)|0)*17;
 		col= ((idx)%perRow) * 33;

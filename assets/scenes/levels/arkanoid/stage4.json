@@ -1,0 +1,22 @@
+{
+    "bricks": [
+        "--obGxB-ygobG--",
+        "--bGxBp-gobGx--",
+        "--GxBpy-obGxB--",
+        "--xBpyg-bGxBp--",
+        "--Bpygo-GxBpy--",
+        "--pygob-xBpyg--",
+        "--ygobG-Bpygo--",
+        "--gobGx-pygob--",
+        "--obGxB-ygobG--",
+        "--bGxBp-gobGx--",
+        "--GxBpy-obGxB--",
+        "--xBpyg-bGxBp--",
+        "--Bpygo-GxBpy--",
+        "--pygob-xBpyg--",
+        "--ygobG-Bpygo--",
+        "--gobGx-pygob--"
+    ],
+    "background": 2,
+    "name": "stage4"
+}
