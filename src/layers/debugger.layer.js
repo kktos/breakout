@@ -4,67 +4,171 @@ import animResolveFrame from "../utils/animResolveFrame.util.js";
 
 export default class DebuggerLayer extends UILayer {
 
-	constructor(gc) {
-		super(gc);
+	constructor(gc, ui) {
+		super(gc, ui);
 
-		const rezMgr= gc.resourceManager;
+		this.rezMgr= gc.resourceManager;
+		
 		this.width= gc.screen.canvas.width;
-		this.font= rezMgr.get("font","font.png");
-		this.spritesheet= rezMgr.get("sprite", "enemies");
-		this.pos= {x:10,y:10};
+		this.height= gc.screen.canvas.height;
+		
+		this.font= this.rezMgr.get("font","font.png");
+		
+		this.spritesheetList= this.rezMgr.byKind("sprite");
 
+		this.setSpritesheet(0);
+
+		this.buildUI(this.spritesheetList);
+	}
+
+	buildUI(list) {
+		list= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
+		this.ui.innerHTML= `
+			<div class="grid-column vcenter">
+				<div id="btnBack" class="btn white-shadow vcenter">BACK</div>
+				<div id="btnNew" class="btn white-shadow vcenter">NEW</div>
+				<div id="btnLoad" class="btn white-shadow vcenter">LOAD</div>
+				<select id="ss">${list}</select>
+				<div id="btnSave" class="btn white-shadow vcenter hright">SAVE</div>
+			</div>
+			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
+				<div class="vcenter hright">BACKGROUND</div>
+				<div id="btnPrevBkgnd" class="btn btn-small white-shadow vcenter">PREV</div>
+				<div id="btnNextBkgnd" class="btn btn-small white-shadow vcenter">NEXT</div>
+			</div>
+		`;
+		this.ui.querySelectorAll(".btn").forEach((el) => el.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(el.id)));
+		this.ui.querySelectorAll("SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+	}
+
+	onChangeUI(el) {
+		switch(el.id) {
+			case "ss":
+				this.setSpritesheet(el.value);
+				break;
+		}
+		// console.log(el.id, el.value);
+	}
+
+	onClickUIBtn(id) {
+		switch(id) {
+			case "btnBack":
+				this.goBack();
+				break;
+		}
+	}
+
+	setSpritesheet(idx) {
+		this.spritesheetName= this.spritesheetList[idx];
+		this.spritesheet= this.rezMgr.get(this.spritesheetName);
 		this.animations= this.spritesheet.animations;
 		this.names= [...this.animations.keys()];
 		this.currAnim= 0;
-
-		this.upLatch= false;
-		this.downLatch= false;
-
+		this.pauseAnim= false;
+		this.stepAnim= false;
+		this.step= 0;		
 	}
 
-	handleKeyboard(gc, keys) {
+	prevAnim() {
+		if(this.currAnim > 0)
+			this.currAnim--;
+		else
+			this.currAnim= this.names.length-1;
+	}
 
-		if(!keys.get("ArrowDown") && this.downLatch)
-			this.downLatch= false;
-		if(!keys.get("ArrowUp") && this.upLatch)
-			this.upLatch= false;
+	nextAnim() {
+		if(this.currAnim < this.names.length-1)
+			this.currAnim++;
+	}
 
-		if(keys.get("ArrowDown") && !this.downLatch) {
-			if(this.currAnim < this.names.length-1)
-				this.currAnim++;
-			this.downLatch= true;
+	playAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		anim.isStopped= false;
+		anim.loop= anim.loopInitialValue;
+		anim.lastFrameIdx= -1;
+		anim.frameIdx= -1;		
+	}
+
+	handleEvent(gc, e) {
+		switch(e.type) {
+			case "keydown":
+				switch(e.key) {
+					case "ArrowDown":
+						this.prevAnim();
+						break;
+					case "ArrowUp":
+						this.nextAnim();
+						break;
+
+					case "p":
+						this.playAnim();
+						break;
+
+					case "-": {
+						const anim= this.animations.get(this.names[this.currAnim]);
+						anim.len= (anim.len*10 + 1)/10;
+						break;
+					}
+					case "+": {
+						const anim= this.animations.get(this.names[this.currAnim]);
+						anim.len= (anim.len*10 - 1)/10;
+						if(anim.len<=0)
+							anim.len= 0.1;
+						break;
+					}
+
+					case "s":
+						this.stepAnim= !this.stepAnim;
+						break;
+					case "a": {
+						const anim= this.animations.get(this.names[this.currAnim]);
+						this.step--;
+						if(this.step<0)
+							this.step= anim.frames.length-1;
+						break;
+					}
+					case "z": {
+						const anim= this.animations.get(this.names[this.currAnim]);
+						this.step= (this.step +1) % anim.frames.length;
+						break;
+					}
+				}
+				break;
 		}
-		if(keys.get("ArrowUp") && !this.upLatch) {
-			if(this.currAnim > 0)
-				this.currAnim--;
-			else
-				this.currAnim= this.names.length-1;
-			this.upLatch= true;
-		}
-
 	}
 
 	render(gc) {
-		const {keys, tick, screen:{ctx}}= gc;
+		const {tick, screen:{ctx}}= gc;
 		
 		let text;
 		let line= 0;
-		const nl= () => { line= line + this.font.height; return line; };
+		const nl= () => { line= line + this.font.height+2; return line; };
 
-		this.handleKeyboard(gc, keys);
+		const print= (field, value) => {
+			nl();
+			this.font.align= Align.Right;
+			this.font.print(ctx, field, 100, line);
+			this.font.align= Align.Left;
+			this.font.print(ctx, value, 110, line);	
+		};
 
 		const anim= this.animations.get(this.names[this.currAnim]);
 
 		this.font.size= 2;
-		this.font.align= Align.Left;
-		text= `NAME.${this.currAnim} ${this.names[this.currAnim]}`;
-		this.font.print(ctx, text, 10, nl());
-		this.font.print(ctx, "COUNT "+anim.frames.length, 10, nl());
 
-		const frameSprite= animResolveFrame(anim, tick/100);
+		print("IDX", this.currAnim);
+		print("NAME", this.names[this.currAnim]);
+		print("COUNT", anim.frames.length);
+		print("LOOP", anim.loopInitialValue);
+		print("SPEED", anim.len);
+
+		const step= this.stepAnim ? this.step : tick/100;
+		const frameSprite= animResolveFrame(anim, step);
 		const frameSpriteSize= this.spritesheet.spriteSize(frameSprite);
-		this.spritesheet.draw(frameSprite, ctx, this.width-frameSpriteSize.x-10, this.pos.y);
+		this.spritesheet.draw(frameSprite, ctx, this.width-frameSpriteSize.x-50, 50);
 
+		this.spritesheet.draw(frameSprite, ctx, this.width/2-frameSpriteSize.x*2, this.height/2, {zoom:2});
+		
 		// line+= frameSpriteSize.y;
 		// nl();
 

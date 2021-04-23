@@ -1,5 +1,5 @@
 import Trait from './Trait.js';
-import Level from '../Level.js';
+import LevelScene from "../scene/level.scene.js";
 
 export default class SpawnerTrait extends Trait {
 
@@ -15,11 +15,11 @@ export default class SpawnerTrait extends Trait {
 		this.wannaSpawn= true;
 	}
 
-	update(entity, {level}) {
+	update(entity, {scene}) {
 		if(!this.wannaSpawn || !this.entities.length)
 			return;
 		this.wannaSpawn= false;
-		this.entities.forEach(entity => level.addTask(Level.ADD_ENTITY, entity));
+		this.entities.forEach(entity => scene.addTask(LevelScene.ADD_ENTITY, entity));
 		this.entities.length= 0;
     }
 

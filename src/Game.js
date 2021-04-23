@@ -1,8 +1,6 @@
 import ENV from "./env.js";
-import Level from "./Level.js";
 import ResourceManager from "./ResourceManager.js";
 import Director from "./scene/Director.js";
-import Scene from "./scene/Scene.js";
 
 let lastTime= 0;
 let acc= 0;
@@ -24,36 +22,43 @@ class KeyMap {
 	}
 }
 
-function handleEvent(gc, e) {
+function handleEvent(gc, coppola, e) {
 	if(!e.isTrusted)
 		return;
+
+	const bbox= gc.screen.bbox;
+	const evt= {
+		type: e.type,
+		buttons: e.buttons,
+		x: e.x - bbox.x,
+		y: e.y - bbox.y,
+		key: undefined
+
+	};
+
 	switch(e.type) {
 
+		case "contextmenu":
+			e.preventDefault();
+			return;
+
 		case "keyup":
-			gc.keys.set(e.key, false);
-			break;
-
 		case "keydown":
-			gc.keys.set(e.key, true);
+			evt.key= e.key;
+			gc.keys.set(e.key, evt.type == "keydown");
 			break;
 
-		case "mousedown": {
-			gc.mouse.down= true;
-			break;
-		}
-		case "mouseup": {
-			gc.mouse.down= false;
-			break;
-		}
-
+		case "mousedown":
+		case "mouseup":
+		case "click":
 		case "mousemove": {
-			const w= gc.screen.canvas.width;
-			gc.mouse.x= Math.min(w, w * e.clientX /document.body.offsetWidth);
-			gc.mouse.y= 0;
+			gc.mouse.down= evt.type == "mousedown";
+			gc.mouse.x= evt.x;
+			gc.mouse.y= evt.y;
 			break;
 		}
 	}
-	gc.coppola.handleEvent(gc, e);
+	coppola.handleEvent(gc, evt);
 }
 
 export default class Game {
@@ -61,6 +66,7 @@ export default class Game {
 		this.gc= {
 			screen: {
 				canvas,
+				bbox: canvas.getBoundingClientRect(),
 				ctx: canvas.getContext("2d")
 			},
 
@@ -71,40 +77,32 @@ export default class Game {
 
 			mouse: {x: 0, y: 0, down: false},
 			keys: new KeyMap(),
-			level: null,
-			coppola: null
+			scene: null
 		};
 	}
 
-	loop(dt= 0) {
+	loop(coppola, dt= 0) {
 		acc+= (dt - lastTime) / 1000;
 		while(acc > inc) {
 	
-			this.gc.coppola.update(this.gc);
+			coppola.update(this.gc);
 
 			this.gc.tick++;
 			acc-= inc;
 		}
 		lastTime= dt;
-		requestAnimationFrame((dt)=> this.loop(dt));
+		requestAnimationFrame((dt)=> this.loop(coppola, dt));
 	}
 
 	async start() {
 		await this.gc.resourceManager.load();
 
-		this.gc.coppola= new Director(this.gc);
-        this.gc.coppola.run("menu");
+		const coppola= new Director(this.gc);
+        coppola.run("menu");
 
-		["mousemove", "keyup", "keydown"]
-			.forEach(type=> document.addEventListener(type, (e) => handleEvent(this.gc, e)));
+		["mousemove", "keyup", "keydown", "mousedown", "mouseup", "click", "contextmenu"]
+			.forEach(type=> document.addEventListener(type, (e) => handleEvent(this.gc, coppola, e)));
 
-		["mousedown", "mouseup", "click"]
-			.forEach(type=> this.gc.screen.canvas.addEventListener(type, (e) => handleEvent(this.gc, e)));
-
-		this.gc.screen.canvas.addEventListener('contextmenu', function(evt) { 
-				evt.preventDefault();
-			  }, false);
-
-		this.loop();
+		this.loop(coppola);
 	}
 }

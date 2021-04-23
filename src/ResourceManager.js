@@ -51,13 +51,17 @@ export default class ResourceManager {
 		this.cache.set(id, rez);
 	}
 
-	get(kind, name) {
-		const id= kind+":"+name;
+	get(kind, name= null) {
+		const id= name ? kind+":"+name : kind;
 		if(!this.cache.has(id))
 			throw new Error(`Unable to find resource ${id}!`);
 
 		return this.cache.get(id);
 	}
 
+	byKind(kind) {
+		const re= new RegExp("^"+kind+":");
+		return [...this.cache.keys()].filter(k => k.match(re));
+	}
 
 }

@@ -7,14 +7,13 @@ import {Align} from "../Font.js";
 let flipflop= true;
 export default class DashboardLayer extends Layer {
 	
-	constructor(gc, paddle= null) {
+	constructor(gc) {
 		super(gc);
 
 		const rezMgr= gc.resourceManager;
 
 		this.width= gc.screen.canvas.width;
 		this.spritesheet= rezMgr.get("sprite", "paddles");
-        this.playerTrait= paddle ? paddle.traits.get(PlayerTrait) : {highscore:0,score:0,lives:3};
 
 		const lifeSize= this.spritesheet.spriteSize("life");
 		this.lifeY= 600 - lifeSize.y - 5;
@@ -31,26 +30,28 @@ export default class DashboardLayer extends Layer {
 		this.font= rezMgr.get("font","font.png");
 	}
 
-	render({tick,screen:{ctx}}) {
+	render({scene:{paddle},tick,screen:{ctx}}) {
 		ctx.fillStyle= "#000";
 		ctx.fillRect(0, 0, this.width, ENV.WALL_TOP);
+
+        const playerTrait= paddle ? paddle.traits.get(PlayerTrait) : {highscore:0,score:0,lives:3};
 
 		this.font.size= 3;
 		this.font.align= Align.Center;
 		this.font.print(ctx, "HIGH SCORE", this.width/2, 1, "red");
-		this.font.print(ctx, this.playerTrait.highscore, this.width/2, 28);
+		this.font.print(ctx, playerTrait.highscore, this.width/2, 28);
 
 		this.font.align= Align.Left;
 		// if(!(tick%50))
 		// 	flipflop= !flipflop;
 		if(flipflop)
 			this.font.print(ctx, "1UP", this.width/8, 1, "red");
-		this.font.print(ctx, this.playerTrait.score, this.width/8, 28);
+		this.font.print(ctx, playerTrait.score, this.width/8, 28);
 
 		for(let idx= 0; idx<this.walls.length; idx++)
 			this.walls[idx].draw(ctx);
 
-		for(let idx= 0; idx<this.playerTrait.lives; idx++)
+		for(let idx= 0; idx<playerTrait.lives; idx++)
 			this.spritesheet.draw("life", ctx, 20+(idx*this.lifeW), this.lifeY);
 	}	
 

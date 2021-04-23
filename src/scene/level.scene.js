@@ -1,48 +1,65 @@
-import ENV from "./env.js";
-import Events from "./events/Events.js";
-import {collideRect, COLLISION} from "./math.js";
-import Scene from "./scene/Scene.js";
-import TaskList from "./TaskList.js";
-import BallEntity from "./entities/ball.entity.js";
-import PaddleEntity from "./entities/paddle.entity.js";
-import SpawnerEntity from "./entities/spawner.entity.js";
-import Trait from "./traits/Trait.js";
-import StickyTrait from "./traits/powerups/sticky.trait.js";
-import PlayerTrait from "./traits/player.trait.js";
-import PaddleTrait from "./traits/paddle.trait.js";
-import KillableTrait from "./traits/killable.trait.js";
+import ENV from "../env.js";
+import Events from "../events/Events.js";
+import {collideRect, COLLISION} from "../math.js";
+import Scene from "./Scene.js";
+import TaskList from "../TaskList.js";
+import BallEntity from "../entities/ball.entity.js";
+import PaddleEntity from "../entities/paddle.entity.js";
+import SpawnerEntity from "../entities/spawner.entity.js";
+import Trait from "../traits/Trait.js";
+import StickyTrait from "../traits/powerups/sticky.trait.js";
+import PlayerTrait from "../traits/player.trait.js";
+import PaddleTrait from "../traits/paddle.trait.js";
+import KillableTrait from "../traits/killable.trait.js";
+import BackgroundLayer from "../layers/background.layer.js";
+import EntitiesLayer from "../layers/entities.layer.js";
+import DashboardLayer from "../layers/dashboard.layer.js";
 
-export default class Level extends Scene {
+export default class LevelScene extends Scene {
 
 	static REMOVE_ENTITY= Symbol('removeEntity');
 	static ADD_ENTITY= Symbol('addEntity');
 	static RESET= Symbol('reset');
 
-	constructor(gc, id) {
+	constructor(gc, name, {background, bricks}) {
+		super(gc, name);
+		
+		this.bbox= {x:18, y:ENV.WALL_TOP+12, dx:this.screenWidth-18, dy:this.screenHeight};
+		this.entities= [];
 
-		super(gc);
-
-		this.id= id;
 		this.audio= gc.resourceManager.get("audio","level");
 		this.audio.play("new_level");
 
 		this.breakableCount= 0;
 		this.gravity= 50;
-		this.bbox= {x:18, y:ENV.WALL_TOP+12, dx:this.screenWidth-18, dy:this.screenHeight};
-		this.entities= [];
+		this.gameover= true;
 
 		this.tasks= new TaskList();
 		this.setTaskHandlers(gc);
 
+		const spawner= new SpawnerEntity(gc.resourceManager, 300, 550);
+		this.entities.push(spawner);
+	
+		this.addLayer(new BackgroundLayer(gc, background));
+		this.addLayer(new EntitiesLayer(gc, this.entities, bricks));
+		this.addLayer(new DashboardLayer(gc));
+	}
+
+	newPlayer(gc) {
+		if(this.paddle) {
+			const idx= this.entities.indexOf(this.paddle);
+			if(idx != -1)
+				this.entities.splice(idx, 1);
+		}
+
 		this.paddle= new PaddleEntity(gc.resourceManager, 300, 550);
 
 		const trait= new Trait();
-
 		trait
 			.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
 				if(lives==0) {
 					this.audio.play("game_over");
-					gc.level= await Level.load(0, gc);
+					this.events.emit(Scene.EVENT_COMPLETE, "menu");
 				} else
 					this.reset(gc);
 			})
@@ -51,21 +68,19 @@ export default class Level extends Scene {
 					this.breakableCount--;
 
 				if(this.breakableCount<=0)
-					this.events.emit(Scene.EVENT_COMPLETE, this.next);
+					this.events.emit(Scene.EVENT_COMPLETE, -1);
 			});
-
 		this.paddle.addTrait(trait);
 		this.entities.push(this.paddle);
 
-		const spawner= new SpawnerEntity(gc.resourceManager, 300, 550);
-		this.entities.push(spawner);
-
 		this.reset(gc);
+
 	}
 
 	init(gc) {
-		gc.level= this;
 		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.type != "X") ).length;
+		if(this.gameover)
+			this.newPlayer(gc);
 	}
 
 	reset(gc) {
@@ -80,19 +95,19 @@ export default class Level extends Scene {
 
 	setTaskHandlers(gc) {
 		this.tasks
-			.onTask(Level.REMOVE_ENTITY, (entity) => {
+			.onTask(LevelScene.REMOVE_ENTITY, (entity) => {
 				const idx= this.entities.indexOf(entity);
 				if(idx != -1)
 					this.entities.splice(idx, 1);			
 			});
 
 		this.tasks
-			.onTask(Level.ADD_ENTITY, (entity) => {
+			.onTask(LevelScene.ADD_ENTITY, (entity) => {
 				this.entities.push(entity);
 			});
 
 		this.tasks
-			.onTask(Level.RESET, () => {
+			.onTask(LevelScene.RESET, () => {
 				this.reset(gc);
 			});
 

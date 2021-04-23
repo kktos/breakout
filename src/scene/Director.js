@@ -1,4 +1,5 @@
 import Scene from './Scene.js';
+import SceneFactory from './Scene.factory.js';
 
 export default class Director {
     constructor(gc) {
@@ -8,11 +9,15 @@ export default class Director {
     }
 
     addScene(scene) {
-        scene.events.on(Scene.EVENT_COMPLETE, (name) => {
-            if(name)
-                this.run(name);
+        scene.events.on(Scene.EVENT_COMPLETE, (nameOrIdx) => {
+            if(Number.isInteger(nameOrIdx)) {
+                if(nameOrIdx<0)
+                    this.runPrevious();
+                else
+                    this.runNext();
+            }
             else
-                this.runNext();
+                this.run(nameOrIdx);
         });
         this.scenes.push(scene);
     }
@@ -59,10 +64,11 @@ export default class Director {
             return;
         }
 
-        Scene.load(this.gc, name).then(scene => {
+        SceneFactory.load(this.gc, name).then(scene => {
             this.addScene(scene);
             this.sceneIndex= this.scenes.length-1;
             this.currentScene.init(this.gc);
+            this.currentScene.run();
         });
     }
 
@@ -72,9 +78,7 @@ export default class Director {
 
 	}
     update(gc) {
-        if(this.currentScene && this.currentScene.isRunning) {
-            this.currentScene.update(gc);
-            this.currentScene.render(gc);
-        }
+        this.currentScene && this.currentScene.isRunning && this.currentScene.update(gc);
+        this.currentScene && this.currentScene.isRunning && this.currentScene.render(gc);
     }
 }

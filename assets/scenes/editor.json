@@ -1,10 +1,13 @@
 {
+	"type": "editor",
 	"name": "editor",
 	"background": 2,
-
-	"editor": 1,
 	"killOnExit": true,
+	"showCursor": true,
 
+	"ui": [
+		{"btn": "back"}
+	],
 	"template": [
 		"##### ##### #####",
 		"##### ##### #####",

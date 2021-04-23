@@ -1,5 +1,5 @@
 import Trait from './Trait.js';
-import Level from '../Level.js';
+import LevelScene from '../scene/level.scene.js';
 
 export default class KillableTrait extends Trait {
 	static EVENT_KILLED = Symbol('Killed');
@@ -17,7 +17,7 @@ export default class KillableTrait extends Trait {
 	}
 
 	update(entity,gc) {
-		const {level, dt}= gc;
+		const {scene, dt}= gc;
 
 		// if(window.ENTITIES && window.ENTITIES.includes(entity.id))
 		// 	console.log(
@@ -38,8 +38,8 @@ export default class KillableTrait extends Trait {
 			this.deadTime += dt;
 			entity.pause();
 			if(this.deadTime > this.removeAfter) {
-				level.broadcast(KillableTrait.EVENT_KILLED, entity);
-				level.addTask(Level.REMOVE_ENTITY, entity);
+				scene.broadcast(KillableTrait.EVENT_KILLED, entity);
+				scene.addTask(LevelScene.REMOVE_ENTITY, entity);
 			}
 		}
     }

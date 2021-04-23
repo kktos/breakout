@@ -1,5 +1,5 @@
 import Trait from './Trait.js';
-import Level from '../Level.js';
+import LevelScene from '../scene/level.scene.js';
 import AnimationTrait from './animation.trait.js';
 import PowerupEntity from '../entities/powerup.entity.js';
 import KillableTrait from "../traits/killable.trait.js";
@@ -18,7 +18,7 @@ export default class BrickTrait extends Trait {
 	}
 
 	collides(gc, side, entity, target) {
-		const {level, resourceManager}= gc;
+		const {scene, resourceManager}= gc;
 
 		if(entity.ghost || target.mass<=1)
 			return;
@@ -45,7 +45,7 @@ export default class BrickTrait extends Trait {
 				if(BrickTrait.powerAfter <=0) {
 					this.resetPowerTimer();
 					const powerup= new PowerupEntity(resourceManager, entity.pos.x, entity.pos.y);
-					level.addTask(Level.ADD_ENTITY, powerup);
+					scene.addTask(LevelScene.ADD_ENTITY, powerup);
 				}
 		
 				break;

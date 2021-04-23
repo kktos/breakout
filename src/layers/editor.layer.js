@@ -180,14 +180,14 @@ export default class EditorLayer extends UILayer {
 				break;
 
 			case "click": {
-				const btn= this.buttons.findIndex(btn => ptInRect(e.offsetX, e.offsetY, btn));
+				const btn= this.buttons.findIndex(btn => ptInRect(e.x, e.y, btn));
 				if(btn>=0)
 					this.selectedType= btn;
 				break;
 			}
 			case "mousedown": {
 				this.isDrawing= true;
-				const target= this.entities.find(entity => ptInRect(e.offsetX, e.offsetY, entity));
+				const target= this.entities.find(entity => ptInRect(e.x, e.y, entity));
 				if(target) {
 					target.setType(e.buttons==2?"#":this.buttons[this.selectedType].type);
 					this.isModified= true;
@@ -201,8 +201,7 @@ export default class EditorLayer extends UILayer {
 			case "mousemove": {
 				if(!this.isDrawing)
 					return;
-
-				const target= this.entities.find(entity => ptInRect(e.offsetX, e.offsetY, entity));
+				const target= this.entities.find(entity => ptInRect(e.x, e.y, entity));
 				if(target) {
 					target.setType(e.buttons==2?"#":this.buttons[this.selectedType].type);
 					this.isModified= true;

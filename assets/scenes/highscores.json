@@ -1,0 +1,18 @@
+{
+	"type": "layout",
+	"name": "highscores",
+	"background": 0,
+	"showCursor": true,
+	"ui": [
+		{"btn": "back"}
+	],
+	"layout": [
+		{
+			"type": "text",
+			"pos": [300, 15],
+			"size": 4,
+			"align": 2,
+			"text": "highscores"
+		}		
+	]
+}

@@ -21,6 +21,60 @@
 				[64, 176, 64, 32]
 			]
 		},
+		"enemydoor": {
+			"scale": 1,
+			"tiles": {
+				"pos": [21, 0],
+				"size": [24, 8],
+				"increment": [0, 1],
+				"count": 6
+			}
+		},
+		"door1": {
+			"scale": 1,
+			"tiles": {
+				"pos": [136, 32],
+				"size": [8, 24],
+				"increment": [1, 0],
+				"count": 7
+			}
+		},
+		"door2": {
+			"scale": 1,
+			"tiles": {
+				"pos": [136, 56],
+				"size": [8, 24],
+				"increment": [1, 0],
+				"count": 7
+			}
+		},
+		"door3": {
+			"scale": 1,
+			"tiles": {
+				"pos": [136, 80],
+				"size": [8, 24],
+				"increment": [1, 0],
+				"count": 7
+			}
+		},
+		"door4": {
+			"scale": 1,
+			"tiles": {
+				"pos": [136, 104],
+				"size": [8, 24],
+				"increment": [1, 0],
+				"count": 7
+			}
+		},
+		"door5": {
+			"scale": 1,
+			"tiles": {
+				"pos": [136, 128],
+				"size": [8, 24],
+				"increment": [1, 0],
+				"count": 7
+			}
+		},
 
 		"topleft": {
 			"scale": 2,
@@ -77,5 +131,49 @@
 			]
 		}
 
+	},
+	"animations": {
+		"enemydoor": {
+			"len": 0.2,
+			"frames": {
+				"name": "enemydoor",
+				"range": [0, 5]
+			}
+		},
+		"door1": {
+			"len": 0.2,
+			"frames": {
+				"name": "door1",
+				"range": [0, 6]
+			}
+		},
+		"door2": {
+			"len": 0.2,
+			"frames": {
+				"name": "door2",
+				"range": [0, 6]
+			}
+		},
+		"door3": {
+			"len": 0.2,
+			"frames": {
+				"name": "door3",
+				"range": [0, 6]
+			}
+		},
+		"door4": {
+			"len": 0.2,
+			"frames": {
+				"name": "door4",
+				"range": [0, 6]
+			}
+		},
+		"door5": {
+			"len": 0.2,
+			"frames": {
+				"name": "door5",
+				"range": [0, 6]
+			}
+		}		
 	}
 }

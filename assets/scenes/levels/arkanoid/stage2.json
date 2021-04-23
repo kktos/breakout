@@ -1,5 +1,7 @@
 {
+    "type": "level",
 	"name": "stage 2",
+    "next": "stage3",
 	"background": 1,
 	"bricks": [
 		"gg-------------",

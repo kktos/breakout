@@ -1,4 +1,7 @@
 {
+    "type": "level",
+    "name": "stage4",
+    "background": 2,
     "bricks": [
         "--obGxB-ygobG--",
         "--bGxBp-gobGx--",
@@ -16,7 +19,5 @@
         "--pygob-xBpyg--",
         "--ygobG-Bpygo--",
         "--gobGx-pygob--"
-    ],
-    "background": 2,
-    "name": "stage4"
+    ]
 }

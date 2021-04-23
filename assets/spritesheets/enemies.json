@@ -213,6 +213,7 @@
 		},
 		"explosion": {
 			"len": 0.03,
+			"loop": 1,
 			"frames": {
 				"name": "explosion",
 				"range": [0, 47]

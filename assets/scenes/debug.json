@@ -1,8 +1,11 @@
 {
+	"type": "debug",
 	"name": "debug",
 	"background": 0,
+	"killOnExit": true,
+	"showCursor": true,
 
-	"debug": 1,
-	"killOnExit": true
-
+	"ui": [
+		{"btn": "back"}
+	]
 }

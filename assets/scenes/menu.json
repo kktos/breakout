@@ -1,6 +1,8 @@
 {
+	"type": "layout",
 	"name": "menu",
 	"background": 3,
+	"showCursor": true,
 
 	"layout": [
 		{
@@ -8,46 +10,35 @@
 			"items": [
 				{
 					"text": "play",
-					"pos": [300, 410],
+					"pos": [300, 300],
 					"size": 3,
 					"align": 2,
-					"scene": "/levels/arkanoid/stage1"
+					"scene": "arkanoid"
+				},
+				{
+					"text": "highscores",
+					"pos": [300, 360],
+					"size": 3,
+					"align": 2,
+					"scene": "highscores"
 				},
 				{
 					"text": "level editor",
-					"pos": [300, 470],
+					"pos": [300, 420],
 					"size": 3,
 					"align": 2,
 					"scene": "editor"
 				},
 				{
-					"text": "debugger",
-					"pos": [300, 530],
+					"text": "debug",
+					"pos": [300, 480],
 					"size": 3,
 					"align": 2,
 					"scene": "debug"
 				}
 			]
 		},
-		{
-			"type": "text",
-			"pos": [300, 300],
-			"size": 4,
-			"align": 2,
-			"text": "BREAK IT"
-		},
-		{
-			"type": "sprite",
-			"pos": [500, 280],
-			"zoom": 2,
-			"sprite": "enemies:@portal"
-		},
-		{
-			"type": "sprite",
-			"pos": [50, 280],
-			"zoom": 2,
-			"sprite": "enemies:@portal"
-		},
+
 		{
 			"type": "sprite",
 			"pos": [15, 50],
@@ -55,33 +46,87 @@
 			"sprite": "bricks:standard-0",
 			"zoom": 2
 		},
+
 		{
 			"type": "sprite",
 			"pos": [15, 82],
-			"range": [9, 1],
+			"range": [2, 1],
 			"sprite": "bricks:standard-1",
 			"zoom": 2
 		},
 		{
 			"type": "sprite",
+			"pos": [462, 82],
+			"range": [2, 1],
+			"sprite": "bricks:standard-1",
+			"zoom": 2
+		},
+
+		{
+			"type": "sprite",
 			"pos": [15, 114],
-			"range": [9, 1],
+			"range": [2, 1],
 			"sprite": "bricks:standard-2",
 			"zoom": 2
 		},
 		{
 			"type": "sprite",
+			"pos": [462, 114],
+			"range": [2, 1],
+			"sprite": "bricks:standard-2",
+			"zoom": 2
+		},
+
+		{
+			"type": "sprite",
 			"pos": [15, 146],
-			"range": [9, 1],
+			"range": [2, 1],
 			"sprite": "bricks:standard-3",
 			"zoom": 2
 		},
+		{
+			"type": "sprite",
+			"pos": [462, 146],
+			"range": [2, 1],
+			"sprite": "bricks:standard-3",
+			"zoom": 2
+		},
+
 		{
 			"type": "sprite",
 			"pos": [15, 178],
 			"range": [9, 1],
 			"sprite": "bricks:standard-4",
 			"zoom": 2
+		},
+
+		{
+			"type": "text",
+			"pos": [300, 115],
+			"size": 4,
+			"align": 2,
+			"color": "black",
+			"text": "BREAK IT"
+		},
+		{
+			"type": "text",
+			"pos": [298, 113],
+			"size": 4,
+			"align": 2,
+			"color": "#fff",
+			"text": "BREAK IT"
+		},
+		{
+			"type": "sprite",
+			"pos": [500, 100],
+			"zoom": 2,
+			"sprite": "enemies:@portal"
+		},
+		{
+			"type": "sprite",
+			"pos": [50, 100],
+			"zoom": 2,
+			"sprite": "enemies:@portal"
 		}
 	]
 }

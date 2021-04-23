@@ -1,4 +1,5 @@
 {
+    "type": "level",
     "name": "stage 1",
     "next": "stage2",
     "background": 0,

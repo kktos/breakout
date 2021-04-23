@@ -20,8 +20,12 @@ export default class BulletEntity extends Entity {
 		this.addTrait(new VelocityTrait());
 
 		const deathOnTop= new Trait();
-		deathOnTop.update= (entity, {level}) => {
-			const bbox= level.bbox;
+		deathOnTop.collides= (gc, side, entity, target) => {
+			if(entity.traits.has(KillableTrait))
+				entity.traits.get(KillableTrait).kill();
+		}
+		deathOnTop.update= (entity, {scene}) => {
+			const bbox= scene.bbox;
 			if(entity.pos.y < bbox.y) {
 				if(entity.traits.has(KillableTrait))
 					entity.traits.get(KillableTrait).kill();				

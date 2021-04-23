@@ -1,7 +1,7 @@
 import Trait from '../Trait.js';
 import Events from "../../events/Events.js";
 import BulletEntity from "../../entities/bullet.entity.js";
-import Level from "../../Level.js";
+import LevelScene from "../../scene/level.scene.js";
 
 export default class LaserTrait extends Trait {
 
@@ -26,12 +26,12 @@ export default class LaserTrait extends Trait {
 		this.isActive= false;
 	}
 
-	fire({resourceManager, level}, pos) {
+	fire({resourceManager, scene}, pos) {
 		if(!this.isActive)
 			return;
 
-		const bullets= new BulletEntity(resourceManager, pos.x, pos.y);
-		level.addTask(Level.ADD_ENTITY, bullets);
+		const bullets= new BulletEntity(resourceManager, pos.x, pos.y-20);
+		scene.addTask(LevelScene.ADD_ENTITY, bullets);
 	}
 
 
