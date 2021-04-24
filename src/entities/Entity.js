@@ -19,6 +19,7 @@ export default class Entity {
 		this.vel= {x: 0, y: 0};
 		this.speed= 0;
 		this.mass= 1;
+		this.isSolid= true;
 		this.previousVel= this.vel;
 		this.previousMass= this.mass;
 
@@ -78,7 +79,8 @@ export default class Entity {
 			throw new Error(`no animation ${name}`);
 
 		this.currSprite= name;
-		this.size= this.spritesheet.spriteSize(this.spritesheet.animFrame(name, 1));
+		const frame= this.spritesheet.animations.get(name).frame(0);
+		this.size= this.spritesheet.spriteSize(frame);
 	}
 
     collides(gc, side, target) {

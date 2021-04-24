@@ -11,7 +11,7 @@ export default class BounceTrait extends Trait {
 
 	collides(gc, side, entity, target) {
 		// if(!this.isBouncing || target.ghost)
-		if(!this.isBouncing)
+		if(!this.isBouncing || !target.isSolid)
 			return;
 
 		switch(side) {

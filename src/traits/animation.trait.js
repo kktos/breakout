@@ -1,46 +1,43 @@
 import Trait from './Trait.js';
-import animResolveFrame from '../utils/animResolveFrame.util.js';
+import Anim from '../Anim.js';
 
 export default class AnimationTrait extends Trait {
 
 	constructor() {
 		super();
 		this.anim= null;
-		this.runningAnim= null;
 	}
 
 	setAnim(entity, name) {
-		this.anim= entity.spritesheet.animations.get(name);
-		if(!this.anim)
+		const anim= entity.spritesheet.animations.get(name);
+		if(!anim)
 			throw new Error(`Unknown animation ${name} for ${entity.constructor}`);
 
-		this.runningAnim= {...this.anim};
+		this.anim= new Anim(name, anim);
+		entity.setSprite(this.anim.frame(0));
 	}
 
 	start() {
-		if(!this.runningAnim)
+		if(!this.anim)
 			return;
 
-		const anim= this.runningAnim;
-		anim.isStopped= false;
-		anim.loop= anim.loopInitialValue;
-		anim.lastFrameIdx= -1;
-		anim.frameIdx= -1;
+		this.anim
+			.reset()
+			.play();
 	}
 
 	stop() {
-		if(!this.runningAnim)
+		if(!this.anim)
 			return;
 
-		this.runningAnim.isStopped= true;
+		this.anim.stop();
 	}
 
     update(entity) {
-		if(!this.runningAnim)
+		if(!this.anim)
 			return;
 
-		const spriteName= animResolveFrame(this.runningAnim, entity.lifetime);
-		entity.setSprite(spriteName);
+		entity.setSprite(this.anim.frame(entity.lifetime));
 	}
 	
 }

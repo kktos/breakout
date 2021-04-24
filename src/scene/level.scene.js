@@ -5,7 +5,7 @@ import Scene from "./Scene.js";
 import TaskList from "../TaskList.js";
 import BallEntity from "../entities/ball.entity.js";
 import PaddleEntity from "../entities/paddle.entity.js";
-import SpawnerEntity from "../entities/spawner.entity.js";
+import SpawnerEntity from "../entities/enemyspawner.entity.js";
 import Trait from "../traits/Trait.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
 import PlayerTrait from "../traits/player.trait.js";

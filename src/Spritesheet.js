@@ -1,7 +1,7 @@
 import ENV from "./env.js";
 import {loadImage, loadJson} from "./utils/loaders.util.js";
 import createSpriteSheet from "./utils/createSpriteSheet.util.js";
-import animResolveFrame from "./utils/animResolveFrame.util.js";
+import Anim from "./Anim.js";
 
 export default class SpriteSheet {
 
@@ -55,19 +55,20 @@ export default class SpriteSheet {
 			let width= 0, height= 0;
 			spriteDef.forEach(([offsets, name]) => {
 				const [col, row, countX, countY]= offsets;
-				const s= this.spriteSize(name);
-	
-				if(countY) {
-					height+= s.y*countY;
+				if(name) {
+					const s= this.spriteSize(name);
+					if(countY)
+						height+= s.y*countY;
+					if(countX)
+						width+= s.x*countX;
+					if(width<s.x)
+						width= s.x;
+					if(height<s.y)
+						height= s.y;	
+				} else {
+					height+= row;
+					width+= col;
 				}
-				if(countX) {
-					width+= s.x*countX;
-				}
-	
-				if(width<s.x)
-					width= s.x;
-				if(height<s.y)
-					height= s.y;
 			});
 	
 			canvas.width = width;
@@ -75,30 +76,36 @@ export default class SpriteSheet {
 		}
 
 		let width= 0, height= 0;
-		let x= 0, y= 0;
 		let dx= 0, dy= 0;
 
 		spriteDef.forEach(([offsets, name]) => {
 			const [col, row, countX, countY]= offsets;
-			const s= this.spriteSize(name);
-			if(countY) {
-				dy= height;
-				height+= s.y*countY;
+			let s;
+			if(name) {
+				s= this.spriteSize(name);
+				if(countY) {
+					dy= height;
+					height+= s.y*countY;
+				}
+				if(countX) {
+					dx= width;
+					width+= s.x*countX;
+				}
+				if(width<s.x)
+					width= s.x;
+				if(height<s.y)
+					height= s.y;	
+			} else {
+				height+= row;
+				width+= col;
+				return;
 			}
-			if(countX) {
-				dx= width;
-				width+= s.x*countX;
-			}
-			if(width<s.x)
-				width= s.x;
-			if(height<s.y)
-				height= s.y;
 
 			if(countY>1) {
 				for(let idx= 0; idx <countY; idx++) {
 					ctx.drawImage(
 						this.sprites.get(name)[0],
-						x, y, s.x, s.y,
+						0, 0, s.x, s.y,
 						dx, dy, s.x, s.y);			
 					dy+= s.y;
 				}
@@ -107,36 +114,22 @@ export default class SpriteSheet {
 				for(let idx= 0; idx <countX; idx++) {
 					ctx.drawImage(
 						this.sprites.get(name)[0],
-						x, y, s.x, s.y,
+						0, 0, s.x, s.y,
 						dx, dy, s.x, s.y);			
 					dx+= s.x;
 				}
 			} else
 				ctx.drawImage(
 					this.sprites.get(name)[0],
-					x, y, s.x, s.y,
+					0, 0, s.x, s.y,
 					dx, dy, s.x, s.y);			
 		});
 
         this.sprites.set(name, [canvas]);
 	}
 
-    defineAnim(name, animation) {
-		if(!animation.loop)
-			animation.loop= Infinity;
-		animation.frameIdx= -1;
-		animation.loopInitialValue= animation.loop;
-
-		if(!Array.isArray(animation.frames)) {
-			const framesDef= animation.frames;
-			const frames= [];
-			const [from, to]= framesDef.range;
-			for(let idx= from; idx<=to; idx++)
-				frames.push(framesDef.name+"-"+idx);
-			animation.frames= frames;
-		}
-
-		this.animations.set(name, animation);
+    defineAnim(name, sheet) {
+		this.animations.set(name, new Anim(name, sheet));
     }
 
 	has(name) {
@@ -155,11 +148,6 @@ export default class SpriteSheet {
 		return {x: sprite.width, y: sprite.height};
 	}
 	
-	animFrame(name, time) {
-        const animation= this.animations.get(name);
-        return animResolveFrame(animation, time);
-	}
-
 	draw(name, ctx, x, y, {flip, zoom} = {zoom:1, flip:false}) {
 		if(!this.sprites.has(name))
 			throw new Error(`Unable to find sprite ${name}`);
@@ -170,7 +158,7 @@ export default class SpriteSheet {
 
     drawAnim(name, ctx, x, y, distance, {zoom} = {zoom:1}) {
         const animation= this.animations.get(name);
-        this.draw(animResolveFrame(animation, distance), ctx, x, y, {zoom});
+        this.draw(animation.frame(distance), ctx, x, y, {zoom});
     }
 
 

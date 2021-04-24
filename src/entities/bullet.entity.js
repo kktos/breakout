@@ -14,6 +14,7 @@ export default class BulletEntity extends Entity {
 		this.vel.y= -360;
 		this.mass= 2;
 		this.ghost= true;
+		this.isSolid= false;
 
 		this.setSprite("bullets");
 		this.addTrait(new KillableTrait());

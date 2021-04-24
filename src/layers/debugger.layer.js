@@ -1,6 +1,5 @@
 import UILayer from "./UILayer.js";
 import {Align} from "../Font.js";
-import animResolveFrame from "../utils/animResolveFrame.util.js";
 
 export default class DebuggerLayer extends UILayer {
 
@@ -26,10 +25,7 @@ export default class DebuggerLayer extends UILayer {
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
 				<div id="btnBack" class="btn white-shadow vcenter">BACK</div>
-				<div id="btnNew" class="btn white-shadow vcenter">NEW</div>
-				<div id="btnLoad" class="btn white-shadow vcenter">LOAD</div>
 				<select id="ss">${list}</select>
-				<div id="btnSave" class="btn white-shadow vcenter hright">SAVE</div>
 			</div>
 			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
 				<div class="vcenter hright">BACKGROUND</div>
@@ -83,10 +79,9 @@ export default class DebuggerLayer extends UILayer {
 
 	playAnim() {
 		const anim= this.animations.get(this.names[this.currAnim]);
-		anim.isStopped= false;
-		anim.loop= anim.loopInitialValue;
-		anim.lastFrameIdx= -1;
-		anim.frameIdx= -1;		
+		anim
+			.reset()
+			.play();
 	}
 
 	handleEvent(gc, e) {
@@ -152,22 +147,39 @@ export default class DebuggerLayer extends UILayer {
 			this.font.print(ctx, value, 110, line);	
 		};
 
+		ctx.strokeStyle= "#777777";
+		ctx.beginPath();
+		ctx.moveTo(this.width/2,0);
+		ctx.lineTo(this.width/2,this.height);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(0, this.height/2);
+		ctx.lineTo(this.width, this.height/2);
+		ctx.stroke();
+
 		const anim= this.animations.get(this.names[this.currAnim]);
 
 		this.font.size= 2;
 
 		print("IDX", this.currAnim);
 		print("NAME", this.names[this.currAnim]);
-		print("COUNT", anim.frames.length);
+		print("FRAMES", anim.frames.length);
 		print("LOOP", anim.loopInitialValue);
 		print("SPEED", anim.len);
 
 		const step= this.stepAnim ? this.step : tick/100;
-		const frameSprite= animResolveFrame(anim, step);
+		const frameSprite= anim.frame(step);
 		const frameSpriteSize= this.spritesheet.spriteSize(frameSprite);
 		this.spritesheet.draw(frameSprite, ctx, this.width-frameSpriteSize.x-50, 50);
 
-		this.spritesheet.draw(frameSprite, ctx, this.width/2-frameSpriteSize.x*2, this.height/2, {zoom:2});
+		line= this.height/2;
+		this.spritesheet.draw(frameSprite, ctx, this.width/2-frameSpriteSize.x, line-frameSpriteSize.y, {zoom:2});
+		line+= frameSpriteSize.y*2;
+		this.font.align= Align.Center;
+		this.font.print(ctx, frameSprite, this.width/2, line);
+		nl(); this.font.print(ctx, anim.loop, this.width/2, line);
+		// nl(); this.font.print(ctx, step|0, this.width/2, line);
+		// nl(); this.font.print(ctx,  Math.floor(step / anim.len)% anim.frames.length, this.width/2, line);
 		
 		// line+= frameSpriteSize.y;
 		// nl();
