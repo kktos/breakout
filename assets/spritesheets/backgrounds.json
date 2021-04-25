@@ -140,7 +140,6 @@
 		"enemydoor": {
 			"len": 0.2,
 			"loop": 1,
-			"movie": true,
 			"frames": {
 				"name": "enemydoor",
 				"range": [0, 5]

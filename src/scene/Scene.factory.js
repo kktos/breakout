@@ -5,11 +5,15 @@ import LayoutScene from "./layout.scene.js";
 import EditorScene from "./editor.scene.js";
 import DebugScene from "./debug.scene.js";
 import GameScene from "./game.scene.js";
+import LocalDB from "../utils/storage.util.js";
 
 export default class SceneFactory {
 
 	static async load(gc, name) {
-		const sheet= await loadJson(`${ENV.SCENES_PATH}${name}.json`);
+		const sheet= typeof name == "string" ?
+							await loadJson(`${ENV.SCENES_PATH}${name}.json`)
+							:
+							LocalDB.loadLevel(name.key);
 
 		let scene;
 
@@ -24,7 +28,7 @@ export default class SceneFactory {
 				scene= new EditorScene(gc, name, sheet);
 				break;
 			case "level":
-				scene= new LevelScene(gc, name, sheet);
+				scene= new LevelScene(gc, sheet.name, sheet);
 				break;
 			case "game":
 				scene= new GameScene(gc, name, sheet);

@@ -4,6 +4,7 @@ import SpawnerTrait from "../traits/spawner.trait.js";
 import TimerTrait from "../traits/timer.trait.js";
 import EnemyEntity from "./enemy.entity.js";
 import FollowPathTrait from "../traits/followPath.trait.js";
+import KillableTrait from "../traits/killable.trait.js";
 
 export default class EnemySpawner extends Entity {
 
@@ -14,6 +15,10 @@ export default class EnemySpawner extends Entity {
 		this.max= 4;
 
 		const spawner= new SpawnerTrait();
+
+		spawner.on(KillableTrait.EVENT_KILLED, (entity) => {
+			entity.class == "EnemyEntity" && this.count--;
+		});
 
 		const doors= [[160,50], [384,50]].map(([x,y]) => {
 			const door= new Entity(resourceMgr, x, y, "backgrounds");
@@ -31,11 +36,12 @@ export default class EnemySpawner extends Entity {
 			if(anim.step<0)
 				return;
 
-			const enemy= new EnemyEntity(resourceMgr, (this.count%2) ? 160 : 384, 50, "M");
+			const enemy= new EnemyEntity(resourceMgr, (this.count%2) ? 160 : 384, 50);
 			const followPath= enemy.traits.get(FollowPathTrait);
 			followPath
 				.whenAt(160, 100)
 				.setVel(-30, 20);
+
 			spawner.spawn(enemy);
 
 			anim.backwards();
@@ -46,9 +52,7 @@ export default class EnemySpawner extends Entity {
 		spawner.on(TimerTrait.EVENT_TIMER, (id) => {
 			if(this.count==this.max)
 				return;
-
 			doorAnim.reset();
-
 			this.count++;
 		});
 

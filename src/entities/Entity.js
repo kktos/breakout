@@ -45,6 +45,8 @@ export default class Entity {
 	get right() { return this.pos.x + this.size.x; }
 	get top() { return this.pos.y; }
 	get bottom() { return this.pos.y + this.size.y; }
+	get width() { return this.size.x; }
+	get height() { return this.size.y; }
 
 	pause() {
 		this.previousVel= this.vel;

@@ -23,6 +23,14 @@ class Font {
     textRect(text, x, y) {
         const str= String(text).toUpperCase();
         const width= str.length*this.height;
+        switch(this.align) {
+            case Align.Center:
+                x-= width / 2;
+                break;
+            case Align.Right:
+                x-= width;
+                break;
+        }
         return [x, y, x+width, y+this.height];
     }
 

@@ -16,8 +16,6 @@ export default class DisplayLayer extends UILayer {
 		this.blinkFlag= false;
 
 		this.itemSelected= 0;
-		// this.upLatch= false;
-		// this.downLatch= false;
 
 		const menus= layout.filter(op => op.type=="menu");
 		if(menus.length>1)
@@ -27,16 +25,34 @@ export default class DisplayLayer extends UILayer {
 
 	}
 
+	findMenuByPoint(x,y) {
+		return this.menu.items.findIndex(item => {
+			if(item.align)
+				this.font.align= item.align;
+			if(item.size)
+				this.font.size= item.size;
+			const r= this.font.textRect(item.text, item.pos[0], item.pos[1]);
+			const textRect= {left:r[0],top:r[1],right:r[2],bottom:r[3]};
+			return ptInRect(x, y, textRect);
+		});
+	}
+
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "click":
 				if(this.menu) {
-					this.menu.items.forEach((item, idx) => {
-						const r= this.font.textRect(item.text, item.pos[0], item.pos[1]);
-						const z= {left:r[0],top:r[1],right:r[2],bottom:r[3]};
-						if(ptInRect(e.x, e.y, z))
-							this.goto(gc, idx);
-					});
+					const menuIdx= this.findMenuByPoint(e.x, e.y);
+					if(menuIdx>=0)
+						this.goto(gc, menuIdx);
+				}
+				break;
+
+			case "mousemove":
+				if(this.menu) {
+					const menuIdx= this.findMenuByPoint(e.x, e.y);
+					if(menuIdx>=0)
+						this.itemSelected= menuIdx;
+					gc.screen.canvas.style.cursor= menuIdx>=0 ? "pointer" : "default";
 				}
 				break;
 
@@ -100,33 +116,6 @@ export default class DisplayLayer extends UILayer {
 		}
 	}
 
-	// handleKeyboard(keys, scene) {
-
-	// 	if(this.menu) {
-	// 		if(!keys.get("ArrowDown") && this.downLatch)
-	// 			this.downLatch= false;
-	// 		if(!keys.get("ArrowUp") && this.upLatch)
-	// 			this.upLatch= false;
-	
-	// 		if(keys.get("ArrowDown") && !this.downLatch) {
-	// 			this.itemSelected= (this.itemSelected+1) % this.menu.items.length;
-	// 			this.downLatch= true;
-	// 		}
-	// 		if(keys.get("ArrowUp") && !this.upLatch) {
-	// 			this.itemSelected--;
-	// 			if(this.itemSelected<0)
-	// 				this.itemSelected= this.menu.items.length;
-	// 			this.upLatch= true;
-	// 		}
-
-	// 		if(keys.get("Enter")) {
-	// 			scene.events.emit(Scene.EVENT_COMPLETE, String(this.menu.items[this.itemSelected].scene));
-	// 		}
-	
-	// 	}
-
-	// }
-
 	renderMenu(gc, op) {
 		op.items.forEach((item, idx)=> {
 			this.renderText(gc, {color: idx==this.itemSelected?"red":"white", ...item});
@@ -134,12 +123,9 @@ export default class DisplayLayer extends UILayer {
 	}
 
 	render(gc) {
-
 		this.time+= (gc.dt*1000)|0;
 		if(!(this.time%500|0))
 			this.blinkFlag= !this.blinkFlag;
-
-		// this.handleKeyboard(gc.keys, scene);
 
 		this.layout.forEach(op => {
 			switch(op.type) {

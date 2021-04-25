@@ -44,7 +44,7 @@ export default class BrickEntity extends Entity {
 			case "x":
 				this.animTrait.setAnim(this, "silver");
 				this.animTrait.start();
-				this.data= 4;
+				this.data= 2;
 				break;
 
 			case "X":

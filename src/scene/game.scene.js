@@ -1,4 +1,5 @@
 import Scene from "./Scene.js";
+import LocalDB from "../utils/storage.util.js";
 
 export default class GameScene extends Scene {
 
@@ -9,7 +10,12 @@ export default class GameScene extends Scene {
 		localStorage.setItem("score", 0);
 		localStorage.setItem("lives", 3);
 
-		this.levels= sheet.levels;
+		if(!Array.isArray(sheet.levels)) {
+			this.levels= LocalDB.levels(sheet.levels);
+		}
+		else
+			this.levels= sheet.levels;
+
 		this.currentLevel= -1;
 	}
 

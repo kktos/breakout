@@ -31,7 +31,7 @@ export default class LaserTrait extends Trait {
 			return;
 
 		const bullets= new BulletEntity(resourceManager, pos.x, pos.y-20);
-		scene.addTask(LevelScene.ADD_ENTITY, bullets);
+		scene.addTask(LevelScene.TASK_ADD_ENTITY, bullets);
 	}
 
 

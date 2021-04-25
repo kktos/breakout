@@ -1,6 +1,7 @@
 import Trait from './Trait.js';
 import KillableTrait from './killable.trait.js';
 import BallEntity from '../entities/ball.entity.js';
+import AnimationTrait from './animation.trait.js';
 
 export default class PlayerTrait extends Trait {
 
@@ -19,8 +20,13 @@ export default class PlayerTrait extends Trait {
 
             if(entity instanceof BallEntity) {
                 this.lives--;
-                localStorage.setItem("lives", this.lives);
-                this.paddle.emit(PlayerTrait.EVENT_PLAYER_KILLED, this.lives);
+                this.paddle.traits.get(AnimationTrait).setAnim(this.paddle, "explosion");
+                this.paddle.audio
+                    .play("die")
+                    .then(() => {
+                        localStorage.setItem("lives", this.lives);
+                        this.paddle.emit(PlayerTrait.EVENT_PLAYER_KILLED, this.lives);        
+                    });
                 return;
             }
 

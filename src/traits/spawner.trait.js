@@ -19,7 +19,7 @@ export default class SpawnerTrait extends Trait {
 		if(!this.wannaSpawn || !this.entities.length)
 			return;
 		this.wannaSpawn= false;
-		this.entities.forEach(entity => scene.addTask(LevelScene.ADD_ENTITY, entity));
+		this.entities.forEach(entity => scene.addTask(LevelScene.TASK_ADD_ENTITY, entity));
 		this.entities.length= 0;
     }
 

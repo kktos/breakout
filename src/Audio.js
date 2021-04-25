@@ -36,11 +36,14 @@ export default class Audio {
 	}
 
 	play(name) {
-        const source= this.context.createBufferSource();
-        source.connect(this.gainNode);
-        this.gainNode.connect(this.context.destination);
-        source.buffer= this.buffers.get(name);
-        source.start(0);
+		return new Promise(resolve => {
+			const source= this.context.createBufferSource();
+			source.connect(this.gainNode);
+			this.gainNode.connect(this.context.destination);
+			source.buffer= this.buffers.get(name);
+			source.start(0);
+			source.onended= () => resolve(name);
+		});
 	}
 
 }

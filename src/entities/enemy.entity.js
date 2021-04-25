@@ -10,9 +10,21 @@ import FollowPathTrait from "../traits/followPath.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
 import BreakTrait from "../traits/break.trait.js";
 
+const TYPES= [
+	"3cubes",
+	"blueCone",
+	"greenTriangle",
+	"3coloredBalls",
+	"3redBalls",
+	"3blueBalls",
+	"redCube",
+	"planets",
+	"portal",
+	"sphere"
+]
 export default class EnemyEntity extends Entity {
 
-	constructor(resourceMgr, x, y, type) {
+	constructor(resourceMgr, x, y, type= null) {
 		super(resourceMgr, x, y, "enemies");
 
 		this.audio= resourceMgr.get("audio", "paddle");
@@ -39,18 +51,8 @@ export default class EnemyEntity extends Entity {
 	}
 
 	setType(type, animTrait) {
-		this.type= type;
-		
-		switch(type) {
-			case "explosion":
-				animTrait.setAnim(this, type);
-				break;
-
-			default:
-				animTrait.setAnim(this, "blueCone");
-				break;
-		}		
-
+		this.type= type!=null ? type : TYPES[Math.random()*TYPES.length|0];
+		animTrait.setAnim(this, this.type);
 	}
 
 	render({screen:{ctx}}) {

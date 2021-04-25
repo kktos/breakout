@@ -1,4 +1,4 @@
-
+import LocalDB from "../utils/storage.util.js";
 export default class ChooseFileUI {
 
 
@@ -7,7 +7,7 @@ export default class ChooseFileUI {
 		div.className= "overlay";
 		div.innerHTML= `<div class="alert choose">
 							<div class="list">
-								${files.map(file=>`<div key="${file}" class="list-item">${file.replace(/^level:/,'')}</div>`).join("")}
+								${files.map(file=>`<div key="${file.key}" class="list-item">${file.name}</div>`).join("")}
 							</div>
 							<div class="grid-column">
 								<div id="no" class="btn btn-white black-shadow hvcenter">CANCEL</div>
@@ -48,14 +48,8 @@ export default class ChooseFileUI {
 		items.forEach((item) => item.addEventListener("click", itemsEventsHandler));
 	}
 
-	static choose(callback) {
-		let keys= [];
-		for(let idx= 0; idx < localStorage.length; idx++)
-			keys.push(localStorage.key(idx));
-
-		keys= keys.filter(key => key.match(/^level/)).sort();
-		
-		ChooseFileUI.runDialog(keys, callback);
+	static choose(theme, callback) {
+		ChooseFileUI.runDialog(LocalDB.levels(theme), callback);
 	}
 
 

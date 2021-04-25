@@ -6,6 +6,7 @@ import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
 import AlertUI from "../ui/alert.ui.js";
 import ChooseFileUI from "../ui/chooseFile.ui.js";
 import BackgroundLayer from "./background.layer.js";
+import LocalDB from "../utils/storage.util.js";
 
 export default class EditorLayer extends UILayer {
 
@@ -23,17 +24,18 @@ export default class EditorLayer extends UILayer {
 		this.paddlesSprites= gc.resourceManager.get("sprite", "paddles");
 		this.buttons= [];
 		this.selectedType= 0;
+
 		this.templateSheet= templateSheet;
 
 		this.bkgndLayer= bkgndLayer;
-		this.bkgndSprite= 0;
+		this.bkgndIndex= 0;
 
-		this.themeName= "arkanoid";
+		this.themeName= "user";
 		this.levelName= "";
 
 		this.buildUI();
 
-		bkgndLayer.setBackground(gc, this.bkgndSprite);
+		bkgndLayer.setBackground(gc, this.bkgndIndex);
 		this.resetLevel();
 	}
 
@@ -41,6 +43,7 @@ export default class EditorLayer extends UILayer {
 		this.entities.length= 0;
 		this.entities.push(...createBricks(this.gc, this.templateSheet));
 		this.isModified= false;
+		this.updateBrickStats();
 	}
 
 	buildUI() {
@@ -60,62 +63,83 @@ export default class EditorLayer extends UILayer {
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
 				<div id="btnBack" class="btn white-shadow vcenter">BACK</div>
+				<div class="sep"></div>
 				<div id="btnNew" class="btn white-shadow vcenter">NEW</div>
 				<div id="btnLoad" class="btn white-shadow vcenter">LOAD</div>
+				<div class="sep"></div>
 				<input type="text" value="${this.levelName}" placeholder="level name..."/>
 				<div id="btnSave" class="btn white-shadow vcenter hright">SAVE</div>
 			</div>
-			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
-				<div class="vcenter hright">BACKGROUND</div>
-				<div id="btnPrevBkgnd" class="btn btn-small white-shadow vcenter">PREV</div>
-				<div id="btnNextBkgnd" class="btn btn-small white-shadow vcenter">NEXT</div>
+			<div class="grid-column vcenter" style="grid-template-rows:30px">
+				<div class="vcenter hright">
+					BACKGROUND
+					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>
+				</div>
+				<div class="vcenter hright">TOTAL<input id="brickCount" readonly class="w50" type="text" value="0"/></div>
+				<div class="vcenter">BREAKABLE<input id="breakableCount" readonly class="w50" type="text" value="0"/></div>
+				<div class="vcenter">POINTS<input id="points" readonly class="w50" type="text" value="0"/></div>
 			</div>
 		`;
 		this.ui.querySelectorAll(".btn").forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));
+		this.ui.querySelectorAll("INPUT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
 	}
 
+	onChangeUI(el) {
+		switch(el.id) {
+			case "bkgndIndex":
+				this.setBackground(el.value);
+				break;
+		}
+	}
 
 	chooseFile() {
-		ChooseFileUI.choose(selected => this.load(selected));
+		ChooseFileUI.choose(this.themeName, selected => this.load(selected));
 	}
 
 	load(name) {
-		const sheet= JSON.parse(localStorage.getItem(name));
+		const sheet= LocalDB.loadLevel(name);
 		this.entities.length= 0;
 		this.entities.push(...createBricks(this.gc, sheet.bricks, true));
-		this.bkgndSprite= sheet.background|0;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndSprite);
+		this.bkgndIndex= sheet.background|0;
+		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
 		this.ui.querySelectorAll("INPUT")[0].value= sheet.name;
-		this.isModified= false;		
+		this.isModified= false;
+
+		this.updateBrickStats();
 	}
 
 	save() {
 		let name= this.ui.querySelectorAll("INPUT")[0].value;
-		name= name.replace(/^\s+/, '');
-		name= name.replace(/\s+$/, '');
+		name= name.replace(/^\s+/, '').replace(/\s+$/, '');
 		if(name=="")
 			return;
 
 		this.levelName= name;
 		const sheet= {
 			bricks: stringifyBricks(this.entities),
-			background: this.bkgndSprite,
-			name: this.levelName
+			background: this.bkgndIndex,
+			name: this.levelName,
+			type: "level"
 		};
-		localStorage.setItem(`level:${this.themeName}/${this.levelName}`, JSON.stringify(sheet));
+
+		LocalDB.saveLevel(this.themeName, this.levelName, sheet);
+
 		this.isModified= false;
 	}
 
-	prevBackground() {
-		this.bkgndSprite--;
-		if(this.bkgndSprite<0)
-			this.bkgndSprite= BackgroundLayer.SPRITES.length-1;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndSprite);
+	setBackground(bkgndIndex) {
+		this.bkgndIndex= bkgndIndex % BackgroundLayer.SPRITES.length;
+		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
 	}
 
-	nextBackground() {
-		this.bkgndSprite= (this.bkgndSprite + 1) % BackgroundLayer.SPRITES.length;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndSprite);
+	updateBrickStats() {
+		const total= this.entities.filter(b=>b.type!="#").length;
+		const breakable= this.entities.filter(b=>b.type!="#"&&b.type!="X").length;
+		const points= this.entities.reduce((acc, curr)=>acc+curr.points|0,0);
+
+		this.ui.querySelector("#brickCount").value= total;
+		this.ui.querySelector("#breakableCount").value= breakable;
+		this.ui.querySelector("#points").value= points;
 	}
 
 	prevBrickType() {
@@ -130,13 +154,6 @@ export default class EditorLayer extends UILayer {
 
 	onClickUIBtn(id) {
 		switch(id) {
-			case "btnPrevBkgnd":
-				this.prevBackground();
-				break;
-
-			case "btnNextBkgnd":
-				this.nextBackground();
-				break;
 
 			case "btnBack":
 				if(this.isModified)
@@ -166,6 +183,15 @@ export default class EditorLayer extends UILayer {
 		}
 	}
 
+	drawBrick(x, y, buttons) {
+		const target= this.entities.find(entity => ptInRect(x, y, entity));
+		if(target) {
+			target.setType(buttons==2?"#":this.buttons[this.selectedType].type);
+			this.isModified= true;
+			this.updateBrickStats();
+		}				
+	}
+
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "keydown":
@@ -187,11 +213,7 @@ export default class EditorLayer extends UILayer {
 			}
 			case "mousedown": {
 				this.isDrawing= true;
-				const target= this.entities.find(entity => ptInRect(e.x, e.y, entity));
-				if(target) {
-					target.setType(e.buttons==2?"#":this.buttons[this.selectedType].type);
-					this.isModified= true;
-				}				
+				this.drawBrick(e.x, e.y, e.buttons);
 				break;
 			}
 			case "mouseup": {
@@ -201,11 +223,7 @@ export default class EditorLayer extends UILayer {
 			case "mousemove": {
 				if(!this.isDrawing)
 					return;
-				const target= this.entities.find(entity => ptInRect(e.x, e.y, entity));
-				if(target) {
-					target.setType(e.buttons==2?"#":this.buttons[this.selectedType].type);
-					this.isModified= true;
-				}
+				this.drawBrick(e.x, e.y, e.buttons);
 				break;
 			}
 		}

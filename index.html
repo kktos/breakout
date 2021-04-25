@@ -17,6 +17,15 @@
 			CANVAS {
 				margin: auto;
 			}
+			INPUT {
+				background: black;
+				color: white;
+				text-align: right;				
+			}
+			INPUT[readonly] {
+				text-align: center;				
+				border: none;
+			}
 			SELECT {
 				background: #3a3a3a;
     			color: white;				
@@ -25,6 +34,13 @@
 				display: grid;
 				grid-auto-flow: row;
 				color: white;
+			}
+			.sep {
+				background-color: white;
+				width: 2px;
+			}
+			.w50 {
+				width: 50px;
 			}
 			.btn {
 				background: #2668a0;
@@ -102,6 +118,14 @@
 			}
 			.selected {
 				background: #8ed0ff;
+			}
+			.gamepaused {
+				color: white;
+				font-size: 72px;
+				background: #00000070;
+				padding: 10px 30px;
+				border: 1px solid white;
+				border-radius: 10px;
 			}
 		</style>		
 	</head>

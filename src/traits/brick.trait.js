@@ -25,6 +25,7 @@ export default class BrickTrait extends Trait {
 	
 		switch(entity.type) {
 			case "x":
+			case "X":
 				entity.data--;
 				if(entity.data>0) {
 					entity.audio.play("ping2");
@@ -45,7 +46,7 @@ export default class BrickTrait extends Trait {
 				if(BrickTrait.powerAfter <=0) {
 					this.resetPowerTimer();
 					const powerup= new PowerupEntity(resourceManager, entity.pos.x, entity.pos.y);
-					scene.addTask(LevelScene.ADD_ENTITY, powerup);
+					scene.addTask(LevelScene.TASK_ADD_ENTITY, powerup);
 				}
 		
 				break;

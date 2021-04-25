@@ -39,7 +39,7 @@ export default class KillableTrait extends Trait {
 			entity.pause();
 			if(this.deadTime > this.removeAfter) {
 				scene.broadcast(KillableTrait.EVENT_KILLED, entity);
-				scene.addTask(LevelScene.REMOVE_ENTITY, entity);
+				scene.addTask(LevelScene.TASK_REMOVE_ENTITY, entity);
 			}
 		}
     }

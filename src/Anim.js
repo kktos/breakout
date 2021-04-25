@@ -21,8 +21,6 @@ export default class Anim {
 		}
 		this.loopInitialValue= this.loop;
 		this.reset();
-
-		this.frame= sheet.movie ? this.frameTime : this.frameDist;
 	}
 
 	backwards() {
@@ -50,7 +48,7 @@ export default class Anim {
 		return this;
 	}
 
-	frameTime(time) {
+	frame(time) {
 		if(this.isStopped || !this.loop)
 			return this.frames[this.frameIdx];
 	
@@ -69,26 +67,6 @@ export default class Anim {
 					this.frameIdx= this.loop ? this.frames.length-1 : this.frameIdx+1;
 				}
 			}
-		}
-
-		const frame= this.frames[this.frameIdx];
-		if(!this.loop)
-			this.events.emit(Anim.EVENT_END, this);
-		return frame;
-	}
-
-	frameDist(time) {
-		if(this.isStopped || !this.loop)
-			return this.frames[this.frameIdx];
-	
-		const heartbeat= Math.floor(time / this.len) % this.frames.length;
-		if(this.lastHearbeat != heartbeat) {
-			this.lastHearbeat= heartbeat;
-			this.frameIdx++;
-			if(this.frameIdx == this.frames.length) {
-				this.loop--;
-				this.frameIdx= this.loop ? 0 : this.frameIdx-1;
-			}		
 		}
 
 		const frame= this.frames[this.frameIdx];

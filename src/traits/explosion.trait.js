@@ -1,5 +1,6 @@
 import Trait from './Trait.js';
 import KillableTrait from "./killable.trait.js";
+import AnimationTrait from "./animation.trait.js";
 
 export default class ExplosionTrait extends Trait {
 
@@ -13,10 +14,13 @@ export default class ExplosionTrait extends Trait {
 			return;
 		const killable= entity.traits.get(KillableTrait);
 		if(killable && killable.isDead) {
-			killable.removeAfter= 1;
-			entity.audio.play("explosion");
-			entity.setAnim("explosion");
 			this.isExploded= true;
+			const anim= entity.traits.get(AnimationTrait);
+			anim && anim.setAnim(entity, "explosion");
+			killable.removeAfter= Infinity;
+			entity.audio
+				.play("explosion")
+				.then(() => killable.removeAfter= 0);
 		}
     }
 

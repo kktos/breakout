@@ -5,6 +5,7 @@ import PlayerTrait from "../traits/player.trait.js";
 import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import MouseXTrait from "../traits/mouseX.trait.js";
 import PaddleTrait from "../traits/paddle.trait.js";
+import AnimationTrait from "../traits/animation.trait.js";
 
 export default class PaddleEntity extends Entity {
 
@@ -15,26 +16,25 @@ export default class PaddleEntity extends Entity {
 
 		this.poweredBy= null;
 
-		this.setAnim("normal0");
-
 		this.addTrait(new MouseXTrait());
 		this.addTrait(new BoundingBoxTrait());
 		this.addTrait(new StickyTrait());
 		this.addTrait(new LaserTrait());
 		this.addTrait(new PlayerTrait(this));
+		this.addTrait(new AnimationTrait());
 		this.addTrait(new PaddleTrait());
+
+		this.reset();
 
 	}
 
+	reset() {
+		this.traits.get(AnimationTrait).setAnim(this, "normal0");
+		this.traits.get(PaddleTrait).revokePower(this);
+		// this.traits.get(StickyTrait).stickIt(this, ball, true);		
+	}
+
 	render({screen:{ctx}}) {
-		this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
-
-		// this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
-
-		// ctx.strokeStyle= "white";
-		// ctx.strokeRect(this.pos.x-2, this.pos.y-2, this.size.x+2, this.size.y+2);
-		// const sticky= this.traits.get(Sticky);
-		// ctx.font = '14px sans-serif';
-		// ctx.fillText(`${this.lifetime}`, 600-100, 600-10);		
+		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 	}	
 }

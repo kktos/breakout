@@ -22,47 +22,11 @@ class KeyMap {
 	}
 }
 
-function handleEvent(gc, coppola, e) {
-	if(!e.isTrusted)
-		return;
-
-	const bbox= gc.screen.bbox;
-	const evt= {
-		type: e.type,
-		buttons: e.buttons,
-		x: e.x - bbox.x,
-		y: e.y - bbox.y,
-		key: undefined
-
-	};
-
-	switch(e.type) {
-
-		case "contextmenu":
-			e.preventDefault();
-			return;
-
-		case "keyup":
-		case "keydown":
-			evt.key= e.key;
-			gc.keys.set(e.key, evt.type == "keydown");
-			break;
-
-		case "mousedown":
-		case "mouseup":
-		case "click":
-		case "mousemove": {
-			gc.mouse.down= evt.type == "mousedown";
-			gc.mouse.x= evt.x;
-			gc.mouse.y= evt.y;
-			break;
-		}
-	}
-	coppola.handleEvent(gc, evt);
-}
-
 export default class Game {
 	constructor(canvas) {
+		this.isRunning= false;
+		this.coppola= null;
+
 		this.gc= {
 			screen: {
 				canvas,
@@ -81,28 +45,99 @@ export default class Game {
 		};
 	}
 
-	loop(coppola, dt= 0) {
+	loop(dt= 0) {
 		acc+= (dt - lastTime) / 1000;
 		while(acc > inc) {
 	
-			coppola.update(this.gc);
+			this.coppola.update(this.gc);
 
 			this.gc.tick++;
 			acc-= inc;
 		}
 		lastTime= dt;
-		requestAnimationFrame((dt)=> this.loop(coppola, dt));
+		this.isRunning && requestAnimationFrame((dt)=> this.loop(dt));
 	}
 
+	pause() {
+		this.isRunning= false;
+		const overlay= document.createElement("div");
+		overlay.className= "overlay";
+		const msg= document.createElement("div");
+		msg.className= "gamepaused";
+		msg.innerText= "GAME PAUSED";
+		overlay.appendChild(msg);
+		document.body.appendChild(overlay);
+	}
+
+	play() {
+		const overlay= document.querySelector(".overlay");
+		overlay && overlay.remove();
+		this.isRunning= true;
+		this.loop();
+	}
+
+	handleEvent(e) {
+		if(!e.isTrusted)
+			return;
+	
+		const bbox= this.gc.screen.bbox;
+		const evt= {
+			type: e.type,
+			buttons: e.buttons,
+			x: e.x - bbox.x,
+			y: e.y - bbox.y,
+			key: undefined
+	
+		};
+	
+		switch(e.type) {
+	
+			case "contextmenu":
+				e.preventDefault();
+				return;
+	
+			case "focus":
+				this.play();
+				return;
+	
+			case "blur":
+				this.pause();
+				return;
+	
+			case "keyup":
+			case "keydown":
+				evt.key= e.key;
+				this.gc.keys.set(e.key, evt.type == "keydown");
+				break;
+	
+			case "mousedown":
+			case "mouseup":
+			case "click":
+			case "mousemove": {
+				this.gc.mouse.down= evt.type == "mousedown";
+				this.gc.mouse.x= evt.x;
+				this.gc.mouse.y= evt.y;
+				break;
+			}
+		}
+		this.coppola.handleEvent(this.gc, evt);
+	}
+	
 	async start() {
 		await this.gc.resourceManager.load();
 
-		const coppola= new Director(this.gc);
-        coppola.run("menu");
+		this.coppola= new Director(this.gc);
+        this.coppola.run("menu");
 
-		["mousemove", "keyup", "keydown", "mousedown", "mouseup", "click", "contextmenu"]
-			.forEach(type=> document.addEventListener(type, (e) => handleEvent(this.gc, coppola, e)));
+		[
+			"mousemove", "mousedown", "mouseup", "click",
+			"keyup", "keydown",
+			"contextmenu"]
+			.forEach(type=> document.addEventListener(type, (e) => this.handleEvent(e)));
 
-		this.loop(coppola);
+		["blur", "focus"]
+			.forEach(type=> window.addEventListener(type, (e) => this.handleEvent(e)));
+
+		this.play();
 	}
 }

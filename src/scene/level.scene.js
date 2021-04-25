@@ -17,22 +17,25 @@ import DashboardLayer from "../layers/dashboard.layer.js";
 
 export default class LevelScene extends Scene {
 
-	static REMOVE_ENTITY= Symbol('removeEntity');
-	static ADD_ENTITY= Symbol('addEntity');
-	static RESET= Symbol('reset');
+	static TASK_REMOVE_ENTITY= Symbol('removeEntity');
+	static TASK_ADD_ENTITY= Symbol('addEntity');
+	static TASK_RESET= Symbol('reset');
+
+	static STATE_STARTING= Symbol('starting');
+	static STATE_RUNNING= Symbol('running');
+	static STATE_ENDING= Symbol('ending');
 
 	constructor(gc, name, {background, bricks}) {
 		super(gc, name);
-		
+
 		this.bbox= {x:18, y:ENV.WALL_TOP+12, dx:this.screenWidth-18, dy:this.screenHeight};
 		this.entities= [];
 
 		this.audio= gc.resourceManager.get("audio","level");
-		this.audio.play("new_level");
+		this.state= LevelScene.STATE_STARTING;
 
 		this.breakableCount= 0;
 		this.gravity= 50;
-		this.gameover= true;
 
 		this.tasks= new TaskList();
 		this.setTaskHandlers(gc);
@@ -58,8 +61,9 @@ export default class LevelScene extends Scene {
 		trait
 			.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
 				if(lives==0) {
-					this.audio.play("game_over");
-					this.events.emit(Scene.EVENT_COMPLETE, "menu");
+					this.audio
+						.play("game_over")
+						.then(() => this.events.emit(Scene.EVENT_COMPLETE, "menu"));
 				} else
 					this.reset(gc);
 			})
@@ -78,36 +82,40 @@ export default class LevelScene extends Scene {
 	}
 
 	init(gc) {
+		this.audio
+			.play("new_level")
+			.then(() => this.newPlayer(gc));
+
 		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.type != "X") ).length;
-		if(this.gameover)
-			this.newPlayer(gc);
 	}
 
 	reset(gc) {
 		const ball= new BallEntity(gc.resourceManager, 200, 200, this.paddle);
 		this.entities.push(ball);
 
-		this.paddle.traits.get(PaddleTrait).revokePower(this.paddle);
+		this.paddle.reset();
 
 		const sticky= this.paddle.traits.get(StickyTrait);
 		sticky.stickIt(this.paddle, ball, true);
+
+		this.state= LevelScene.STATE_RUNNING;
 	}
 
 	setTaskHandlers(gc) {
 		this.tasks
-			.onTask(LevelScene.REMOVE_ENTITY, (entity) => {
+			.onTask(LevelScene.TASK_REMOVE_ENTITY, (entity) => {
 				const idx= this.entities.indexOf(entity);
 				if(idx != -1)
 					this.entities.splice(idx, 1);			
 			});
 
 		this.tasks
-			.onTask(LevelScene.ADD_ENTITY, (entity) => {
+			.onTask(LevelScene.TASK_ADD_ENTITY, (entity) => {
 				this.entities.push(entity);
 			});
 
 		this.tasks
-			.onTask(LevelScene.RESET, () => {
+			.onTask(LevelScene.TASK_RESET, () => {
 				this.reset(gc);
 			});
 
