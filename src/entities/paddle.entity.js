@@ -12,6 +12,9 @@ export default class PaddleEntity extends Entity {
 	constructor(resourceMgr, x, y) {
 		super(resourceMgr, x, y, "paddles");
 
+		this.mass= 2;
+		
+		this.visible= false;
 		this.audio= resourceMgr.get("audio", "paddle");
 
 		this.poweredBy= null;
@@ -23,18 +26,23 @@ export default class PaddleEntity extends Entity {
 		this.addTrait(new PlayerTrait(this));
 		this.addTrait(new AnimationTrait());
 		this.addTrait(new PaddleTrait());
-
-		this.reset();
-
 	}
 
 	reset() {
-		this.traits.get(AnimationTrait).setAnim(this, "normal0");
+		this.visible= true;
+		const animTrait= this.traits.get(AnimationTrait);
+		animTrait
+			.setAnim(this, "beamup")
+			.start()
+			.then(() => {
+				animTrait.setAnim(this, "normal0");
+				// force narrow bounding box to avoid collision tunneling with the tiny ball
+				this.size.y= 5;
+			});
 		this.traits.get(PaddleTrait).revokePower(this);
-		// this.traits.get(StickyTrait).stickIt(this, ball, true);		
 	}
 
 	render({screen:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.visible && this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 	}	
 }

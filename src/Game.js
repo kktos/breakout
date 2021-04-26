@@ -62,6 +62,7 @@ export default class Game {
 		this.isRunning= false;
 		const overlay= document.createElement("div");
 		overlay.className= "overlay";
+		overlay.id= "gamepaused";
 		const msg= document.createElement("div");
 		msg.className= "gamepaused";
 		msg.innerText= "GAME PAUSED";
@@ -70,7 +71,7 @@ export default class Game {
 	}
 
 	play() {
-		const overlay= document.querySelector(".overlay");
+		const overlay= document.querySelector("#gamepaused");
 		overlay && overlay.remove();
 		this.isRunning= true;
 		this.loop();

@@ -31,12 +31,12 @@ export default class PaddleTrait extends Trait {
 	grantPower(paddle, type) {
 		switch(type) {
 			case "M": {
-				paddle.PoweredBy= type;
+				paddle.poweredBy= type;
 				paddle.traits.get(StickyTrait).isSticky= true;
 				break;
 			}
 			case "L": {
-				paddle.PoweredBy= type;
+				paddle.poweredBy= type;
 				paddle.traits.get(LaserTrait).activate(paddle);
 				break;
 			}
@@ -44,7 +44,6 @@ export default class PaddleTrait extends Trait {
 				paddle.traits.get(PlayerTrait).addLife();
 				break;
 			}
-
 		}
 	}
 

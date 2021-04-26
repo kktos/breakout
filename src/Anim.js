@@ -44,8 +44,14 @@ export default class Anim {
 		return this;
 	}
 	play() {
-		this.isStopped= false;
-		return this;
+		return new Promise(resolve => {
+			this.isStopped= false;
+			const onFinished= (anim) => {
+				this.events.off(Anim.EVENT_END, onFinished);
+				resolve(anim);
+			};
+			this.events.on(Anim.EVENT_END, onFinished);
+		});
 	}
 
 	frame(time) {

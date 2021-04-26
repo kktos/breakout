@@ -80,8 +80,7 @@ export default class DebuggerLayer extends UILayer {
 	playAnim() {
 		const anim= this.animations.get(this.names[this.currAnim]);
 		anim
-			.reset()
-			.play();
+			.reset();
 	}
 
 	handleEvent(gc, e) {

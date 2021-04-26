@@ -38,7 +38,7 @@ export default class SceneFactory {
 		}
 
 		// scene.killOnExit= sheet.killOnExit ? true : false;
-		document.body.style.cursor= sheet.showCursor ? "default" : "none";
+		gc.screen.canvas.style.cursor= sheet.showCursor ? "default" : "none";
 	
 		return scene;		
 	}

@@ -1,7 +1,7 @@
 {
 	"type": "layout",
 	"name": "highscores",
-	"background": 0,
+	"background": "#000",
 	"showCursor": true,
 	"ui": [
 		{"btn": "back"}
@@ -13,6 +13,80 @@
 			"size": 4,
 			"align": 2,
 			"text": "highscores"
-		}		
+		},
+		{
+			"type": "text",
+			"pos": [300, 100],
+			"size": 3,
+			"align": 2,
+			"color": "yellow",
+			"text": "BEST 10"
+		},
+
+		{
+			"type": "text",
+			"pos": [250, 150],
+			"size": 3,
+			"align": 3,
+			"color": "#b21db7",
+			"text": "SCORE"
+		},
+		{
+			"type": "text",
+			"pos": [450, 150],
+			"size": 3,
+			"align": 3,
+			"color": "#b21db7",
+			"text": "LEVEL"
+		},		
+		{
+			"type": "text",
+			"pos": [580, 150],
+			"size": 3,
+			"align": 3,
+			"color": "#b21db7",
+			"text": "NAME"
+		},
+
+		{
+			"type":"repeat",
+			"count": 10,
+			"step": {
+				"pos": [0,40]
+			},
+			"items": [
+				{
+					"type": "text",
+					"pos": [90, 190],
+					"size": 3,
+					"align": 3,
+					"texts": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"]
+				},
+				{
+					"type": "text",
+					"pos": [250, 190],
+					"size": 3,
+					"align": 3,
+					"var": "highscores:$idx:score"
+				},
+				{
+					"type": "text",
+					"pos": [450, 190],
+					"size": 3,
+					"align": 3,
+					"var": "highscores:$idx:level"
+				},		
+				{
+					"type": "text",
+					"pos": [580, 190],
+					"size": 3,
+					"align": 3,
+					"var": "highscores:$idx:name"
+				}
+		
+			]
+		}
+		
+
 	]
 }

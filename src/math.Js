@@ -33,21 +33,26 @@ function collideRect1(r1, r2){
 	return(collision);
 }
 
+export function contains(r1, r2) {
+  return (r1.left < r2.left && r1.top < r2.top && r2.bottom < r1.bottom && r2.right < r1.right);
+}
+
+
 function collideRect2(r1, r2){
 	return intersectSide(intersect(r1, r2));
 }
 
 export let collideRect= collideRect1;
 
-window.TOGGLE= () => {
-	if(collideRect == collideRect2) {
-		collideRect= collideRect1;
-		console.log("collideRect1");
-	} else {
-		collideRect= collideRect2;
-		console.log("collideRect2");
-	}
-};
+// window.TOGGLE= () => {
+// 	if(collideRect == collideRect2) {
+// 		collideRect= collideRect1;
+// 		console.log("collideRect1");
+// 	} else {
+// 		collideRect= collideRect2;
+// 		console.log("collideRect2");
+// 	}
+// };
 
 export function ptInRect(x, y, r) {
 	return 	r.left <= x && x <= r.right &&

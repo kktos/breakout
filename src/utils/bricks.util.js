@@ -1,7 +1,7 @@
 import ENV from '../env.js';
 import BrickEntity from "../entities/brick.entity.js";
 
-const perRow= 15;
+const perRow= ENV.BRICKS_PER_ROW;
 
 export function createBricks({resourceManager}, bricksDef, templateMode= false) {
 	const entities= [];

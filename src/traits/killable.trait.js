@@ -19,22 +19,9 @@ export default class KillableTrait extends Trait {
 	update(entity,gc) {
 		const {scene, dt}= gc;
 
-		// if(window.ENTITIES && window.ENTITIES.includes(entity.id))
-		// 	console.log(
-		// 		`${gc.entities.MAINLOOP} UPDT:${gc.entities[entity.id].updateID}`,
-		// 		"dead?",
-		// 		`${entity.class}:${entity.id}`,
-		// 		this.isDead?"DEAD":"ALIVE"
-		// 	);
-
 		if(this.isDead) {
+			entity.isSolid= false;
 
-			// console.log(
-			// 	`${gc.entities.MAINLOOP} UPDT:${gc.entities[entity.id].updateID}`,
-			// 	"KILL ",
-			// 	`${entity.class}:${entity.id}`,
-			// );
-	
 			this.deadTime += dt;
 			entity.pause();
 			if(this.deadTime > this.removeAfter) {

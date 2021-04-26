@@ -48,6 +48,11 @@ export default class Entity {
 	get width() { return this.size.x; }
 	get height() { return this.size.y; }
 
+	set left(x) { this.pos.x= x; }
+	set right(x) { this.size.x= x - this.pos.x; }
+	set bottom(y) { this.size.y= y - this.pos.y; }
+	set top(y) { this.pos.y= y; }
+
 	pause() {
 		this.previousVel= this.vel;
 		this.previousMass= this.mass;

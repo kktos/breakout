@@ -1,6 +1,7 @@
 import ENV from "../env.js";
 import Events from "../events/Events.js";
 import {collideRect, COLLISION} from "../math.js";
+import LocalDB from "../utils/storage.util.js";
 import Scene from "./Scene.js";
 import TaskList from "../TaskList.js";
 import BallEntity from "../entities/ball.entity.js";
@@ -9,7 +10,6 @@ import SpawnerEntity from "../entities/enemyspawner.entity.js";
 import Trait from "../traits/Trait.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
-import PaddleTrait from "../traits/paddle.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 import BackgroundLayer from "../layers/background.layer.js";
 import EntitiesLayer from "../layers/entities.layer.js";
@@ -55,15 +55,19 @@ export default class LevelScene extends Scene {
 				this.entities.splice(idx, 1);
 		}
 
-		this.paddle= new PaddleEntity(gc.resourceManager, 300, 550);
+		this.paddle= new PaddleEntity(gc.resourceManager, ENV.PADDLE_X, ENV.PADDLE_Y);
 
 		const trait= new Trait();
 		trait
 			.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
 				if(lives==0) {
+					this.state= LevelScene.STATE_ENDING;
 					this.audio
 						.play("game_over")
-						.then(() => this.events.emit(Scene.EVENT_COMPLETE, "menu"));
+						.then(() => {
+							LocalDB.updateHighscores();
+							this.events.emit(Scene.EVENT_COMPLETE, "menu");
+						});
 				} else
 					this.reset(gc);
 			})
@@ -77,20 +81,19 @@ export default class LevelScene extends Scene {
 		this.paddle.addTrait(trait);
 		this.entities.push(this.paddle);
 
-		this.reset(gc);
-
 	}
 
 	init(gc) {
+		this.newPlayer(gc);
 		this.audio
 			.play("new_level")
-			.then(() => this.newPlayer(gc));
+			.then(() => this.reset(gc));
 
 		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.type != "X") ).length;
 	}
 
 	reset(gc) {
-		const ball= new BallEntity(gc.resourceManager, 200, 200, this.paddle);
+		const ball= new BallEntity(gc.resourceManager, 0, 0, this.paddle);
 		this.entities.push(ball);
 
 		this.paddle.reset();
@@ -173,6 +176,11 @@ export default class LevelScene extends Scene {
 
 	handleEvent(gc, e) {
 		switch(e.type) {
+			case "keydown": {
+				if(e.key=="r")
+					this.newPlayer(gc);
+				break;
+			}
 			case "click": {
 				this.paddle.emit(Events.EVENT_MOUSECLICK, gc, this.paddle.pos);
 				break;

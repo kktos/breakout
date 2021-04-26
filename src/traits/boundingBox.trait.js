@@ -1,12 +1,13 @@
 import Trait from './Trait.js';
 import KillableTrait from "./killable.trait.js";
+import ENV from "../env.js";
 
 export default class BoundingBoxTrait extends Trait {
 
     update(entity, {scene}) {
 		const bbox= scene.bbox;
 
-		if(entity.bottom > bbox.dy) {
+		if(entity.bottom > ENV.PADDLE_Y + 10) {
 			if(entity.traits.has(KillableTrait))
 				entity.traits.get(KillableTrait).kill();
 			return;

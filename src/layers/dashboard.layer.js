@@ -55,15 +55,22 @@ export default class DashboardLayer extends Layer {
 			this.walls[idx].draw(ctx);
 
 		for(let idx= 0; idx<playerTrait.lives; idx++)
-			this.spritesheet.draw("life", ctx, 20+(idx*this.lifeW), this.lifeY);
-		
-		if(state == Level.STATE_STARTING) {
-			if(!this.timer)
-				this.timer= tick;
-			this.font.align= Align.Center;
-			this.font.print(ctx, name, this.width/2, 480);
-			if(tick - this.timer > 50)
-				this.font.print(ctx, "READY", this.width/2, 520);
+			this.spritesheet.draw("life", ctx, 20+(idx*this.lifeW), this.lifeY);		
+
+		switch(state) {
+			case Level.STATE_STARTING: {
+				if(!this.timer)
+					this.timer= tick;
+				this.font.align= Align.Center;
+				this.font.print(ctx, name, this.width/2, 480);
+				if(tick - this.timer > 50)
+					this.font.print(ctx, "READY", this.width/2, 520);
+				break;
+			}
+			case Level.STATE_ENDING: {
+				this.font.align= Align.Center;
+				this.font.print(ctx, "GAME OVER", this.width/2, 400);
+			}
 		}
 	}	
 

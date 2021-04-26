@@ -22,90 +22,40 @@ I
 M
 */
 // const TYPES= "LESCBDTNPRIM";
-const TYPES= "L";
+const TYPES= "LESCBDPM";
+const TYPE_ANIMS= {
+	L: "laser",
+	E: "enlarge",
+	C: "catch",
+	S: "slow",
+	B: "break",
+	D: "disruption",
+	P: "player",
+	M: "magnet"
+};
+
 export default class PowerupEntity extends Entity {
 
-
-	constructor(resourceMgr, x, y, type="M") {
+	constructor(resourceMgr, x, y) {
 		super(resourceMgr, x, y, "powerups");
 
 		this.mass= 2;
 		this.ghost= true;
+		this.isSolid= false;
 
 		this.animTrait= new AnimationTrait();
-
-		this.currSprite= "magnet-0";
-		this.setType();
-		this.setSprite(this.currSprite);
-
 		this.addTrait(this.animTrait);
 		this.addTrait(new GravityTrait());
 		this.addTrait(new VelocityTrait());
 		this.addTrait(new KillableTrait());
 		this.addTrait(new BoundingBoxTrait());
+
+		this.setType();
 	}
 
 	setType() {
-		this.type= TYPES[ Math.random()*TYPES.length|0 ];
-		
-		// const idx= "LESCBDTNPRIM".indexOf(type);
-		// if(idx>=0) {
-		// 	this.currSprite= "standard-"+idx;
-		// 	return;
-		// }
-
-		switch(this.type) {
-			default:
-			case "L": {
-				this.currSprite= "laser-0";
-				this.animTrait.setAnim(this, "laser");
-				this.animTrait.start();
-				break;
-			}
-			case "E": {
-				this.currSprite= "enlarge-0";
-				this.animTrait.setAnim(this, "enlarge");
-				this.animTrait.start();
-				break;
-			}
-			case "C": {
-				this.currSprite= "catch-0";
-				this.animTrait.setAnim(this, "catch");
-				this.animTrait.start();
-				break;
-			}
-			case "S": {
-				this.currSprite= "slow-0";
-				this.animTrait.setAnim(this, "slow");
-				this.animTrait.start();
-				break;
-			}
-			case "B": {
-				this.currSprite= "break-0";
-				this.animTrait.setAnim(this, "break");
-				this.animTrait.start();
-				break;
-			}
-			case "D": {
-				this.currSprite= "disruption-0";
-				this.animTrait.setAnim(this, "disruption");
-				this.animTrait.start();
-				break;
-			}
-			case "P": {
-				this.currSprite= "player-0";
-				this.animTrait.setAnim(this, "player");
-				this.animTrait.start();
-				break;
-			}
-			case "M":
-				this.currSprite= "magnet-0";
-				this.animTrait.setAnim(this, "magnet");
-				this.animTrait.start();
-				this.data= 4;
-				break;
-		}		
-
+		this.type= TYPES[ Math.random()*TYPES.length|0 ];	
+		this.animTrait.setAnim(this, TYPE_ANIMS[this.type]);
 	}
 
 	render({screen:{ctx}}) {

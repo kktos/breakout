@@ -15,15 +15,15 @@ export default class AnimationTrait extends Trait {
 
 		this.anim= new Anim(name, anim);
 		entity.setSprite(this.anim.frame(0));
+		return this;
 	}
 
 	start() {
 		if(!this.anim)
 			return;
 
-		this.anim
-			.reset()
-			.play();
+		return this.anim
+					.reset();
 	}
 
 	stop() {
@@ -31,6 +31,7 @@ export default class AnimationTrait extends Trait {
 			return;
 
 		this.anim.stop();
+		return this;
 	}
 
     update(entity) {

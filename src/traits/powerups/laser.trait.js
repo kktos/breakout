@@ -2,6 +2,7 @@ import Trait from '../Trait.js';
 import Events from "../../events/Events.js";
 import BulletEntity from "../../entities/bullet.entity.js";
 import LevelScene from "../../scene/level.scene.js";
+import AnimationTrait from "../animation.trait.js";
 
 export default class LaserTrait extends Trait {
 
@@ -17,12 +18,14 @@ export default class LaserTrait extends Trait {
 	}
 
 	activate(entity) {
-		entity.setAnim("gun");
+		const animTrait= entity.traits.get(AnimationTrait);
+		animTrait && animTrait.setAnim(entity, "gun");
 		this.isActive= true;
 	}
 
 	deactivate(entity) {
-		entity.setAnim("normal0");
+		const animTrait= entity.traits.get(AnimationTrait);
+		animTrait && animTrait.setAnim(entity, "normal0");
 		this.isActive= false;
 	}
 

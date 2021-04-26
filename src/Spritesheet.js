@@ -154,6 +154,8 @@ export default class SpriteSheet {
 
 		const sprite= this.sprites.get(name)[flip|0];
         ctx.drawImage(sprite, x, y, zoom*sprite.width, zoom*sprite.height);
+		// ctx.strokeStyle="red";
+		// ctx.strokeRect(x,y, zoom*sprite.width, zoom*sprite.height);
     }
 
     drawAnim(name, ctx, x, y, distance, {zoom} = {zoom:1}) {

@@ -9,7 +9,6 @@ export default class BulletEntity extends Entity {
 	constructor(resourceMgr, x, y) {
 		super(resourceMgr, x, y, "paddles");
 
-		// this.audio= resourceMgr.get("audio", "bricks");
 		this.vel.x= 0;
 		this.vel.y= -360;
 		this.mass= 2;
@@ -22,6 +21,8 @@ export default class BulletEntity extends Entity {
 
 		const deathOnTop= new Trait();
 		deathOnTop.collides= (gc, side, entity, target) => {
+			if(!target.points)
+				return;
 			if(entity.traits.has(KillableTrait))
 				entity.traits.get(KillableTrait).kill();
 		}

@@ -35,7 +35,7 @@ export default class EditorLayer extends UILayer {
 
 		this.buildUI();
 
-		bkgndLayer.setBackground(gc, this.bkgndIndex);
+		bkgndLayer.setBackground(gc, this.bkgndIndex, true);
 		this.resetLevel();
 	}
 
@@ -101,7 +101,7 @@ export default class EditorLayer extends UILayer {
 		this.entities.length= 0;
 		this.entities.push(...createBricks(this.gc, sheet.bricks, true));
 		this.bkgndIndex= sheet.background|0;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
+		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex, true);
 		this.ui.querySelectorAll("INPUT")[0].value= sheet.name;
 		this.isModified= false;
 

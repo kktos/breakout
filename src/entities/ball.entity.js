@@ -1,4 +1,5 @@
 import Entity from "./Entity.js";
+import ENV from "../env.js";
 import VelocityTrait from "../traits/velocity.trait.js";
 import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
@@ -9,11 +10,10 @@ export default class BallEntity extends Entity {
 	constructor(resourceMgr, x, y, owner) {
 		super(resourceMgr, x, y);
 		
-		this.size= {x: 10, y: 10};
-		// this.vel= {x: 380, y: 360};
+		this.size= {x: ENV.BALL_RADIUS*2+5, y: ENV.BALL_RADIUS*2+5};
 		this.vel= {x: 0, y: -360};
 		this.mass= 10;
-		this.radius= this.size.x/2;
+		this.radius= ENV.BALL_RADIUS;
 		
 		this.addTrait(new VelocityTrait());
 		this.addTrait(new BounceTrait());

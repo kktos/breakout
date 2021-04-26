@@ -1,6 +1,7 @@
 import UILayer from "./UILayer.js";
 import Scene from "../scene/Scene.js";
 import { ptInRect } from "../math.js";
+import LocalDB from "../utils/storage.util.js";
 export default class DisplayLayer extends UILayer {
 
 	constructor(gc, layout, ui) {
@@ -122,6 +123,40 @@ export default class DisplayLayer extends UILayer {
 		});
 	}
 
+	evalVar(variable, idx) {
+		const parts= variable.replace(/\$idx/, idx).split(":");
+		switch(parts[0]) {
+			case "highscores": {
+				const highscores= LocalDB.highscores();
+				const row= highscores[parts[1]];
+				return row ? row[parts[2]] : null;
+			}
+		}
+		return null;
+	}
+
+	renderRepeat(gc, op) {
+		const items= op.items.map(it => {
+			const item= {...it};
+			item.pos= [...it.pos];
+			return item;
+		});
+
+		for(let idx=0; idx<op.count; idx++) {
+			items.forEach(item => {
+				if(Array.isArray(item.texts))
+					item.text= item.texts[idx];
+				if(item.var) {
+					item.text= this.evalVar(item.var, idx);
+				}
+				if(item.text)
+					this.renderText(gc, item);
+				item.pos[0]+= op.step.pos[0];
+				item.pos[1]+= op.step.pos[1];
+			});
+		}
+	}
+
 	render(gc) {
 		this.time+= (gc.dt*1000)|0;
 		if(!(this.time%500|0))
@@ -131,6 +166,9 @@ export default class DisplayLayer extends UILayer {
 			switch(op.type) {
 				case "text":
 					this.renderText(gc, op);
+					break;
+				case "repeat":
+					this.renderRepeat(gc, op);
 					break;
 				case "sprite":
 					this.renderSprite(gc, op);
