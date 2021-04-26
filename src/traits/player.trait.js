@@ -21,6 +21,9 @@ export default class PlayerTrait extends Trait {
         this.on(KillableTrait.EVENT_KILLED, (entity) => {
 
             if(entity instanceof BallEntity) {
+                this.paddle.ballCount--;
+                if(this.paddle.ballCount>0)
+                    return;
                 this.lives--;
                 this.paddle.traits.get(AnimationTrait).setAnim(this.paddle, "explosion");
                 this.paddle.audio

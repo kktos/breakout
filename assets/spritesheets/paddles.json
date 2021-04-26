@@ -34,12 +34,7 @@
 				"count": 5
 			}
 		},		
-		"standard": {
-			"scale": 2,
-			"rects":[
-				[0, 64, 64, 16]
-			]
-		},
+
 		"normal0": {
 			"scale": 2,
 			"tiles": {
@@ -76,6 +71,52 @@
 				"count": 4
 			}
 		},
+		"large0": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 104],
+				"size": [48, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"large1": {
+			"scale": 2,
+			"tiles": {
+				"pos": [48, 104],
+				"size": [48, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"large2": {
+			"scale": 2,
+			"tiles": {
+				"pos": [96, 104],
+				"size": [48, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"large3": {
+			"scale": 2,
+			"tiles": {
+				"pos": [144, 104],
+				"size": [48, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+
+		"small": {
+			"scale": 2,
+			"tiles": {
+				"pos": [128, 64],
+				"size": [24, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
 
 		"gun": {
 			"scale": 2,
@@ -107,6 +148,7 @@
 			"loop": 1,
 			"frames": { "name": "explosion", "range": [0, 4] }
 		},
+
 		"normal0": {
 			"len": 0.1,
 			"frames": { "name": "normal0", "range": [0, 3] }
@@ -123,6 +165,29 @@
 			"len": 0.1,
 			"frames": { "name": "normal3", "range": [0, 3] }
 		},
+
+		"large0": {
+			"len": 0.1,
+			"frames": { "name": "large0", "range": [0, 3] }
+		},
+		"large1": {
+			"len": 0.1,
+			"frames": { "name": "large1", "range": [0, 3] }
+		},
+		"large2": {
+			"len": 0.1,
+			"frames": { "name": "large2", "range": [0, 3] }
+		},
+		"large3": {
+			"len": 0.1,
+			"frames": { "name": "large3", "range": [0, 3] }
+		},
+
+		"small": {
+			"len": 0.1,
+			"frames": { "name": "small", "range": [0, 3] }
+		},
+
 		"gun": {
 			"len": 0.1,
 			"frames": { "name": "gun", "range": [0, 3] }

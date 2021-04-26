@@ -4,10 +4,9 @@ import VelocityTrait from "../traits/velocity.trait.js";
 import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
-import BelongsToTrait from "../traits/belongsTo.trait.js";
 
 export default class BallEntity extends Entity {
-	constructor(resourceMgr, x, y, owner) {
+	constructor(resourceMgr, x, y) {
 		super(resourceMgr, x, y);
 		
 		this.size= {x: ENV.BALL_RADIUS*2+5, y: ENV.BALL_RADIUS*2+5};
@@ -19,7 +18,6 @@ export default class BallEntity extends Entity {
 		this.addTrait(new BounceTrait());
 		this.addTrait(new BoundingBoxTrait());
 		this.addTrait(new KillableTrait());
-		this.addTrait(new BelongsToTrait(owner));
 	}
 
 	render({screen:{ctx}}) {

@@ -9,10 +9,9 @@ function generateID() {
 export default class Entity {
 
 	constructor(resourceMgr, x, y, sheetFilename= null) {
-		this.id= generateID();
-
 		const m= String(this.constructor).match(/class ([a-zA-Z0-9_]+)/);
 		this.class= m[1];
+		this.id= generateID();
 
 		this.pos= {x, y};
 		this.size= {x: 0, y: 0};

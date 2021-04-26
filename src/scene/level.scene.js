@@ -55,7 +55,7 @@ export default class LevelScene extends Scene {
 				this.entities.splice(idx, 1);
 		}
 
-		this.paddle= new PaddleEntity(gc.resourceManager, ENV.PADDLE_X, ENV.PADDLE_Y);
+		this.paddle= new PaddleEntity(gc, ENV.PADDLE_X, ENV.PADDLE_Y);
 
 		const trait= new Trait();
 		trait
@@ -83,6 +83,10 @@ export default class LevelScene extends Scene {
 
 	}
 
+	findBall() {
+		return this.entities.find(e=>e.class=="BallEntity");
+	}
+
 	init(gc) {
 		this.newPlayer(gc);
 		this.audio
@@ -93,7 +97,7 @@ export default class LevelScene extends Scene {
 	}
 
 	reset(gc) {
-		const ball= new BallEntity(gc.resourceManager, 0, 0, this.paddle);
+		const ball= new BallEntity(gc.resourceManager, 0, 0);
 		this.entities.push(ball);
 
 		this.paddle.reset();

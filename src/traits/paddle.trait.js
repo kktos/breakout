@@ -6,6 +6,8 @@ import KillableTrait from "./killable.trait.js";
 import PlayerTrait from "./player.trait.js";
 import StickyTrait from "./powerups/sticky.trait.js";
 import LaserTrait from "./powerups/laser.trait.js";
+import EnlargeTrait from "./powerups/enlarge.trait.js";
+import DisruptionTrait from "./powerups/disruption.trait.js";
 
 export default class PaddleTrait extends Trait {
 
@@ -15,12 +17,16 @@ export default class PaddleTrait extends Trait {
 
 	revokePower(paddle) {
 		switch(paddle.poweredBy) {
-			case "M": {
+			case "C": {
 				paddle.traits.get(StickyTrait).isSticky= false;
 				break;
 			}
 			case "L": {
 				paddle.traits.get(LaserTrait).deactivate(paddle);
+				break;
+			}
+			case "E": {
+				paddle.traits.get(EnlargeTrait).deactivate(paddle);
 				break;
 			}
 
@@ -30,9 +36,14 @@ export default class PaddleTrait extends Trait {
 
 	grantPower(paddle, type) {
 		switch(type) {
-			case "M": {
+			case "C": {
 				paddle.poweredBy= type;
 				paddle.traits.get(StickyTrait).isSticky= true;
+				break;
+			}
+			case "E": {
+				paddle.poweredBy= type;
+				paddle.traits.get(EnlargeTrait).activate(paddle);
 				break;
 			}
 			case "L": {
@@ -44,21 +55,24 @@ export default class PaddleTrait extends Trait {
 				paddle.traits.get(PlayerTrait).addLife();
 				break;
 			}
+			case "D": {
+				paddle.traits.get(DisruptionTrait).addBalls(paddle);
+				break;
+			}
 		}
 	}
 
 	collides(gc, side, paddle, target) {
 
 		if(target instanceof PowerupEntity) {
-
-			// console.log("POWER",
-			// 	gc.entities[paddle.id].collideID,
-			// 	target.class, target.type, target.id);
+			const killable= target.traits.get(KillableTrait);
+			if(killable.isDead)
+				return;
 
 			this.revokePower(paddle);
 			this.grantPower(paddle, target.type);
 
-			target.traits.get(KillableTrait).kill();			
+			killable.kill();			
 			return;
 		}
 

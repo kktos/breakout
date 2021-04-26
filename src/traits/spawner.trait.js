@@ -10,8 +10,8 @@ export default class SpawnerTrait extends Trait {
 		this.wannaSpawn= false;
 	}
 
-	spawn(entities) {
-		this.entities.push(entities);
+	spawn(entity) {
+		this.entities.push(entity);
 		this.wannaSpawn= true;
 	}
 
