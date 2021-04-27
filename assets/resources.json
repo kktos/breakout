@@ -12,6 +12,7 @@
 		"level.json"
 	],
 	"fonts": [
-		"font.png"
+		"pontus.json",
+		"bubble-bobble.json"
 	]
 }

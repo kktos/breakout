@@ -28,7 +28,7 @@ export default class DashboardLayer extends Layer {
 		);
 		this.walls[2].pos.x= this.width - this.walls[2].size.x;
 
-		this.font= rezMgr.get("font","font.png");
+		this.font= rezMgr.get("font", ENV.MAIN_FONT);
 
 		this.timer= 0;
 	}

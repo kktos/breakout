@@ -2,6 +2,8 @@ import UILayer from "./UILayer.js";
 import Scene from "../scene/Scene.js";
 import { ptInRect } from "../math.js";
 import LocalDB from "../utils/storage.util.js";
+import ENV from "../env.js";
+
 export default class DisplayLayer extends UILayer {
 
 	constructor(gc, layout, ui) {
@@ -10,7 +12,7 @@ export default class DisplayLayer extends UILayer {
 		const rezMgr= gc.resourceManager;
 
 		this.width= gc.screen.canvas.width;
-		this.font= rezMgr.get("font","font.png");
+		this.font= rezMgr.get("font", ENV.MAIN_FONT);
 
 		this.layout= layout;
 		this.time= 0;

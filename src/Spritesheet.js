@@ -142,7 +142,7 @@ export default class SpriteSheet {
 
 	spriteSize(name) {
 		if(!this.sprites.has(name)) {
-			throw new Error(`Unable to find sprite ${name}`);
+			throw new Error(`Unable to find sprite "${name}"`);
 		}
 		const sprite= this.sprites.get(name)[0];
 		return {x: sprite.width, y: sprite.height};
@@ -150,7 +150,7 @@ export default class SpriteSheet {
 	
 	draw(name, ctx, x, y, {flip, zoom} = {zoom:1, flip:false}) {
 		if(!this.sprites.has(name))
-			throw new Error(`Unable to find sprite ${name}`);
+			throw new Error(`Unable to find sprite "${name}"`);
 
 		const sprite= this.sprites.get(name)[flip|0];
         ctx.drawImage(sprite, x, y, zoom*sprite.width, zoom*sprite.height);

@@ -2,7 +2,7 @@ import ENV from "./env.js";
 import {loadJson} from "./utils/loaders.util.js";
 import SpriteSheet from "./Spritesheet.js";
 import Audio from "./Audio.js";
-import {loadFont} from "./Font.js";
+import Font from "./Font.js";
 
 function loadSpritesheets(mgr, sheets) {
 	return sheets.map(filename => SpriteSheet.load(filename).then(r=>mgr.add("sprite", filename, r)));
@@ -13,7 +13,7 @@ function loadAudiosheets(mgr, sheets) {
 }
 
 function loadFonts(mgr, sheets) {
-	return sheets.map(filename => loadFont(filename).then(r=>mgr.add("font", filename, r)));
+	return sheets.map(filename => Font.load(filename).then(r=>mgr.add("font", r.name, r)));
 }
 
 export default class ResourceManager {

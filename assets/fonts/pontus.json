@@ -1,0 +1,7 @@
+{
+	"name": "mario",
+	"height": 8,
+	"width": 8,
+	"charset": " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.",
+	"img": "font-pontus.png"
+}

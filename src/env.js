@@ -3,6 +3,8 @@ const rootDir= "./assets";
 
 const ENV= {
 
+	MAIN_FONT: "bubble-bobble",
+
 	RESOURCES_PATH: `${rootDir}/`,
 
 	SCENES_PATH: `${rootDir}/scenes/`,
@@ -13,8 +15,8 @@ const ENV= {
 	VOLUME: 50,
 
 	SPRITESHEETS_PATH: `${rootDir}/spritesheets/`,
-
 	IMAGES_PATH: `${rootDir}/images/`,
+	FONTS_PATH: `${rootDir}/fonts/`,
 
 	BALL_RADIUS: 5,
 

@@ -1,14 +1,40 @@
-import {loadImage} from './utils/loaders.util.js';
+import ENV from "./env.js";
+import {loadImage, loadJson} from './utils/loaders.util.js';
 import SpriteSheet from './Spritesheet.js';
 
-const CHARS= ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.';
+// const CHARS= ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.';
 export const Align= {
     Left: 1,
     Center: 2,
     Right: 3
 }
-class Font {
-    constructor(sprites, size) {
+
+function loadFont(filename, sheet) {
+    return loadImage(sheet.img)
+        .then(image => {
+            const fontSprite= new SpriteSheet(image);
+            const offsetX= sheet.offsetX|0;
+            const offsetY= sheet.offsetY|0;
+            const gapX= sheet.gapX|0;
+            const rowLen= image.width;
+            for (let [index, char] of [...sheet.charset].entries()) {
+                const x= offsetX + index * (sheet.width+gapX) % rowLen;
+                const y= offsetY + Math.floor(index * (sheet.width+gapX) / rowLen) * sheet.width;
+                fontSprite.define(char, x, y, sheet.width, sheet.height);
+            }
+
+            return new Font(sheet.name, fontSprite, sheet.width);
+        });
+}
+
+export default class Font {
+	static load(filename) {
+		return loadJson(ENV.FONTS_PATH + filename)
+					.then(sheet => loadFont(filename, sheet));
+	}
+
+    constructor(name, sprites, size) {
+        this.name= name;
         this.sprites= sprites;
         this.spriteSize= size;
         this.size= 1;
@@ -69,22 +95,4 @@ class Font {
 
         context.drawImage(canvas, x, y);
     }
-}
-
-
-export function loadFont(fontName) {
-    return loadImage(fontName)
-    .then(image => {
-        const fontSprite= new SpriteSheet(image);
-
-        const spriteSize= 8;
-        const rowLen= image.width;
-        for (let [index, char] of [...CHARS].entries()) {
-            const x= index * spriteSize % rowLen;
-            const y= Math.floor(index * spriteSize / rowLen) * spriteSize;
-            fontSprite.define(char, x, y, spriteSize, spriteSize);
-        }
-
-        return new Font(fontSprite, spriteSize);
-    });
 }

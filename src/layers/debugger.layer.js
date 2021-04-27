@@ -1,6 +1,7 @@
 import UILayer from "./UILayer.js";
 import {Align} from "../Font.js";
 import BackgroundLayer from "./background.layer.js";
+import ENV from "../env.js";
 
 export default class DebuggerLayer extends UILayer {
 
@@ -12,7 +13,7 @@ export default class DebuggerLayer extends UILayer {
 		this.width= gc.screen.canvas.width;
 		this.height= gc.screen.canvas.height;
 		
-		this.font= this.rezMgr.get("font","font.png");
+		this.font= this.rezMgr.get("font", ENV.MAIN_FONT);
 		this.bkgndLayer= bkgndLayer;
 
 		this.spritesheetList= this.rezMgr.byKind("sprite");

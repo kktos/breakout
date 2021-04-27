@@ -15,7 +15,7 @@ export default class EditorLayer extends UILayer {
 
 		this.width= gc.screen.canvas.width;
 		this.entities= entities;
-		this.font= gc.resourceManager.get("font","font.png");
+		this.font= gc.resourceManager.get("font", ENV.MAIN_FONT);
 
 		this.isDrawing= false;
 		this.isModified= false;
