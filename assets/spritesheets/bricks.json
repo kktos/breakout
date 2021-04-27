@@ -39,26 +39,46 @@
 		"template": {
 			"scale": 2,
 			"rect":	[64, 0, 32, 16]
+		},
+		"highlander": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 32],
+				"size": [16, 8],
+				"increment": [1, 0],
+				"count": 6
+			}
+		},
+		"rebirth": {
+			"scale": 2,
+			"tiles": {
+				"pos": [0, 40],
+				"size": [16, 8],
+				"increment": [1, 0],
+				"count": 9
+			}
 		}
-
 	},
 	"animations": {
 		"silver": {
 			"len": 0.1,
 			"loop": 2,
-			"frames": [
-				"silver-0",
-				"silver-1",
-				"silver-2",
-				"silver-3",
-				"silver-4",
-				"silver-5"
-			]
+			"frames": {"name": "silver","range": [0, 5]}
 		},
 		"gold": {
 			"len": 0.1,
 			"loop": 2,
 			"frames": {"name": "gold","range": [0, 5]}
+		},
+		"highlander": {
+			"len": 0.1,
+			"loop": 2,
+			"frames": {"name": "highlander","range": [0, 5]}
+		},
+		"rebirth": {
+			"len": 0.1,
+			"loop": 2,
+			"frames": {"name": "rebirth","range": [0, 8]}
 		}
 	}
 }

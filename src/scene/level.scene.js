@@ -93,7 +93,7 @@ export default class LevelScene extends Scene {
 			.play("new_level")
 			.then(() => this.reset(gc));
 
-		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.type != "X") ).length;
+		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.breakable) ).length;
 	}
 
 	reset(gc) {
@@ -106,6 +106,12 @@ export default class LevelScene extends Scene {
 		sticky.stickIt(this.paddle, ball, true);
 
 		this.state= LevelScene.STATE_RUNNING;
+
+		const bricks= this.entities.filter(a=>a.class=="BrickEntity");
+		console.log("BRICKS", bricks);
+		console.log("BREAKABLES", bricks.filter(b=>b.breakable));
+		console.log("OTHERS",this.entities.filter(a=>a.class!="BrickEntity"));
+
 	}
 
 	setTaskHandlers(gc) {

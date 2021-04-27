@@ -20,8 +20,9 @@ class KeyMap {
 	set(key, pressed) {
 		this.map.set(key, pressed);
 	}
-
+	
 	isPressed(key) {
+		// console.log({key,pressed:this.get(key)});
 		return this.get(key) == true;
 	}
 }

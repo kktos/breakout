@@ -25,6 +25,8 @@ export default class EditorLayer extends UILayer {
 		this.buttons= [];
 		this.selectedType= 0;
 
+		this.firstPoint= null;
+
 		this.templateSheet= templateSheet;
 
 		this.bkgndLayer= bkgndLayer;
@@ -132,7 +134,7 @@ export default class EditorLayer extends UILayer {
 
 	updateBrickStats() {
 		const total= this.entities.filter(b=>b.type!="#").length;
-		const breakable= this.entities.filter(b=>b.type!="#"&&b.type!="X").length;
+		const breakable= this.entities.filter(b=>!["#","@","X"].includes(b.type)).length;
 		const points= this.entities.reduce((acc, curr)=>acc+curr.points|0,0);
 
 		this.ui.querySelector("#brickCount").value= total;
@@ -190,6 +192,25 @@ export default class EditorLayer extends UILayer {
 		}				
 	}
 
+	// https://stackoverflow.com/questions/4672279/bresenham-algorithm-in-javascript
+	line({x:x0, y:y0}, {x:x1, y:y1}, buttons) {
+		var dx = Math.abs(x1 - x0);
+		var dy = Math.abs(y1 - y0);
+		var sx = (x0 < x1) ? 1 : -1;
+		var sy = (y0 < y1) ? 1 : -1;
+		var err = dx - dy;
+	 
+		while(true) {
+		   this.drawBrick(x0, y0, buttons);
+	 
+		//    if ((x0 === x1) && (y0 === y1)) break;
+		   if (Math.abs(x0 - x1) < 0.0001 && Math.abs(y0 - y1) < 0.0001) break;
+		   var e2 = 2*err;
+		   if (e2 > -dy) { err -= dy; x0  += sx; }
+		   if (e2 < dx) { err += dx; y0  += sy; }
+		}
+	 }
+
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "keydown":
@@ -211,6 +232,7 @@ export default class EditorLayer extends UILayer {
 			}
 			case "mousedown": {
 				this.isDrawing= true;
+				this.firstPoint= {x:e.x, y:e.y};
 				this.drawBrick(e.x, e.y, e.buttons);
 				break;
 			}
@@ -221,7 +243,11 @@ export default class EditorLayer extends UILayer {
 			case "mousemove": {
 				if(!this.isDrawing)
 					return;
-				this.drawBrick(e.x, e.y, e.buttons);
+
+				if(gc.keys.isPressed("Control"))
+					this.line(this.firstPoint, {x:e.x, y:e.y}, e.buttons);
+				else
+					this.drawBrick(e.x, e.y, e.buttons);
 				break;
 			}
 		}

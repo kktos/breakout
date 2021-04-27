@@ -20,23 +20,22 @@ export default class ChooseFileUI {
 		const items= div.querySelectorAll(".list-item");
 		const buttons= div.querySelectorAll(".btn");
 
+		const closeDialog= (withBtn) => {
+			document.querySelector("BODY").removeChild(div);
+			if(withBtn=="yes")
+				callback(selected.attributes.getNamedItem("key").value);
+		}
+
 		const btnEventsHandler= (evt) => {
 			if(!evt.isTrusted)
 				return;
-
 			if(evt.target.id == "yes" && !selected)
 				return;
-
-			buttons.forEach((btn) => btn.removeEventListener("click", btnEventsHandler));
-			items.forEach((item) => item.removeEventListener("click", itemsEventsHandler));
-
-			document.querySelector("BODY").removeChild(div);
-			if(evt.target.id=="yes")
-				callback(selected.attributes.getNamedItem("key").value);
+			closeDialog(evt.target.id);
 		}
 		buttons.forEach((btn) => btn.addEventListener("click", btnEventsHandler));
 		
-		const itemsEventsHandler= (evt) => {
+		const selectItemHandler= (evt) => {
 			if(!evt.isTrusted)
 				return;
 
@@ -45,7 +44,13 @@ export default class ChooseFileUI {
 			selected= evt.target;
 			selected.className= "list-item selected";
 		}
-		items.forEach((item) => item.addEventListener("click", itemsEventsHandler));
+		const chooseItemHandler= (evt) => {
+			if(!evt.isTrusted)
+				return;
+			closeDialog("yes");
+		}
+		items.forEach((item) => item.addEventListener("click", selectItemHandler));
+		items.forEach((item) => item.addEventListener("dblclick", chooseItemHandler));
 	}
 
 	static choose(theme, callback) {

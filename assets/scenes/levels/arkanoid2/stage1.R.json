@@ -1,0 +1,6 @@
+{
+	"bricks": ["xxxxxxxxxxxxxxxxx", "g------gxg------g", "o------oxo------o", "b------bxb------b", "G------GxG------G", "r------rxr------r", "B------BxB------B", "p------pxp------p", "y------yxy------y", "g------gxg------g", "@@@@@@@@@@@@@@@@@", "ggoobbGGrrBBppyyg", "goobbGGrrBBppyygg", "oobbGGrrBBppyyggo", "obbGGrrBBppyyggoo", "-----------------"],
+	"background": 0,
+	"name": "stage1.R",
+	"type": "level"
+}

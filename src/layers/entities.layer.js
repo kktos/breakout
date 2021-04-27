@@ -17,7 +17,7 @@ export default class EntitiesLayer extends Layer {
 		const ctx= gc.screen.ctx;
 		ctx.fillStyle="#fff";
 		ctx.font= "10px";
-		ctx.fillText((gc.scene?gc.scene.breakableCount + "/":"") + this.entities.length,600-50,600-10);
+		ctx.fillText((gc.scene?gc.scene.breakableCount|0:"-") +"/"+ this.entities.length,600-60,600-10);
 	}
 
 }

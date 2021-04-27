@@ -26,6 +26,7 @@ export default class BrickTrait extends Trait {
 		switch(entity.type) {
 			case "x":
 			case "X":
+			case "@":
 				entity.data--;
 				if(entity.data>0) {
 					entity.audio.play("ping2");

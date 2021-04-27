@@ -1,0 +1,6 @@
+{
+	"bricks": ["xxxxxxxxxxxxxxxxx", "yyyyByyyxbbbrbbbb", "yyyBByyyxbbbrrbbb", "yyBBByyyxbbbrrrbb", "yBBBBBBBxrrrrrrrb", "BBBBBBBBxrrrrrrrr", "yBBBBBBBxrrrrrrrb", "yyBBByyyxbbbrrrbb", "yyyBByyyxbbbrrbbb", "yyyyByyyxbbbrbbbb", "xx@xxxxxxxxxxx@xx", "-----------------", "-----------------", "-----------------", "-----------------", "-----------------"],
+	"background": 0,
+	"name": "stage1.L",
+	"type": "level"
+}
