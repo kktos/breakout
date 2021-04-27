@@ -11,7 +11,7 @@ export default class ChooseFileUI {
 							</div>
 							<div class="grid-column">
 								<div id="no" class="btn btn-white black-shadow hvcenter">CANCEL</div>
-								<div id="yes" class="btn black-shadow hvcenter">CHOOSE</div>
+								<div id="yes" class="btn btn-blue black-shadow hvcenter">CHOOSE</div>
 							</div>
 						</div>`;
 		document.querySelector("BODY").appendChild(div);

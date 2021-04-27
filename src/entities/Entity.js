@@ -1,11 +1,6 @@
 import EventBuffer from "../events/EventBuffer.js";
+import {generateID} from "../utils/id.util.js";
 
-function generateID() {
-	let letters= [];
-	for(let idx= 0; idx <5; idx++)
-		letters.push(65 + Math.random()*26);
-	return String.fromCharCode(...letters);
-}
 export default class Entity {
 
 	constructor(resourceMgr, x, y, sheetFilename= null) {
@@ -18,6 +13,7 @@ export default class Entity {
 		this.vel= {x: 0, y: 0};
 		this.speed= 0;
 		this.mass= 1;
+		this.isFixed= true;
 		this.isSolid= true;
 		this.previousVel= this.vel;
 		this.previousMass= this.mass;
@@ -30,8 +26,10 @@ export default class Entity {
 
 		this.lifetime= 0;
 		this.anim= null;
-		this.traits= new Map();
 		this.events= new EventBuffer();
+		this.traits= new Map();
+		this.collidesTraits= [];
+		this.updateTraits= [];
 
 		this.currSprite= null;
 		if(sheetFilename) {
@@ -66,6 +64,10 @@ export default class Entity {
 
 	addTrait(trait) {
         this.traits.set(trait.constructor, trait);
+		if(trait.collides)	
+			this.collidesTraits.push(trait);
+		if(trait.update)	
+			this.updateTraits.push(trait);
     }
 
 	emit(name, ...args) {
@@ -91,29 +93,38 @@ export default class Entity {
 
     collides(gc, side, target) {
 
-		if(!gc.entities)
-			gc.entities= {};
-		let debug= gc.entities[this.id];
-		if(!debug) {
-			gc.entities[this.id]= {};
-			debug= gc.entities[this.id];
-		}
-		debug.collideID= generateID();
+		// if(!gc.entities)
+		// 	gc.entities= {};
+		// let debug= gc.entities[this.id];
+		// if(!debug) {
+		// 	gc.entities[this.id]= {};
+		// 	debug= gc.entities[this.id];
+		// }
+		// debug.collideID= generateID();
 
-        this.traits.forEach(trait => trait.collides(gc, side, this, target));
+		const traits= this.collidesTraits;
+		for(let idx= 0; idx<traits.length; idx++)
+			traits[idx].collides(gc, side, this, target);
+
+        // this.traits.forEach(trait => trait.collides(gc, side, this, target));
     }
 
 	update(gc) {
-		if(!gc.entities)
-			gc.entities= {};
-		let debug= gc.entities[this.id];
-		if(!debug) {
-			gc.entities[this.id]= {};
-			debug= gc.entities[this.id];
-		}
-		debug.updateID= generateID();
+		// if(!gc.entities)
+		// 	gc.entities= {};
+		// let debug= gc.entities[this.id];
+		// if(!debug) {
+		// 	gc.entities[this.id]= {};
+		// 	debug= gc.entities[this.id];
+		// }
+		// debug.updateID= generateID();
 
-		this.traits.forEach(trait => trait.update(this, gc));
+		const traits= this.updateTraits;
+		for(let idx= 0; idx<traits.length; idx++)
+			traits[idx].update(this, gc);
+
+		// this.traits.forEach(trait => trait.update(this, gc));
+
 		this.lifetime+= gc.dt;
 	}
 

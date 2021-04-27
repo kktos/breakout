@@ -49,7 +49,7 @@ export default class StickyTrait extends Trait {
 	}
 
 	follow(magnet, entity) {
-		entity.pos.x= magnet.left + (magnet.right - magnet.left)/2;
+		entity.pos.x= magnet.left + (magnet.right - magnet.left)/2 - (entity.right-entity.left)/2;
 		entity.pos.y= magnet.pos.y - entity.size.y - 1;
 	}
 

@@ -1,6 +1,11 @@
+import {generateID} from "../utils/id.util.js";
 
 export default class Trait {
 	constructor() {
+		const m= String(this.constructor).match(/class ([a-zA-Z0-9_]+)/);
+		this.class= m[1];
+		this.id= generateID();
+
 		this.listeners= [];
 	}
 
@@ -16,9 +21,6 @@ export default class Trait {
         });
     }
 
-	collides() {
-	}
-
-	update() {
-	}
+	// collides() {}
+	// update() {}
 }

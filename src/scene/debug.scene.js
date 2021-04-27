@@ -7,8 +7,9 @@ export default class DebugScene extends Scene {
 	constructor(gc, name, {background, ui}) {
 		super(gc, name);
 
-		this.addLayer(new BackgroundLayer(gc, background));
-		this.receiver= new DebuggerLayer(gc, ui);
+		const bkgndLayer= new BackgroundLayer(gc, background);
+		this.receiver= new DebuggerLayer(gc, ui, bkgndLayer);
+		this.addLayer(bkgndLayer);
 		this.addLayer(this.receiver);
 
 	}

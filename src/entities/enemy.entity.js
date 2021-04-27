@@ -31,6 +31,8 @@ export default class EnemyEntity extends Entity {
 		this.vel= {x: 0, y: 10};
 		this.speed= 0;
 		this.mass= 0.05;
+		this.isFixed= false;
+
 		this.data= 0;
 		this.points= 100;
 

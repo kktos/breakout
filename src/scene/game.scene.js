@@ -1,6 +1,5 @@
 import Scene from "./Scene.js";
 import LocalDB from "../utils/storage.util.js";
-import EnterNameUI from "../ui/enterName.ui.js";
 
 export default class GameScene extends Scene {
 
@@ -15,23 +14,19 @@ export default class GameScene extends Scene {
 			this.levels= sheet.levels;
 
 		this.currentLevel= -1;
-		this.username= null;
 
-		EnterNameUI.ask((name) => {
-			this.username= name;
-			LocalDB.newPlayer(name);
-		});
+		LocalDB.newPlayer("currentPlayer");
 	}
 
 	render(gc) {
-		if(!this.username)
-			return;
 		this.currentLevel++;
-		if(this.currentLevel >= this.levels.length) {
+		if(!LocalDB.currentPlayer().lives || this.currentLevel >= this.levels.length) {
 			this.killOnExit= true;
 			this.events.emit(Scene.EVENT_COMPLETE, "menu");
 		}
-		else
+		else {
+			LocalDB.updateRound(this.currentLevel);
 			this.events.emit(Scene.EVENT_COMPLETE, this.levels[this.currentLevel]);
+		}
 	}
 }

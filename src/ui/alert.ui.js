@@ -9,7 +9,7 @@ export default class AlertUI {
 									${text}
 									<div class="grid-column">
 										<div id="no" class="btn btn-white black-shadow hvcenter">${no}</div>
-										<div id="yes" class="btn black-shadow hvcenter">${yes}</div>
+										<div id="yes" class="btn btn-blue black-shadow hvcenter">${yes}</div>
 									</div>
 								</div>`;
 		document.querySelector("BODY").appendChild(alertDiv);

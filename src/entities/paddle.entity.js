@@ -4,7 +4,6 @@ import LaserTrait from "../traits/powerups/laser.trait.js";
 import EnlargeTrait from "../traits/powerups/enlarge.trait.js";
 import DisruptionTrait from "../traits/powerups/disruption.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
-import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import MouseXTrait from "../traits/mouseX.trait.js";
 import PaddleTrait from "../traits/paddle.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
@@ -15,6 +14,7 @@ export default class PaddleEntity extends Entity {
 		super(gc.resourceManager, x, y, "paddles");
 
 		this.mass= 2;
+		this.isFixed= false;
 		this.ballCount= 0;
 		
 		this.visible= false;
@@ -23,7 +23,6 @@ export default class PaddleEntity extends Entity {
 		this.poweredBy= null;
 
 		this.addTrait(new MouseXTrait());
-		this.addTrait(new BoundingBoxTrait());
 		this.addTrait(new StickyTrait());
 		this.addTrait(new LaserTrait());
 		this.addTrait(new EnlargeTrait());
@@ -38,10 +37,12 @@ export default class PaddleEntity extends Entity {
 		this.ballCount= 1;
 		this.visible= true;
 		const animTrait= this.traits.get(AnimationTrait);
+		this.pos.y-= 8;
 		animTrait
 			.setAnim(this, "beamup")
 			.start()
 			.then(() => {
+				this.pos.y+= 8;
 				animTrait.setAnim(this, "normal0");
 				// force narrow bounding box to avoid collision tunneling with the tiny ball
 				this.size.y= 9;
@@ -49,7 +50,11 @@ export default class PaddleEntity extends Entity {
 		this.traits.get(PaddleTrait).revokePower(this);
 	}
 
-	render({screen:{ctx}}) {
+	render({keys, screen:{ctx}}) {
 		this.visible && this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		if(keys.isPressed("Control")) {
+			ctx.strokeStyle = 'red';
+			ctx.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+		}
 	}	
 }

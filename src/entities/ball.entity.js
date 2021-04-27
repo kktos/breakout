@@ -13,23 +13,27 @@ export default class BallEntity extends Entity {
 		this.vel= {x: 0, y: -360};
 		this.mass= 10;
 		this.radius= ENV.BALL_RADIUS;
-		
+		this.center= this.size.x/2;
+		this.isFixed= false;
+
 		this.addTrait(new VelocityTrait());
 		this.addTrait(new BounceTrait());
 		this.addTrait(new BoundingBoxTrait());
 		this.addTrait(new KillableTrait());
 	}
 
-	render({screen:{ctx}}) {
+	render({keys, screen:{ctx}}) {
+		const centerX= this.pos.x + this.center;
+		const centerY= this.pos.y + this.center;
 		ctx.fillStyle= "white";
 		ctx.beginPath();
-		const centerX= this.pos.x + this.radius;
-		const centerY= this.pos.y + this.radius;
 		ctx.arc(centerX, centerY, this.radius, 0, Math.PI*2);
 		ctx.fill();
 
-		// ctx.fillStyle = 'red';
-		// ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.x);
+		if(keys.isPressed("Control")) {
+			ctx.strokeStyle = 'red';
+			ctx.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+		}
 
 		// ctx.font = '14px sans-serif';
 		// ctx.fillText(`POS= ${this.pos.x|0},${this.pos.y|0} VEL= ${this.vel.x},${this.vel.y}`, 100, 600-10);

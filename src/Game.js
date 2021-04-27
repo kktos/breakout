@@ -20,6 +20,10 @@ class KeyMap {
 	set(key, pressed) {
 		this.map.set(key, pressed);
 	}
+
+	isPressed(key) {
+		return this.get(key) == true;
+	}
 }
 
 export default class Game {
@@ -108,6 +112,7 @@ export default class Game {
 			case "keyup":
 			case "keydown":
 				evt.key= e.key;
+				// console.log(evt.type, e.key);
 				this.gc.keys.set(e.key, evt.type == "keydown");
 				break;
 	

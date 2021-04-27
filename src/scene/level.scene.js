@@ -66,7 +66,7 @@ export default class LevelScene extends Scene {
 						.play("game_over")
 						.then(() => {
 							LocalDB.updateHighscores();
-							this.events.emit(Scene.EVENT_COMPLETE, "menu");
+							this.events.emit(Scene.EVENT_COMPLETE, -1);
 						});
 				} else
 					this.reset(gc);
@@ -144,37 +144,40 @@ export default class LevelScene extends Scene {
 			if(!(entity.size.x + entity.size.y) || !(target.size.x + target.size.y))
 				return;
 
-			const side= collideRect(entity, target);
+			let side= collideRect(entity, target);
 			if(side != COLLISION.NONE) {
 				target.collides(gc, side, entity);
+				if(!entity.isFixed)
+					return;
+				switch(side) {
+					case COLLISION.LEFT:
+						side= COLLISION.RIGHT;
+						break;
+		
+					case COLLISION.RIGHT:
+						side= COLLISION.LEFT;
+						break;
+		
+					case COLLISION.TOP:
+						side= COLLISION.BOTTOM;
+						break;
+		
+					case COLLISION.BOTTOM:
+						side= COLLISION.TOP;
+						break;
+				}
+				entity.collides(gc, side, target);
 			}
 		});
 	
 	}
 
 	update(gc) {
-
-		// function generateID() {
-		// 	let letters= [];
-		// 	for(let idx= 0; idx <5; idx++)
-		// 		letters.push(65 + Math.random()*26);
-		// 	return String.fromCharCode(...letters);
-		// }
-
-		// if(!gc.entities)
-		// 	gc.entities= {};
-		// gc.entities.MAINLOOP= generateID();
-
-		this.entities.forEach(entity => entity.update(gc));
-		this.entities.forEach(entity => this.collides(gc, entity));
-        this.entities.forEach(entity => entity.finalize());
-
-		// if(this.tasks.tasks.length) {
-		// 	console.log(
-		// 		`${gc.entities.MAINLOOP} TASK:${this.tasks.tasks.length}`,
-		// 		this.tasks.tasks.map(({name}) => name.toString()).join(",")
-		// 	);
-		// }
+		const entities= this.entities;
+		const movingOnes= entities.filter(entity => !entity.isFixed);
+		entities.forEach(entity => entity.update(gc));
+		movingOnes.forEach(entity => this.collides(gc, entity));
+        entities.forEach(entity => entity.finalize());
 		this.tasks.processTasks();
 	}
 

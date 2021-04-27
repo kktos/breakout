@@ -1,9 +1,10 @@
 import UILayer from "./UILayer.js";
 import {Align} from "../Font.js";
+import BackgroundLayer from "./background.layer.js";
 
 export default class DebuggerLayer extends UILayer {
 
-	constructor(gc, ui) {
+	constructor(gc, ui, bkgndLayer) {
 		super(gc, ui);
 
 		this.rezMgr= gc.resourceManager;
@@ -12,7 +13,8 @@ export default class DebuggerLayer extends UILayer {
 		this.height= gc.screen.canvas.height;
 		
 		this.font= this.rezMgr.get("font","font.png");
-		
+		this.bkgndLayer= bkgndLayer;
+
 		this.spritesheetList= this.rezMgr.byKind("sprite");
 
 		this.setSpritesheet(0);
@@ -24,26 +26,32 @@ export default class DebuggerLayer extends UILayer {
 		list= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
-				<div id="btnBack" class="btn white-shadow vcenter">BACK</div>
-				<select id="ss">${list}</select>
+				<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+				<div class="vcenter hright">
+					BACKGROUND
+					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>
+				</div>
+				<div class="vcenter hright">
+					SPRITESHEET
+					<select id="ss">${list}</select>
+				</div>
 			</div>
 			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
-				<div class="vcenter hright">BACKGROUND</div>
-				<div id="btnPrevBkgnd" class="btn btn-small white-shadow vcenter">PREV</div>
-				<div id="btnNextBkgnd" class="btn btn-small white-shadow vcenter">NEXT</div>
 			</div>
 		`;
 		this.ui.querySelectorAll(".btn").forEach((el) => el.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(el.id)));
-		this.ui.querySelectorAll("SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+		this.ui.querySelectorAll("INPUT,SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
 	}
 
 	onChangeUI(el) {
 		switch(el.id) {
+			case "bkgndIndex":
+				this.setBackground(el.value);
+				break;
 			case "ss":
 				this.setSpritesheet(el.value);
 				break;
 		}
-		// console.log(el.id, el.value);
 	}
 
 	onClickUIBtn(id) {
@@ -52,6 +60,11 @@ export default class DebuggerLayer extends UILayer {
 				this.goBack();
 				break;
 		}
+	}
+
+	setBackground(bkgndIndex) {
+		this.bkgndIndex= bkgndIndex % BackgroundLayer.SPRITES.length;
+		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
 	}
 
 	setSpritesheet(idx) {
@@ -157,6 +170,9 @@ export default class DebuggerLayer extends UILayer {
 		ctx.stroke();
 
 		const anim= this.animations.get(this.names[this.currAnim]);
+		const step= this.stepAnim ? this.step : tick/100;
+		const frameSprite= anim.frame(step);
+		const frameSpriteSize= this.spritesheet.spriteSize(frameSprite);
 
 		this.font.size= 2;
 
@@ -165,10 +181,10 @@ export default class DebuggerLayer extends UILayer {
 		print("FRAMES", anim.frames.length);
 		print("LOOP", anim.loopInitialValue);
 		print("SPEED", anim.len);
+		print("WIDTH", frameSpriteSize.x);
+		print("HEIGHT", frameSpriteSize.y);
 
-		const step= this.stepAnim ? this.step : tick/100;
-		const frameSprite= anim.frame(step);
-		const frameSpriteSize= this.spritesheet.spriteSize(frameSprite);
+
 		this.spritesheet.draw(frameSprite, ctx, this.width-frameSpriteSize.x-50, 50);
 
 		line= this.height/2;

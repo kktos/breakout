@@ -41,7 +41,7 @@ export default class ResourceManager {
 			}
 		});
 		
-		return Promise.all(jobs).then(()=>console.log(this));
+		return Promise.all(jobs);
 	}
 
 	add(kind, name, rez) {

@@ -29,6 +29,7 @@ export default class LocalDB {
 			score: localStorage.getItem("score")|0,
 			lives: localStorage.getItem("lives")|0,
 			name: localStorage.getItem("name"),
+			round: localStorage.getItem("round")|0,
 			highscore: localStorage.getItem("highscore")|0
 		}
 	}
@@ -37,14 +38,19 @@ export default class LocalDB {
 		localStorage.setItem("score", 0);
 		localStorage.setItem("lives", 3);
 		localStorage.setItem("name", name);
+		localStorage.setItem("round", -1);
 	}
 
 	static updateLives(lives) {
-		localStorage.setItem("lives", lives);
+		localStorage.setItem("lives", lives|0);
 	}
 
 	static updateScore(score) {
-		localStorage.setItem("score", score);
+		localStorage.setItem("score", score|0);
+	}
+
+	static updateRound(round) {
+		localStorage.setItem("round", round|0);
 	}
 
 	static highscores() {

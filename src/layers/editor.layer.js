@@ -62,22 +62,20 @@ export default class EditorLayer extends UILayer {
 
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
-				<div id="btnBack" class="btn white-shadow vcenter">BACK</div>
-				<div class="sep"></div>
-				<div id="btnNew" class="btn white-shadow vcenter">NEW</div>
-				<div id="btnLoad" class="btn white-shadow vcenter">LOAD</div>
-				<div class="sep"></div>
+				<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+				<img id="btnNew" class="btn light-shadow" src="/assets/images/trash.png"/>
+				<img id="btnLoad" class="btn light-shadow" src="/assets/images/load.png"/>
 				<input type="text" value="${this.levelName}" placeholder="level name..."/>
-				<div id="btnSave" class="btn white-shadow vcenter hright">SAVE</div>
+				<img id="btnSave" class="btn light-shadow" src="/assets/images/save.png"/>
 			</div>
-			<div class="grid-column vcenter" style="grid-template-rows:30px">
-				<div class="vcenter hright">
+			<div class="grid-column vcenter" style="grid-template-rows: 30px; justify-content: space-evenly">
+				<div class="grid-row">
 					BACKGROUND
 					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>
 				</div>
-				<div class="vcenter hright">TOTAL<input id="brickCount" readonly class="w50" type="text" value="0"/></div>
-				<div class="vcenter">BREAKABLE<input id="breakableCount" readonly class="w50" type="text" value="0"/></div>
-				<div class="vcenter">POINTS<input id="points" readonly class="w50" type="text" value="0"/></div>
+				<div class="grid-row">TOTAL<input id="brickCount" readonly class="w50" type="text" value="0"/></div>
+				<div class="grid-row">BREAKABLE<input id="breakableCount" readonly class="w50" type="text" value="0"/></div>
+				<div class="grid-row">POINTS<input id="points" readonly class="w150" type="text" value="0"/></div>
 			</div>
 		`;
 		this.ui.querySelectorAll(".btn").forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));

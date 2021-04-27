@@ -8,7 +8,10 @@ import StickyTrait from "./powerups/sticky.trait.js";
 import LaserTrait from "./powerups/laser.trait.js";
 import EnlargeTrait from "./powerups/enlarge.trait.js";
 import DisruptionTrait from "./powerups/disruption.trait.js";
-
+/*
+	Handle collision with powerups to grant powers
+	Handle collision with a ball (sound & special bounce)
+*/
 export default class PaddleTrait extends Trait {
 
 	constructor() {
@@ -78,7 +81,8 @@ export default class PaddleTrait extends Trait {
 
 		if(target instanceof BallEntity) {
 			paddle.audio.play("pong");
-			if(COLLISION.BOTTOM) {
+			// console.log({paddle,side,target});
+			if(side == COLLISION.TOP) {
 				const center= paddle.left + paddle.size.x/2;
 				target.vel.x= (-10*(center-target.left))|0;
 			}

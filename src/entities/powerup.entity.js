@@ -57,6 +57,7 @@ export default class PowerupEntity extends Entity {
 		this.mass= 2;
 		this.ghost= true;
 		this.isSolid= false;
+		this.isFixed= false;
 
 		this.animTrait= new AnimationTrait();
 		this.addTrait(this.animTrait);
