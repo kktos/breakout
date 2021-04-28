@@ -1,0 +1,161 @@
+{
+	"type": "layout",
+	"name": "input name",
+	"background": "black",
+	"showCursor": true,
+
+	"layout": [
+		{
+			"type": "text",
+			"pos": [300, 0],
+			"size": 3,
+			"align": 2,
+			"color": "red",
+			"text": "HIGH SCORE"
+		},
+		{
+			"type": "text",
+			"pos": [300, 26],
+			"size": 3,
+			"align": 2,
+			"text": "%highscore%"
+		},
+		{
+			"type": "text",
+			"pos": [75, 0],
+			"size": 3,
+			"align": 2,
+			"color": "red",
+			"text": "1UP"
+		},
+		{
+			"type": "text",
+			"pos": [80, 26],
+			"size": 3,
+			"align": 2,
+			"text": "%score%"
+		},
+
+		{
+			"type": "text",
+			"pos": [300, 150],
+			"size": 3,
+			"align": 2,
+			"color": "red",
+			"text": "YOUR SCORE IS BEST"
+		},
+		{
+			"type": "text",
+			"pos": [300, 200],
+			"size": 3,
+			"align": 2,
+			"color": "yellow",
+			"text": "PLEASE INPUT YOUR NAME."
+		},
+		{
+			"type": "text",
+			"pos": [140, 468],
+			"size": 3,
+			"align": 1,
+			"text": "YOUR NAME"
+		},
+		{
+			"type": "text",
+			"pos": [400, 468],
+			"size": 3,
+			"align": 1,
+			"text": "%playerName%"
+		},
+
+		{
+			"type": "menu",
+			"items": [
+
+				{
+					"type":"repeat",
+					"count": 8,
+					"step": {
+						"pos": [52,0]
+					},
+					"items": [
+						{
+							"type": "text",
+							"pos": [100, 270],
+							"size": 3,
+							"align": 1,
+							"color": "#F784F7",
+							"texts": ["A", "B", "C", "D", "E", "F", "G", "H"],
+							"action": "concat:playerName:3"
+						}
+					]
+				},
+
+				{
+					"type":"repeat",
+					"count": 8,
+					"step": {
+						"pos": [52,0]
+					},
+					"items": [
+						{
+							"type": "text",
+							"pos": [100, 320],
+							"size": 3,
+							"align": 1,
+							"color": "#F784F7",
+							"texts": ["I", "J", "K", "L", "M", "N", "O", "P"],
+							"action": "concat:playerName:3"
+						}
+					]
+				},
+				{
+					"type":"repeat",
+					"count": 8,
+					"step": {
+						"pos": [52,0]
+					},
+					"items": [
+						{
+							"type": "text",
+							"pos": [100, 370],
+							"size": 3,
+							"align": 1,
+							"color": "#F784F7",
+							"texts": ["Q", "R", "S", "T", "U", "V", "W", "X"],
+							"action": "concat:playerName:3"
+						}
+					]
+				},
+				{
+					"type":"repeat",
+					"count": 8,
+					"step": {
+						"pos": [52,0]
+					},
+					"items": [
+						{
+							"type": "text",
+							"pos": [100, 420],
+							"size": 3,
+							"align": 1,
+							"color": "#F784F7",
+							"texts": ["Y", "Z", " ", ".", "!", "?", "[", "]"],
+							"action": "concat:playerName:3"
+						}
+					]
+				},
+
+				{
+					"text": "OK",
+					"pos": [300, 550],
+					"size": 3,
+					"align": 2,
+					"action": "updateHighscores:playerName",
+					"scene": "highscores"
+				}
+				
+
+			]
+		}
+	]
+}

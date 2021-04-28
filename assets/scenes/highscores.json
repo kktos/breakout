@@ -51,6 +51,7 @@
 		{
 			"type":"repeat",
 			"count": 10,
+			"var": "idx",
 			"step": {
 				"pos": [0,40]
 			},
@@ -67,21 +68,21 @@
 					"pos": [250, 190],
 					"size": 3,
 					"align": 3,
-					"var": "highscores:$idx:score"
+					"text": "%highscores:$idx:score%"
 				},
 				{
 					"type": "text",
 					"pos": [450, 190],
 					"size": 3,
 					"align": 3,
-					"var": "highscores:$idx:level"
+					"text": "%highscores:$idx:round%"
 				},		
 				{
 					"type": "text",
 					"pos": [580, 190],
 					"size": 3,
 					"align": 3,
-					"var": "highscores:$idx:name"
+					"text": "%highscores:$idx:name%"
 				}
 		
 			]

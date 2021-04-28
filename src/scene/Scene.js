@@ -25,7 +25,8 @@ export default class Scene {
     update(gc) {}
 
 	render(gc) {
-		this.layers.forEach(layer => layer.render(gc, this));
+		for(let idx=0; idx<this.layers.length; idx++)
+			this.layers[idx].render(gc, this)
 	}
 
 	pause() {

@@ -36,7 +36,7 @@ SELECT {
 #ui {
 	display: grid;
 	grid-auto-flow: row;
-	color: white;
+	color: #ffff07;
 }
 .sep {
 	background-color: white;

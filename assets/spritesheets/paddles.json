@@ -128,6 +128,25 @@
 			}
 		},
 
+		"selectionL": {
+			"scale": 3,
+			"tiles": {
+				"pos": [144, 16],
+				"size": [8, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+		"selectionR": {
+			"scale": 3,
+			"tiles": {
+				"pos": [160, 16],
+				"size": [8, 8],
+				"increment": [0, 1],
+				"count": 4
+			}
+		},
+
 		"life": {
 			"scale":2,
 			"rect": [32, 153, 32, 14]
@@ -191,6 +210,14 @@
 		"gun": {
 			"len": 0.1,
 			"frames": { "name": "gun", "range": [0, 3] }
+		},
+		"selectionL": {
+			"len": 0.05,
+			"frames": { "name": "selectionL", "range": [0, 3] }
+		},
+		"selectionR": {
+			"len": 0.05,
+			"frames": { "name": "selectionR", "range": [0, 3] }
 		}
 	}
 }

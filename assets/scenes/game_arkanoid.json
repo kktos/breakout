@@ -1,13 +1,6 @@
 {
 	"type": "game",
 	"name": "Arkanoid",
-	"levels0": [
-		"./levels/arkanoid/stage1"
-	],
-	"levels": [
-		"./levels/arkanoid/stage1",
-		"./levels/arkanoid/stage2",
-		"./levels/arkanoid/stage3",
-		"./levels/arkanoid/stage4"
-	]
+	"theme": "arkanoid",
+	"rounds": 1
 }

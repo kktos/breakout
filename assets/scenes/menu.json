@@ -1,7 +1,7 @@
 {
 	"type": "layout",
 	"name": "menu",
-	"background": 3,
+	"background": "black",
 	"showCursor": true,
 
 	"layout": [
@@ -13,32 +13,25 @@
 					"pos": [300, 300],
 					"size": 3,
 					"align": 2,
-					"scene": "game_arkanoid"
-				},
-				{
-					"text": "play user levels",
-					"pos": [300, 360],
-					"size": 3,
-					"align": 2,
-					"scene": "game_user"
+					"scene": "theme"
 				},
 				{
 					"text": "highscores",
-					"pos": [300, 420],
+					"pos": [300, 360],
 					"size": 3,
 					"align": 2,
 					"scene": "highscores"
 				},
 				{
 					"text": "level editor",
-					"pos": [300, 480],
+					"pos": [300, 420],
 					"size": 3,
 					"align": 2,
 					"scene": "editor"
 				},
 				{
 					"text": "debug",
-					"pos": [300, 540],
+					"pos": [300, 480],
 					"size": 3,
 					"align": 2,
 					"scene": "debug"

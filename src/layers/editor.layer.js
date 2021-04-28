@@ -7,6 +7,7 @@ import AlertUI from "../ui/alert.ui.js";
 import ChooseFileUI from "../ui/chooseFile.ui.js";
 import BackgroundLayer from "./background.layer.js";
 import LocalDB from "../utils/storage.util.js";
+import EnterTextUI from "../ui/enterText.ui.js";
 
 export default class EditorLayer extends UILayer {
 
@@ -65,9 +66,20 @@ export default class EditorLayer extends UILayer {
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
 				<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+				<div class="grid-row">
+					THEME
+					<select id="theme">
+						<option value="arkanoid">Arkanoid</option>
+						<option value="arkanoid2">Arkanoid 2</option>
+						<option value="user" selected>User</option>
+					</select>
+				</div>
+				<div class="grid-row">
+					LEVEL
+					<input type="text" placeholder="unnamed" readonly class="w150"/>
+				</div>
 				<img id="btnNew" class="btn light-shadow" src="/assets/images/trash.png"/>
 				<img id="btnLoad" class="btn light-shadow" src="/assets/images/load.png"/>
-				<input type="text" value="${this.levelName}" placeholder="level name..."/>
 				<img id="btnSave" class="btn light-shadow" src="/assets/images/save.png"/>
 			</div>
 			<div class="grid-column vcenter" style="grid-template-rows: 30px; justify-content: space-evenly">
@@ -81,11 +93,14 @@ export default class EditorLayer extends UILayer {
 			</div>
 		`;
 		this.ui.querySelectorAll(".btn").forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));
-		this.ui.querySelectorAll("INPUT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+		this.ui.querySelectorAll("INPUT,SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
 	}
 
 	onChangeUI(el) {
 		switch(el.id) {
+			case "theme":
+				this.themeName= el.value;
+				break;
 			case "bkgndIndex":
 				this.setBackground(el.value);
 				break;
@@ -97,7 +112,7 @@ export default class EditorLayer extends UILayer {
 	}
 
 	load(name) {
-		const sheet= LocalDB.loadLevel(name);
+		const sheet= LocalDB.loadResource(name);
 		this.entities.length= 0;
 		this.entities.push(...createBricks(this.gc, sheet.bricks, true));
 		this.bkgndIndex= sheet.background|0;
@@ -109,22 +124,24 @@ export default class EditorLayer extends UILayer {
 	}
 
 	save() {
-		let name= this.ui.querySelectorAll("INPUT")[0].value;
-		name= name.replace(/^\s+/, '').replace(/\s+$/, '');
-		if(name=="")
-			return;
+		EnterTextUI.run("Save level as :", (name) => {
+			name= name.replace(/^\s+/, '').replace(/\s+$/, '');
+			if(name=="")
+				return;
+				
+			this.levelName= name;
+			const sheet= {
+				bricks: stringifyBricks(this.entities),
+				background: this.bkgndIndex,
+				name: this.levelName,
+				type: "level"
+			};
+			LocalDB.saveLevel(this.themeName, this.levelName, sheet);
+			this.isModified= false;	
 
-		this.levelName= name;
-		const sheet= {
-			bricks: stringifyBricks(this.entities),
-			background: this.bkgndIndex,
-			name: this.levelName,
-			type: "level"
-		};
+			this.ui.querySelectorAll("INPUT")[0].value= name;
+		});
 
-		LocalDB.saveLevel(this.themeName, this.levelName, sheet);
-
-		this.isModified= false;
 	}
 
 	setBackground(bkgndIndex) {

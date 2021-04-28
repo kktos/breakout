@@ -10,60 +10,66 @@ export default class LocalDB {
 
 	static levels(theme) {
 		let keys= LocalDB.keys();
-		const re= new RegExp("^level:"+theme);
+		const re= new RegExp("^\./levels/"+theme+"/");
 		keys= keys.filter(key => key.match(re)).sort();
-		return keys.map(key => ({key, name: key.replace(/^level:/,'')}));
+		return keys.map(key => ({key, name: key.replace(/^\.\/levels\//,'')}));
 	}
 
 	static saveLevel(theme, name, data) {
-		localStorage.setItem(`level:${theme}/${name}`, JSON.stringify(data));
+		localStorage.setItem(`./levels/${theme}/${name}`, JSON.stringify(data));
 	}
 
-	static loadLevel(theme, name) {
-		const key= name ? `level:${theme}/${name}` : theme;
-		return JSON.parse(localStorage.getItem(key));
+	static loadResource(name) {
+		return JSON.parse(localStorage.getItem(name));
 	}
 
 	static currentPlayer() {
 		return {
-			score: localStorage.getItem("score")|0,
-			lives: localStorage.getItem("lives")|0,
-			name: localStorage.getItem("name"),
-			round: localStorage.getItem("round")|0,
-			highscore: localStorage.getItem("highscore")|0
+			score: localStorage.getItem("player:score")|0,
+			lives: localStorage.getItem("player:lives")|0,
+			name: localStorage.getItem("player:name"),
+			round: localStorage.getItem("player:round")|0,
+			highscore: localStorage.getItem("player:highscore")|0
 		}
 	}
 
 	static newPlayer(name) {
-		localStorage.setItem("score", 0);
-		localStorage.setItem("lives", 3);
-		localStorage.setItem("name", name);
-		localStorage.setItem("round", -1);
+		localStorage.setItem("player:score", 0);
+		localStorage.setItem("player:lives", 3);
+		localStorage.setItem("player:name", name);
+		localStorage.setItem("player:round", -1);
 	}
 
+	static updateName(name) {
+		localStorage.setItem("player:name", name);
+	}
 	static updateLives(lives) {
-		localStorage.setItem("lives", lives|0);
+		localStorage.setItem("player:lives", lives|0);
 	}
-
 	static updateScore(score) {
-		localStorage.setItem("score", score|0);
+		localStorage.setItem("player:score", score|0);
 	}
-
 	static updateRound(round) {
-		localStorage.setItem("round", round|0);
+		localStorage.setItem("player:round", round|0);
 	}
 
 	static highscores() {
-		return JSON.parse(localStorage.getItem("highscores")) || [];;
+		return JSON.parse(localStorage.getItem("player:highscores")) || [];;
+	}
+
+	static isPlayerScoreGoodEnough() {
+		const lastGame= LocalDB.currentPlayer();
+		const highscores= LocalDB.highscores();
+		return !highscores.length || highscores.some(i => i.score<lastGame.score);
 	}
 
 	static updateHighscores() {
 		const lastGame= LocalDB.currentPlayer();
 		let highscores= LocalDB.highscores();
-		highscores.push({name:lastGame.name, score:lastGame.score});
+		highscores.push({name:lastGame.name, round:lastGame.round, score:lastGame.score});
 		highscores.sort((a,b) => a.score < b.score ? 1:-1);
 		highscores= highscores.slice(0,10);
-		localStorage.setItem("highscore", highscores[highscores.length-1].score);
-		localStorage.setItem("highscores", JSON.stringify(highscores));
+		localStorage.setItem("player:highscore", highscores[highscores.length-1].score);
+		localStorage.setItem("player:highscores", JSON.stringify(highscores));
 	}
 }

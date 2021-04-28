@@ -65,7 +65,6 @@ export default class LevelScene extends Scene {
 					this.audio
 						.play("game_over")
 						.then(() => {
-							LocalDB.updateHighscores();
 							this.events.emit(Scene.EVENT_COMPLETE, -1);
 						});
 				} else
@@ -107,10 +106,10 @@ export default class LevelScene extends Scene {
 
 		this.state= LevelScene.STATE_RUNNING;
 
-		const bricks= this.entities.filter(a=>a.class=="BrickEntity");
-		console.log("BRICKS", bricks);
-		console.log("BREAKABLES", bricks.filter(b=>b.breakable));
-		console.log("OTHERS",this.entities.filter(a=>a.class!="BrickEntity"));
+		// const bricks= this.entities.filter(a=>a.class=="BrickEntity");
+		// console.log("BRICKS", bricks);
+		// console.log("BREAKABLES", bricks.filter(b=>b.breakable));
+		// console.log("OTHERS",this.entities.filter(a=>a.class!="BrickEntity"));
 
 	}
 

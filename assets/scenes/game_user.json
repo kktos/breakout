@@ -1,5 +1,6 @@
 {
 	"type": "game",
 	"name": "users",
-	"levels": "user"
+	"theme": "user",
+	"rounds": 1
 }

@@ -10,28 +10,30 @@ import LocalDB from "../utils/storage.util.js";
 export default class SceneFactory {
 
 	static async load(gc, name) {
-		const sheet= typeof name == "string" ?
-							await loadJson(`${ENV.SCENES_PATH}${name}.json`)
-							:
-							LocalDB.loadLevel(name.key);
+		let sheet= null;
+
+		console.log("SceneFactory.load", name);
+
+		sheet= LocalDB.loadResource(name);
+		if(!sheet)
+			sheet= await loadJson(`${ENV.SCENES_PATH}${name}.json`);
 
 		let scene;
-
 		switch(sheet.type) {
 			case "layout":
-				scene= new LayoutScene(gc, name, sheet);
+				scene= new LayoutScene(gc, sheet.name, sheet);
 				break;
 			case "debug":
-				scene= new DebugScene(gc, name, sheet);
+				scene= new DebugScene(gc, sheet.name, sheet);
 				break;
 			case "editor":
-				scene= new EditorScene(gc, name, sheet);
+				scene= new EditorScene(gc, sheet.name, sheet);
 				break;
 			case "level":
 				scene= new LevelScene(gc, sheet.name, sheet);
 				break;
 			case "game":
-				scene= new GameScene(gc, name, sheet);
+				scene= new GameScene(gc, sheet.name, sheet);
 				break;
 			default:
 				throw new Error("Uknown Scene type: "+sheet.type);

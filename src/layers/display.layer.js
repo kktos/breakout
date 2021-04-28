@@ -3,6 +3,7 @@ import Scene from "../scene/Scene.js";
 import { ptInRect } from "../math.js";
 import LocalDB from "../utils/storage.util.js";
 import ENV from "../env.js";
+import {clone} from "../utils/object.util.js";
 
 export default class DisplayLayer extends UILayer {
 
@@ -10,6 +11,7 @@ export default class DisplayLayer extends UILayer {
 		super(gc, ui);
 
 		const rezMgr= gc.resourceManager;
+		this.paddleSprites= rezMgr.get("sprite", "paddles");
 
 		this.width= gc.screen.canvas.width;
 		this.font= rezMgr.get("font", ENV.MAIN_FONT);
@@ -17,8 +19,13 @@ export default class DisplayLayer extends UILayer {
 		this.layout= layout;
 		this.time= 0;
 		this.blinkFlag= false;
+		this.isMouseEnabled= false;
 
 		this.itemSelected= 0;
+		this.itemCount= 0;
+		this.menuItems= null;
+
+		this.initVars();
 
 		const menus= layout.filter(op => op.type=="menu");
 		if(menus.length>1)
@@ -26,6 +33,14 @@ export default class DisplayLayer extends UILayer {
 		
 		this.menu= menus.length>0 ? menus[0] : null;
 
+	}
+
+	initVars() {
+		this.vars= new Map();
+		this.vars.set("highscores", LocalDB.highscores());
+		const player= LocalDB.currentPlayer();
+		this.vars.set("score", player.score);
+		this.vars.set("highscore", player.highscore);
 	}
 
 	findMenuByPoint(x,y) {
@@ -43,15 +58,15 @@ export default class DisplayLayer extends UILayer {
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "click":
-				if(this.menu) {
+				if(this.isMouseEnabled && this.menu) {
 					const menuIdx= this.findMenuByPoint(e.x, e.y);
 					if(menuIdx>=0)
-						this.goto(gc, menuIdx);
+						this.exec(gc, menuIdx);
 				}
 				break;
 
 			case "mousemove":
-				if(this.menu) {
+				if(this.isMouseEnabled && this.menu) {
 					const menuIdx= this.findMenuByPoint(e.x, e.y);
 					if(menuIdx>=0)
 						this.itemSelected= menuIdx;
@@ -62,30 +77,89 @@ export default class DisplayLayer extends UILayer {
 			case "keydown":
 				switch(e.key) {
 					case "ArrowDown":
+					case "ArrowRight":
 						if(this.menu)
-							this.itemSelected= (this.itemSelected+1) % this.menu.items.length;
+							this.itemSelected= (this.itemSelected+1) % this.itemCount;
 						break;
 					case "ArrowUp":
+					case "ArrowLeft":
 						if(this.menu) {
 							this.itemSelected--;
 							if(this.itemSelected<0)
-								this.itemSelected= this.menu.items.length-1;
+								this.itemSelected= this.itemCount-1;
 						}
 						break;
-
 					case "Enter":
-						this.goto(gc);
+						this.exec(gc);
 						break;
 				}
 				break;
 		}
 	}
 
-	goto(gc, idx= null) {
+	exec(gc, idx= null) {
 		if(!this.menu)
 			return;
 		const selected= idx==null ? this.itemSelected : idx;
-		gc.scene.events.emit(Scene.EVENT_COMPLETE, String(this.menu.items[selected].scene));
+		const menuItem= this.menuItems[selected];
+
+		if(menuItem.action) {
+			const [action, ...parms]= menuItem.action.split(":");
+			switch(action) {
+				case "updateHighscores": {
+					let name= this.vars.has(parms[0]) ? this.vars.get(parms[0]) : null;
+					if(name) {
+						LocalDB.updateName(name);
+						LocalDB.updateHighscores();
+					}
+					break;
+				}
+				case "concat": {
+					let value= this.vars.has(parms[0]) ? this.vars.get(parms[0]) : "";
+					if(parms[1]) {
+						if(value.length>=parms[1])
+							value= "";
+						value += menuItem.text;
+						value= value.substr(0, parms[1]);
+					}
+					else
+						value+= menuItem.text
+					this.vars.set(parms[0], value);
+					break;
+				}
+				default:
+					console.error("unknown action !", menuItem);
+			}
+		}
+
+		if(menuItem.scene) {
+			gc.scene.events.emit(Scene.EVENT_COMPLETE, String(menuItem.scene));
+			return;
+		}
+
+	}
+
+	eval(text) {
+		return text.replace(/%(.+?)%/, (m, varname) => {
+			const [name, ...parms]= varname.split(":");
+			if(!this.vars.has(name))
+				return "";
+
+			let value= this.vars.get(name);
+			if(value == undefined)
+				return "";
+
+			if(parms.length) {
+				if(parms[0].match(/^\$/))
+					parms[0]= this.vars.get(parms[0].substr(1));
+				value= value[parms[0]];
+				if(value == undefined)
+					return "";
+				if(parms.length>1)
+					value= value[parms[1]];
+			}
+			return value != undefined ? value : "";
+		});
 	}
 
 	renderText({screen:{ctx}}, op) {
@@ -95,7 +169,8 @@ export default class DisplayLayer extends UILayer {
 			this.font.align= op.align;
 		if(op.size)
 			this.font.size= op.size;
-		this.font.print(ctx, op.text, op.pos[0], op.pos[1], op.color);
+		const text= this.eval(op.text);
+		return this.font.print(ctx, text==""? " ": text, op.pos[0], op.pos[1], op.color);
 	}
 
 	renderSprite({resourceManager, tick, screen:{ctx}}, op) {
@@ -119,42 +194,59 @@ export default class DisplayLayer extends UILayer {
 		}
 	}
 
-	renderMenu(gc, op) {
-		op.items.forEach((item, idx)=> {
-			this.renderText(gc, {color: idx==this.itemSelected?"red":"white", ...item});
+	renderMenuText(gc, item, idx) {
+		const textRect= this.renderText(gc, {
+			color: idx==this.itemSelected?ENV.COLORS.DEFAULT_TEXT:ENV.COLORS.SELECTED_TEXT,
+			...item
 		});
-	}
-
-	evalVar(variable, idx) {
-		const parts= variable.replace(/\$idx/, idx).split(":");
-		switch(parts[0]) {
-			case "highscores": {
-				const highscores= LocalDB.highscores();
-				const row= highscores[parts[1]];
-				return row ? row[parts[2]] : null;
-			}
+		if(idx==this.itemSelected) {
+			const ctx= gc.screen.ctx;
+			ctx.strokeStyle= ENV.COLORS.SELECT_RECT;
+			ctx.beginPath();
+			ctx.moveTo(textRect[0]-2, textRect[1]-5);
+			ctx.lineTo(textRect[2]+4, textRect[1]-5);
+			ctx.moveTo(textRect[0]-2, textRect[3]+2);
+			ctx.lineTo(textRect[2]+4, textRect[3]+2);
+			ctx.stroke();
+			this.paddleSprites.drawAnim("selectionL", ctx, textRect[0]-25, textRect[1]-2, gc.tick/100);
+			this.paddleSprites.drawAnim("selectionR", ctx, textRect[2]+4, textRect[1]-2, gc.tick/100);
 		}
-		return null;
 	}
 
-	renderRepeat(gc, op) {
-		const items= op.items.map(it => {
-			const item= {...it};
-			item.pos= [...it.pos];
-			return item;
-		});
+	renderMenu(gc, op) {
+		this.menuItems= [];
+		for(let idx= 0; idx<op.items.length; idx++) {
+			const item= op.items[idx];
 
+			switch(item.type) {
+				default:
+				case "text":
+					this.menuItems.push(item);
+					break;
+				case "repeat":
+					this.renderRepeat(item, (it, menuitem)=>this.menuItems.push(menuitem));
+					break;
+			}
+
+		}
+
+		for(let idx= 0; idx<this.menuItems.length; idx++)
+			this.renderMenuText(gc, this.menuItems[idx], idx);
+
+		this.itemCount= this.menuItems.length;
+	}
+
+	renderRepeat(op, callback) {
 		for(let idx=0; idx<op.count; idx++) {
-			items.forEach(item => {
+			if(op.var)
+				this.vars.set(op.var, idx);
+			op.items.forEach(itemSource => {
+				const item= clone(itemSource);
 				if(Array.isArray(item.texts))
 					item.text= item.texts[idx];
-				if(item.var) {
-					item.text= this.evalVar(item.var, idx);
-				}
-				if(item.text)
-					this.renderText(gc, item);
-				item.pos[0]+= op.step.pos[0];
-				item.pos[1]+= op.step.pos[1];
+				item.pos[0]+= idx*op.step.pos[0];
+				item.pos[1]+= idx*op.step.pos[1];
+				callback(idx, item);
 			});
 		}
 	}
@@ -164,13 +256,14 @@ export default class DisplayLayer extends UILayer {
 		if(!(this.time%500|0))
 			this.blinkFlag= !this.blinkFlag;
 
-		this.layout.forEach(op => {
+		for(let idx= 0; idx<this.layout.length; idx++) {
+			const op= this.layout[idx];
 			switch(op.type) {
 				case "text":
 					this.renderText(gc, op);
 					break;
 				case "repeat":
-					this.renderRepeat(gc, op);
+					this.renderRepeat(op, (idx, item)=>this.renderText(gc, item));
 					break;
 				case "sprite":
 					this.renderSprite(gc, op);
@@ -181,8 +274,7 @@ export default class DisplayLayer extends UILayer {
 				default:
 					throw new Error("Unkown operation "+op.type);
 			}
-			
-		});
+		}
 
 	}
 }

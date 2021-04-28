@@ -7,26 +7,27 @@ export default class GameScene extends Scene {
 		super(gc, name);
 		this.killOnExit= false;
 
-		if(!Array.isArray(sheet.levels)) {
-			this.levels= LocalDB.levels(sheet.levels);
-		}
-		else
-			this.levels= sheet.levels;
-
-		this.currentLevel= -1;
+		this.currentLevel= 0;
+		this.rounds= sheet.rounds;
+		this.theme= sheet.theme;
 
 		LocalDB.newPlayer("currentPlayer");
 	}
 
 	render(gc) {
 		this.currentLevel++;
-		if(!LocalDB.currentPlayer().lives || this.currentLevel >= this.levels.length) {
+		if(!LocalDB.currentPlayer().lives || this.currentLevel > this.rounds) {
 			this.killOnExit= true;
-			this.events.emit(Scene.EVENT_COMPLETE, "menu");
+
+			if(LocalDB.isPlayerScoreGoodEnough()) {
+				this.events.emit(Scene.EVENT_COMPLETE, "input_name");
+			}
+			else
+				this.events.emit(Scene.EVENT_COMPLETE, "menu");
 		}
 		else {
 			LocalDB.updateRound(this.currentLevel);
-			this.events.emit(Scene.EVENT_COMPLETE, this.levels[this.currentLevel]);
+			this.events.emit(Scene.EVENT_COMPLETE, `./levels/${this.theme}/stage${this.currentLevel}`);
 		}
 	}
 }

@@ -1,14 +1,15 @@
 
-export default class EnterNameUI {
+export default class EnterTextUI {
 
-	static ask(callback) {
+	static run(prompt, callback) {
 		const alertDiv= document.createElement("div");
 		alertDiv.className= "overlay";
 		alertDiv.innerHTML= `
 								<div class="alert">
-									Enter your name:
+									${prompt}
 									<input id="name" type="text" autofocus style="text-align:left"/>
 									<div class="grid-column">
+										<div id="no" class="btn black-shadow hvcenter">CANCEL</div>
 										<div id="yes" class="btn black-shadow hvcenter">OK</div>
 									</div>
 								</div>`;

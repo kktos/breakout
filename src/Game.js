@@ -54,7 +54,11 @@ export default class Game {
 		acc+= (dt - lastTime) / 1000;
 		while(acc > inc) {
 	
+			// console.time('mainLoop')
+			
 			this.coppola.update(this.gc);
+			
+			// console.timeEnd('mainLoop')
 
 			this.gc.tick++;
 			acc-= inc;

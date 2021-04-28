@@ -1,0 +1,44 @@
+{
+	"type": "layout",
+	"name": "theme",
+	"background": 0,
+	"showCursor": true,
+
+	"layout": [
+		{
+			"type": "text",
+			"pos": [298, 113],
+			"size": 4,
+			"align": 2,
+			"color": "#fff",
+			"text": "CHOOSE A THEME"
+		},
+		{
+			"type": "menu",
+			"items": [
+				{
+					"text": "Arkanoid levels",
+					"pos": [300, 300],
+					"size": 3,
+					"align": 2,
+					"scene": "game_arkanoid"
+				},
+				{
+					"text": "Arkanoid 2 levels",
+					"pos": [300, 360],
+					"size": 3,
+					"align": 2,
+					"scene": "game_arkanoid2"
+				},
+				{
+					"text": "User levels",
+					"pos": [300, 420],
+					"size": 3,
+					"align": 2,
+					"scene": "game_user"
+				}
+			]
+		}
+	]
+
+}

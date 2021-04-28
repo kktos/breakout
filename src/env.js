@@ -18,6 +18,12 @@ const ENV= {
 	IMAGES_PATH: `${rootDir}/images/`,
 	FONTS_PATH: `${rootDir}/fonts/`,
 
+	COLORS: {
+		DEFAULT_TEXT: "white",
+		SELECTED_TEXT: "#ffff07",
+		SELECT_RECT: "#A5A5A5"
+	},
+
 	BALL_RADIUS: 5,
 
 	PADDLE_X: 300,

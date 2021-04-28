@@ -9,7 +9,7 @@ export const Align= {
     Right: 3
 }
 
-function loadFont(filename, sheet) {
+function loadFont(sheet) {
     return loadImage(sheet.img)
         .then(image => {
             const fontSprite= new SpriteSheet(image);
@@ -30,7 +30,7 @@ function loadFont(filename, sheet) {
 export default class Font {
 	static load(filename) {
 		return loadJson(ENV.FONTS_PATH + filename)
-					.then(sheet => loadFont(filename, sheet));
+					.then(sheet => loadFont(sheet));
 	}
 
     constructor(name, sprites, size) {
@@ -94,5 +94,7 @@ export default class Font {
         }
 
         context.drawImage(canvas, x, y);
+        return [x, y, x+canvas.width, y+canvas.height];
     }
+
 }
