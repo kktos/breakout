@@ -8,7 +8,7 @@ export default class BackgroundLayer extends Layer {
 
 	constructor(gc, id, withShadows= false) {
 		super(gc);
-
+		this.id= id;
 		this.type= typeof id == "string" ? "color" : "tile";
 
 		switch(this.type) {

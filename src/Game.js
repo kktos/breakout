@@ -22,7 +22,6 @@ class KeyMap {
 	}
 	
 	isPressed(key) {
-		// console.log({key,pressed:this.get(key)});
 		return this.get(key) == true;
 	}
 }
@@ -53,13 +52,7 @@ export default class Game {
 	loop(dt= 0) {
 		acc+= (dt - lastTime) / 1000;
 		while(acc > inc) {
-	
-			// console.time('mainLoop')
-			
 			this.coppola.update(this.gc);
-			
-			// console.timeEnd('mainLoop')
-
 			this.gc.tick++;
 			acc-= inc;
 		}
@@ -117,7 +110,6 @@ export default class Game {
 			case "keyup":
 			case "keydown":
 				evt.key= e.key;
-				// console.log(evt.type, e.key);
 				this.gc.keys.set(e.key, evt.type == "keydown");
 				break;
 	
@@ -143,11 +135,9 @@ export default class Game {
 		[
 			"mousemove", "mousedown", "mouseup", "click",
 			"keyup", "keydown",
-			"contextmenu"]
-			.forEach(type=> document.addEventListener(type, (e) => this.handleEvent(e)));
-
-		["blur", "focus"]
-			.forEach(type=> window.addEventListener(type, (e) => this.handleEvent(e)));
+			"contextmenu",
+			"blur", "focus"
+		].forEach(type=> window.addEventListener(type, this));
 
 		this.play();
 	}

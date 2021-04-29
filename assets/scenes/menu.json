@@ -1,7 +1,7 @@
 {
-	"type": "layout",
+	"type": "display",
 	"name": "menu",
-	"background": "black",
+	"background": "#000000",
 	"showCursor": true,
 
 	"layout": [
@@ -127,6 +127,46 @@
 			"pos": [50, 100],
 			"zoom": 2,
 			"sprite": "enemies:@portal"
+		},
+		{
+			"type": "text",
+			"pos": [300, 570],
+			"size": 1,
+			"align": 2,
+			"color": "#fff",
+			"text": "code by kktos"
+		},
+		{
+			"type": "text",
+			"pos": [300, 580],
+			"size": 1,
+			"align": 2,
+			"color": "#fff",
+			"text": "heavily inspired by Pontus"
+		},
+		{
+			"type": "text",
+			"pos": [300, 590],
+			"size": 1,
+			"align": 2,
+			"color": "#fff",
+			"text": "all sprites found on the web"
+		},
+		{
+			"type": "text",
+			"pos": [300, 10],
+			"size": 1,
+			"align": 2,
+			"color": "#FF0000",
+			"text": "lisa & paul"
+		},
+		{
+			"type": "text",
+			"pos": [300, 25],
+			"size": 1,
+			"align": 2,
+			"color": "#fff",
+			"text": "present"
 		}
 	]
 }

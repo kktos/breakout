@@ -19,11 +19,9 @@ export default class DisplayLayer extends UILayer {
 		this.layout= layout;
 		this.time= 0;
 		this.blinkFlag= false;
-		this.isMouseEnabled= false;
+		this.isMouseEnabled= true;
 
 		this.itemSelected= 0;
-		this.itemCount= 0;
-		this.menuItems= null;
 
 		this.initVars();
 
@@ -33,14 +31,66 @@ export default class DisplayLayer extends UILayer {
 		
 		this.menu= menus.length>0 ? menus[0] : null;
 
+		this.prepareRendering();
 	}
 
 	initVars() {
 		this.vars= new Map();
 		this.vars.set("highscores", LocalDB.highscores());
-		const player= LocalDB.currentPlayer();
-		this.vars.set("score", player.score);
-		this.vars.set("highscore", player.highscore);
+		this.vars.set("player", LocalDB.currentPlayer());
+	}
+
+	prepareMenu(op) {
+		const menuItems= [];
+		for(let idx= 0; idx<op.items.length; idx++) {
+			const item= op.items[idx];
+			switch(item.type) {
+				default:
+				case "text":
+					menuItems.push(item);
+					break;
+				case "repeat":
+					this.repeat(item, (menuitem)=>menuItems.push(menuitem));
+					break;
+			}
+		}
+		op.items= menuItems;
+	}
+
+	repeat(op, callback) {
+		for(let idx=0; idx<op.count; idx++) {
+			if(op.var)
+				this.vars.set(op.var, idx);
+			op.items.forEach(itemSource => {
+				const item= clone(itemSource);
+				if(Array.isArray(item.texts)) {
+					item.text= item.texts[idx];
+					delete item.texts;
+				}
+				item.pos[0]+= idx*op.step.pos[0];
+				item.pos[1]+= idx*op.step.pos[1];
+				callback(item);
+			});
+		}
+	}
+
+	prepareRendering() {
+		for(let idx= this.layout.length-1; idx>=0; idx--) {
+			const op= this.layout[idx];
+			switch(op.type) {
+				case "repeat":
+					this.repeat(op, (item)=> {
+						this.layout.push(item);
+						if(item.text)
+							item.text= this.eval(item.text);
+					});
+					this.layout.splice(idx, 1);
+					break;
+				case "menu":
+					this.prepareMenu(op);
+					break;
+			}
+		}
 	}
 
 	findMenuByPoint(x,y) {
@@ -79,14 +129,14 @@ export default class DisplayLayer extends UILayer {
 					case "ArrowDown":
 					case "ArrowRight":
 						if(this.menu)
-							this.itemSelected= (this.itemSelected+1) % this.itemCount;
+							this.itemSelected= (this.itemSelected+1) % this.menu.items.length;
 						break;
 					case "ArrowUp":
 					case "ArrowLeft":
 						if(this.menu) {
 							this.itemSelected--;
 							if(this.itemSelected<0)
-								this.itemSelected= this.itemCount-1;
+								this.itemSelected= this.menu.items.length-1;
 						}
 						break;
 					case "Enter":
@@ -101,7 +151,7 @@ export default class DisplayLayer extends UILayer {
 		if(!this.menu)
 			return;
 		const selected= idx==null ? this.itemSelected : idx;
-		const menuItem= this.menuItems[selected];
+		const menuItem= this.menu.items[selected];
 
 		if(menuItem.action) {
 			const [action, ...parms]= menuItem.action.split(":");
@@ -141,7 +191,7 @@ export default class DisplayLayer extends UILayer {
 
 	eval(text) {
 		return text.replace(/%(.+?)%/, (m, varname) => {
-			const [name, ...parms]= varname.split(":");
+			const [name, ...parms]= varname.split(".");
 			if(!this.vars.has(name))
 				return "";
 
@@ -214,41 +264,8 @@ export default class DisplayLayer extends UILayer {
 	}
 
 	renderMenu(gc, op) {
-		this.menuItems= [];
-		for(let idx= 0; idx<op.items.length; idx++) {
-			const item= op.items[idx];
-
-			switch(item.type) {
-				default:
-				case "text":
-					this.menuItems.push(item);
-					break;
-				case "repeat":
-					this.renderRepeat(item, (it, menuitem)=>this.menuItems.push(menuitem));
-					break;
-			}
-
-		}
-
-		for(let idx= 0; idx<this.menuItems.length; idx++)
-			this.renderMenuText(gc, this.menuItems[idx], idx);
-
-		this.itemCount= this.menuItems.length;
-	}
-
-	renderRepeat(op, callback) {
-		for(let idx=0; idx<op.count; idx++) {
-			if(op.var)
-				this.vars.set(op.var, idx);
-			op.items.forEach(itemSource => {
-				const item= clone(itemSource);
-				if(Array.isArray(item.texts))
-					item.text= item.texts[idx];
-				item.pos[0]+= idx*op.step.pos[0];
-				item.pos[1]+= idx*op.step.pos[1];
-				callback(idx, item);
-			});
-		}
+		for(let idx= 0; idx<op.items.length; idx++)
+			this.renderMenuText(gc, op.items[idx], idx);
 	}
 
 	render(gc) {
@@ -261,9 +278,6 @@ export default class DisplayLayer extends UILayer {
 			switch(op.type) {
 				case "text":
 					this.renderText(gc, op);
-					break;
-				case "repeat":
-					this.renderRepeat(op, (idx, item)=>this.renderText(gc, item));
 					break;
 				case "sprite":
 					this.renderSprite(gc, op);

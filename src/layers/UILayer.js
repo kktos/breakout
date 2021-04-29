@@ -11,7 +11,7 @@ export default class UILayer extends Layer {
 		if(layout) {
 			this.ui.innerHTML= `
 				<div class="grid-column vcenter">
-					<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+					<img id="btnBack" class="btn light-shadow" src="./assets/images/left-arrow.png"/>
 				</div>
 			`;
 			this.ui.querySelectorAll(".btn")

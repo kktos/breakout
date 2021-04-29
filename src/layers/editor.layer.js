@@ -65,7 +65,7 @@ export default class EditorLayer extends UILayer {
 
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
-				<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+				<img id="btnBack" class="btn light-shadow" src="./assets/images/left-arrow.png"/>
 				<div class="grid-row">
 					THEME
 					<select id="theme">
@@ -78,9 +78,9 @@ export default class EditorLayer extends UILayer {
 					LEVEL
 					<input type="text" placeholder="unnamed" readonly class="w150"/>
 				</div>
-				<img id="btnNew" class="btn light-shadow" src="/assets/images/trash.png"/>
-				<img id="btnLoad" class="btn light-shadow" src="/assets/images/load.png"/>
-				<img id="btnSave" class="btn light-shadow" src="/assets/images/save.png"/>
+				<img id="btnNew" class="btn light-shadow" src="./assets/images/trash.png"/>
+				<img id="btnLoad" class="btn light-shadow" src="./assets/images/load.png"/>
+				<img id="btnSave" class="btn light-shadow" src="./assets/images/save.png"/>
 			</div>
 			<div class="grid-column vcenter" style="grid-template-rows: 30px; justify-content: space-evenly">
 				<div class="grid-row">

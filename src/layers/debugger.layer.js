@@ -27,7 +27,7 @@ export default class DebuggerLayer extends UILayer {
 		list= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
-				<img id="btnBack" class="btn light-shadow" src="/assets/images/left-arrow.png"/>
+				<img id="btnBack" class="btn light-shadow" src="./assets/images/left-arrow.png"/>
 				<div class="vcenter hright">
 					BACKGROUND
 					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>

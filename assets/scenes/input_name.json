@@ -1,5 +1,5 @@
 {
-	"type": "layout",
+	"type": "display",
 	"name": "input name",
 	"background": "black",
 	"showCursor": true,
@@ -18,7 +18,7 @@
 			"pos": [300, 26],
 			"size": 3,
 			"align": 2,
-			"text": "%highscore%"
+			"text": "%player.highscore%"
 		},
 		{
 			"type": "text",
@@ -33,7 +33,7 @@
 			"pos": [80, 26],
 			"size": 3,
 			"align": 2,
-			"text": "%score%"
+			"text": "%player.score%"
 		},
 
 		{

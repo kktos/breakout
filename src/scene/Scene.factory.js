@@ -1,7 +1,7 @@
 import ENV from "../env.js";
 import {loadJson} from "../utils/loaders.util.js";
 import LevelScene from "./level.scene.js";
-import LayoutScene from "./layout.scene.js";
+import DisplayScene from "./display.scene.js";
 import EditorScene from "./editor.scene.js";
 import DebugScene from "./debug.scene.js";
 import GameScene from "./game.scene.js";
@@ -20,8 +20,8 @@ export default class SceneFactory {
 
 		let scene;
 		switch(sheet.type) {
-			case "layout":
-				scene= new LayoutScene(gc, sheet.name, sheet);
+			case "display":
+				scene= new DisplayScene(gc, sheet.name, sheet);
 				break;
 			case "debug":
 				scene= new DebugScene(gc, sheet.name, sheet);

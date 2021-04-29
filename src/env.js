@@ -24,6 +24,8 @@ const ENV= {
 		SELECT_RECT: "#A5A5A5"
 	},
 
+	HIGHSCORES_COUNT: 10,
+	
 	BALL_RADIUS: 5,
 
 	PADDLE_X: 300,

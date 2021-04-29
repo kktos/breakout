@@ -2,7 +2,7 @@ import Scene from "./Scene.js";
 import BackgroundLayer from "../layers/background.layer.js";
 import DisplayLayer from "../layers/display.layer.js";
 
-export default class LayoutScene extends Scene {
+export default class DisplayScene extends Scene {
 
 	constructor(gc, name, {background, layout, ui}) {
 		super(gc, name);

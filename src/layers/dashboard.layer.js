@@ -1,6 +1,6 @@
 import ENV from "../env.js";
 import {Align} from "../Font.js";
-import Layer from "./layer.js";
+import Layer from "./Layer.js";
 import WallEntity from "../entities/wall.entity.js";
 import PlayerTrait from "../traits/player.trait.js";
 import Level from "../scene/level.scene.js";
