@@ -1,17 +1,17 @@
 import ENV from "./env.js";
-import {loadJson} from "./utils/loaders.util.js";
+import {loadJson, loadSound} from "./utils/loaders.util.js";
 
-function loadSound(context, sound) {
-	return fetch(ENV.SOUNDS_PATH + sound)
+function loadFile(context, sound) {
+	return loadSound(sound)
 		.then(response => response.arrayBuffer())
 		.then(arrayBuffer => context.decodeAudioData(arrayBuffer));
 }
 
-function loadSounds(filename, sheet) {
+function loadSounds(sheet) {
 	const audio= new Audio();
 	return Promise.all(
 			Object.keys(sheet)
-				.map(name => loadSound(audio.context, sheet[name].sound)
+				.map(name => loadFile(audio.context, sheet[name].sound)
 								.then(buf => audio.add(name, buf))
 				)
 		).then(()=>audio);
@@ -21,7 +21,7 @@ export default class Audio {
 
 	static load(filename) {
 		return loadJson(ENV.SOUNDS_PATH + filename)
-					.then(sheet => loadSounds(filename, sheet));
+					.then(sheet => loadSounds(sheet));
 	}
 
 	constructor() {

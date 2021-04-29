@@ -1,22 +1,19 @@
 
-const rootDir= "./assets";
+// const rootDir= "./assets";
+const rootDir= "";
 
 const ENV= {
 
 	MAIN_FONT: "bubble-bobble",
 
-	RESOURCES_PATH: `${rootDir}/`,
-
-	SCENES_PATH: `${rootDir}/scenes/`,
-
+	SCENES_PATH: `scenes/`,
 	LEVELS_DIR: "/levels/",
-
-	SOUNDS_PATH: `${rootDir}/sounds/`,
+	SOUNDS_PATH: `sounds/`,
 	VOLUME: 50,
 
-	SPRITESHEETS_PATH: `${rootDir}/spritesheets/`,
-	IMAGES_PATH: `${rootDir}/images/`,
-	FONTS_PATH: `${rootDir}/fonts/`,
+	SPRITESHEETS_PATH: `spritesheets/`,
+	IMAGES_PATH: `images/`,
+	FONTS_PATH: `fonts/`,
 
 	COLORS: {
 		DEFAULT_TEXT: "white",
