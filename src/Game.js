@@ -1,6 +1,15 @@
 import ENV from "./env.js";
-import ResourceManager from "./ResourceManager.js";
-import Director from "./scene/Director.js";
+import ResourceManager from "./resourcemanager.js";
+import Director from "./scene/director.js";
+
+// let ResourceManager;
+
+// async function imports() {
+// 	return import("./resourcemanager.js")
+// 			.then(m=>{ResourceManager= m.default})
+// 			.catch(err => console.error("IMPORT",err))
+// }
+
 
 let lastTime= 0;
 let acc= 0;
@@ -32,13 +41,17 @@ export default class Game {
 		this.coppola= null;
 
 		this.gc= {
-			screen: {
+			viewport: {
+				width: ENV.VIEWPORT_WIDTH,
+				height: ENV.VIEWPORT_HEIGHT,
 				canvas,
 				bbox: canvas.getBoundingClientRect(),
-				ctx: canvas.getContext("2d")
+				ctx: canvas.getContext("2d"),
+				ratioWidth: canvas.width / ENV.VIEWPORT_WIDTH,
+				ratioHeight: canvas.height / ENV.VIEWPORT_HEIGHT,
 			},
 
-			resourceManager: new ResourceManager(),
+			resourceManager: null,
 
 			dt: inc,
 			tick: 0,
@@ -47,6 +60,9 @@ export default class Game {
 			keys: new KeyMap(),
 			scene: null
 		};
+
+		this.gc.viewport.ctx.scale(this.gc.viewport.ratioWidth, this.gc.viewport.ratioHeight);
+
 	}
 
 	loop(dt= 0) {
@@ -83,12 +99,12 @@ export default class Game {
 		if(!e.isTrusted)
 			return;
 	
-		const bbox= this.gc.screen.bbox;
+		const bbox= this.gc.viewport.bbox;
 		const evt= {
 			type: e.type,
 			buttons: e.buttons,
-			x: e.x - bbox.x,
-			y: e.y - bbox.y,
+			x: ((e.x - bbox.x) / this.gc.viewport.ratioWidth) | 0,
+			y: ((e.y - bbox.y) / this.gc.viewport.ratioHeight) | 0,
 			key: undefined
 	
 		};
@@ -127,8 +143,18 @@ export default class Game {
 	}
 	
 	async start() {
-		await this.gc.resourceManager.load();
 
+		this.gc.resourceManager= new ResourceManager();
+
+		console.log("resourceManager.load");
+		try{
+			await this.gc.resourceManager.load();
+		}
+		catch(err) {
+			console.error("resourceManager.load", err);
+		}
+
+		console.log("new Director");
 		this.coppola= new Director(this.gc);
         this.coppola.run("menu");
 
@@ -139,6 +165,7 @@ export default class Game {
 			"blur", "focus"
 		].forEach(type=> window.addEventListener(type, this));
 
+		console.log("play()");
 		this.play();
 	}
 }

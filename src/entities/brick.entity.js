@@ -1,5 +1,5 @@
 
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 import BrickTrait from "../traits/brick.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
@@ -7,11 +7,11 @@ import KillableTrait from "../traits/killable.trait.js";
 export default class BrickEntity extends Entity {
 
 	// src: https://primetimeamusements.com/getting-good-arkanoid/
-	static TYPES= "gobGrBpyxX@#";
-	static POINTS= [50, 60, 70, 80, 90, 100, 110, 120, 1/50, 0, 0, 0];
-	static SPRITES= [
-		"standard-0", "standard-1", "standard-2", "standard-3", "standard-4", "standard-5", "standard-6", "standard-7",
-		"silver-0", "gold-0", "highlander-0", "template"];
+	// static TYPES= "gobGrBpyxX@#";
+	// static POINTS= [50, 60, 70, 80, 90, 100, 110, 120, 1/50, 0, 0, 0];
+	// static SPRITES= [
+	// 	"standard-0", "standard-1", "standard-2", "standard-3", "standard-4", "standard-5", "standard-6", "standard-7",
+	// 	"silver-0", "gold-0", "highlander-0", "template"];
 
 	constructor(resourceMgr, x, y, type) {
 		super(resourceMgr, x, y, "bricks");
@@ -65,7 +65,14 @@ export default class BrickEntity extends Entity {
 
 	}
 
-	render({screen:{ctx}}) {
+	render({viewport:{ctx}}) {
 		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 	}	
 }
+
+// src: https://primetimeamusements.com/getting-good-arkanoid/
+BrickEntity.TYPES= "gobGrBpyxX@#";
+BrickEntity.POINTS= [50, 60, 70, 80, 90, 100, 110, 120, 1/50, 0, 0, 0];
+BrickEntity.SPRITES= [
+	"standard-0", "standard-1", "standard-2", "standard-3", "standard-4", "standard-5", "standard-6", "standard-7",
+	"silver-0", "gold-0", "highlander-0", "template"];

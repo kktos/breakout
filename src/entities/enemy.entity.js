@@ -1,12 +1,12 @@
 
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 import GravityTrait from "../traits/gravity.trait.js";
 import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBoxTrait from "../traits/boundingBox.trait.js";
+import BoundingBoxTrait from "../traits/boundingbox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 import ExplosionTrait from "../traits/explosion.trait.js";
-import FollowPathTrait from "../traits/followPath.trait.js";
+import FollowPathTrait from "../traits/followpath.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
 import BreakTrait from "../traits/break.trait.js";
 
@@ -57,7 +57,7 @@ export default class EnemyEntity extends Entity {
 		animTrait.setAnim(this, this.type);
 	}
 
-	render({screen:{ctx}}) {
+	render({viewport:{ctx}}) {
 		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 		// this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
 		// ctx.fillText(`${this.vel.x} ${this.vel.y}`,300,600-20);

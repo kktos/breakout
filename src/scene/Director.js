@@ -1,5 +1,5 @@
-import Scene from './Scene.js';
-import SceneFactory from './Scene.factory.js';
+import Scene from './scene.js';
+import SceneFactory from './scene.factory.js';
 
 export default class Director {
     constructor(gc) {

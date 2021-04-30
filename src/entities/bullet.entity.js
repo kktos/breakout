@@ -1,8 +1,8 @@
 
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 import KillableTrait from "../traits/killable.trait.js";
 import VelocityTrait from "../traits/velocity.trait.js";
-import Trait from "../traits/Trait.js";
+import Trait from "../traits/trait.js";
 
 export default class BulletEntity extends Entity {
 
@@ -38,7 +38,7 @@ export default class BulletEntity extends Entity {
 
 	}
 
-	render({screen:{ctx}}) {
+	render({viewport:{ctx}}) {
 		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 	}	
 }

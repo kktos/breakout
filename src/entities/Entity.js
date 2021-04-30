@@ -1,4 +1,4 @@
-import EventBuffer from "../events/EventBuffer.js";
+import EventBuffer from "../events/eventbuffer.js";
 import {generateID} from "../utils/id.util.js";
 
 export default class Entity {

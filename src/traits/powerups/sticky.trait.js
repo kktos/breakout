@@ -1,5 +1,5 @@
-import Trait from '../Trait.js';
-import Events from "../../events/Events.js";
+import Trait from '../trait.js';
+import Events from "../../events/events.js";
 import BounceTrait from '../bounce.trait.js';
 import BallEntity from "../../entities/ball.entity.js";
 

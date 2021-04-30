@@ -1,7 +1,7 @@
 import ENV from "./env.js";
 import {loadImage, loadJson} from "./utils/loaders.util.js";
-import createSpriteSheet from "./utils/createSpriteSheet.util.js";
-import Anim from "./Anim.js";
+import createSpriteSheet from "./utils/createspritesheet.util.js";
+import Anim from "./anim.js";
 
 export default class SpriteSheet {
 

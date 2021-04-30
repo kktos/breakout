@@ -1,5 +1,5 @@
-import Layer from "./Layer.js";
-import Scene from "../scene/Scene.js";
+import Layer from "./layer.js";
+import Scene from "../scene/scene.js";
 
 export default class UILayer extends Layer {
 	

@@ -1,9 +1,9 @@
-import UILayer from "./UILayer.js";
-import Scene from "../scene/Scene.js";
-import { ptInRect } from "../math.js";
-import LocalDB from "../utils/storage.util.js";
 import ENV from "../env.js";
 import {clone} from "../utils/object.util.js";
+import { ptInRect } from "../math.js";
+import LocalDB from "../utils/storage.util.js";
+import UILayer from "./uilayer.js";
+import Scene from "../scene/scene.js";
 
 export default class DisplayLayer extends UILayer {
 
@@ -13,13 +13,13 @@ export default class DisplayLayer extends UILayer {
 		const rezMgr= gc.resourceManager;
 		this.paddleSprites= rezMgr.get("sprite", "paddles");
 
-		this.width= gc.screen.canvas.width;
 		this.font= rezMgr.get("font", ENV.MAIN_FONT);
 
 		this.layout= layout;
 		this.time= 0;
 		this.blinkFlag= false;
 		this.isMouseEnabled= true;
+		this.wannaDisplayHitzones= false
 
 		this.itemSelected= 0;
 
@@ -27,7 +27,7 @@ export default class DisplayLayer extends UILayer {
 
 		const menus= layout.filter(op => op.type=="menu");
 		if(menus.length>1)
-			throw new Error("Only one menu is allowed per screen");
+			throw new Error("Only one menu is allowed per viewport");
 		
 		this.menu= menus.length>0 ? menus[0] : null;
 
@@ -120,12 +120,24 @@ export default class DisplayLayer extends UILayer {
 					const menuIdx= this.findMenuByPoint(e.x, e.y);
 					if(menuIdx>=0)
 						this.itemSelected= menuIdx;
-					gc.screen.canvas.style.cursor= menuIdx>=0 ? "pointer" : "default";
+					gc.viewport.canvas.style.cursor= menuIdx>=0 ? "pointer" : "default";
+				}
+				break;
+
+			case "keyup":
+				switch(e.key) {
+					case "Control":
+						this.wannaDisplayHitzones= false;
+						break;
 				}
 				break;
 
 			case "keydown":
 				switch(e.key) {
+					case "Control":
+						this.wannaDisplayHitzones= true;
+						break;
+
 					case "ArrowDown":
 					case "ArrowRight":
 						if(this.menu)
@@ -212,7 +224,7 @@ export default class DisplayLayer extends UILayer {
 		});
 	}
 
-	renderText({screen:{ctx}}, op) {
+	renderText({viewport:{ctx}}, op) {
 		if(op.blink && this.blinkFlag)
 			return;
 		if(op.align)
@@ -223,7 +235,7 @@ export default class DisplayLayer extends UILayer {
 		return this.font.print(ctx, text==""? " ": text, op.pos[0], op.pos[1], op.color);
 	}
 
-	renderSprite({resourceManager, tick, screen:{ctx}}, op) {
+	renderSprite({resourceManager, tick, viewport:{ctx}}, op) {
 		const [sheet, sprite]= op.sprite.split(":");
 		const ss= resourceManager.get("sprite", sheet);
 		const zoom= op.zoom || 1;
@@ -250,7 +262,7 @@ export default class DisplayLayer extends UILayer {
 			...item
 		});
 		if(idx==this.itemSelected) {
-			const ctx= gc.screen.ctx;
+			const ctx= gc.viewport.ctx;
 			ctx.strokeStyle= ENV.COLORS.SELECT_RECT;
 			ctx.beginPath();
 			ctx.moveTo(textRect[0]-2, textRect[1]-5);
@@ -288,6 +300,22 @@ export default class DisplayLayer extends UILayer {
 				default:
 					throw new Error("Unkown operation "+op.type);
 			}
+		}
+
+		if(this.wannaDisplayHitzones && this.menu) {
+			this.menu.items.forEach(item => {
+				if(item.align)
+					this.font.align= item.align;
+				if(item.size)
+					this.font.size= item.size;
+				const r= this.font.textRect(item.text, item.pos[0], item.pos[1]);
+				gc.viewport.ctx.strokeStyle= "red";
+				gc.viewport.ctx.strokeRect(r[0], r[1], r[2]-r[0], r[3]-r[1]);
+
+				gc.viewport.ctx.fillStyle="white";
+				gc.viewport.ctx.fillText(`X: ${this.gc.mouse.x} Y: ${this.gc.mouse.y}`,510,590);
+				
+			});			
 		}
 
 	}

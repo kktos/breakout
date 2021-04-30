@@ -1,19 +1,27 @@
-import ENV from "./env.js";
 import {loadJson} from "./utils/loaders.util.js";
-import SpriteSheet from "./Spritesheet.js";
-import Audio from "./Audio.js";
-import Font from "./Font.js";
+import SpriteSheet from "./spritesheet.js";
+import Audio from "./audio.js";
+import Font from "./font.js";
 
 function loadSpritesheets(mgr, sheets) {
-	return sheets.map(filename => SpriteSheet.load(filename).then(r=>mgr.add("sprite", filename, r)));
+	return sheets.map(filename => SpriteSheet.load(filename)
+									.catch(err => console.error(`SpriteSheet.load ${filename}`, err))
+									.then(r => mgr.add("sprite", filename, r)
+					));
 }
 
 function loadAudiosheets(mgr, sheets) {
-	return sheets.map(filename => Audio.load(filename).then(r=>mgr.add("audio", filename, r)));
+	return sheets.map(filename => Audio.load(filename)
+									.catch(err => console.error(`Audio.load ${filename}`, err))
+									.then(r=>mgr.add("audio", filename, r)
+					));
 }
 
 function loadFonts(mgr, sheets) {
-	return sheets.map(filename => Font.load(filename).then(r=>mgr.add("font", r.name, r)));
+	return sheets.map(filename => Font.load(filename)
+									.catch(err => console.error(`Font.load ${filename}`, err))
+									.then(r=>mgr.add("font", r.name, r)
+					));
 }
 
 export default class ResourceManager {
@@ -24,7 +32,6 @@ export default class ResourceManager {
 
 	async load() {
 		const sheet= await loadJson("resources.json");
-		// const sheet= await import("/assets/resources.json");
 
 		const jobs= [];
 		const kinds= Object.keys(sheet);
@@ -49,6 +56,7 @@ export default class ResourceManager {
 		const id= (kind+":"+name).replace(/\.json/,'');
 		if(this.cache.has(id))
 			throw new Error(`Duplicate resource ${id}!`);
+		console.log(`ResourceManager.add(${id})`);
 		this.cache.set(id, rez);
 	}
 

@@ -1,15 +1,15 @@
-import EventEmitter from "../events/EventEmitter.js";
+import EventEmitter from "../events/eventemitter.js";
 
 export default class Scene {
-    static EVENT_COMPLETE = Symbol('scene complete');
+    // static EVENT_COMPLETE = Symbol('scene complete');
 
 	constructor(gc, name) {
 		this.gc= gc;
 		this.name= name;
         this.events= new EventEmitter();
 		this.layers= [];
-		this.screenWidth= gc.screen.canvas.width;
-		this.screenHeight= gc.screen.canvas.height;
+		this.screenWidth= gc.viewport.canvas.width;
+		this.screenHeight= gc.viewport.canvas.height;
 		this.receiver= null;
 		this.isRunning= true;
 		this.killOnExit= true;
@@ -42,3 +42,4 @@ export default class Scene {
 			this.receiver.handleEvent(gc, e);
 	}
 }
+Scene.EVENT_COMPLETE= Symbol('scene complete');

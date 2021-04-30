@@ -1,4 +1,4 @@
-import SpriteSheet from "../Spritesheet.js";
+import SpriteSheet from "../spritesheet.js";
 
 export default function createSpriteSheet(filename, sheet, img) {
 	const s= new SpriteSheet(img);

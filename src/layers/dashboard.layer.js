@@ -1,6 +1,6 @@
 import ENV from "../env.js";
-import {Align} from "../Font.js";
-import Layer from "./Layer.js";
+import {Align} from "../font.js";
+import Layer from "./layer.js";
 import WallEntity from "../entities/wall.entity.js";
 import PlayerTrait from "../traits/player.trait.js";
 import Level from "../scene/level.scene.js";
@@ -13,7 +13,7 @@ export default class DashboardLayer extends Layer {
 
 		const rezMgr= gc.resourceManager;
 
-		this.width= gc.screen.canvas.width;
+		this.width= gc.viewport.width;
 		this.spritesheet= rezMgr.get("sprite", "paddles");
 
 		const lifeSize= this.spritesheet.spriteSize("life");
@@ -33,7 +33,7 @@ export default class DashboardLayer extends Layer {
 		this.timer= 0;
 	}
 
-	render({scene:{paddle, state, name},tick,screen:{ctx}}) {
+	render({scene:{paddle, state, name},tick,viewport:{ctx}}) {
 		ctx.fillStyle= "#000";
 		ctx.fillRect(0, 0, this.width, ENV.WALL_TOP);
 

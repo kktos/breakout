@@ -1,4 +1,4 @@
-import Trait from './Trait.js';
+import Trait from './trait.js';
 import KillableTrait from './killable.trait.js';
 import BallEntity from '../entities/ball.entity.js';
 import AnimationTrait from './animation.trait.js';
@@ -6,7 +6,7 @@ import LocalDB from "../utils/storage.util.js";
 
 export default class PlayerTrait extends Trait {
 
-	static EVENT_PLAYER_KILLED = Symbol('playerKilled');
+	// static EVENT_PLAYER_KILLED = Symbol('playerKilled');
 
 	constructor(paddle) {
 		super();
@@ -57,3 +57,4 @@ export default class PlayerTrait extends Trait {
 
 }
 
+PlayerTrait.EVENT_PLAYER_KILLED = Symbol('playerKilled');

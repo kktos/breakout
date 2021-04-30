@@ -1,4 +1,4 @@
-import Scene from "./Scene.js";
+import Scene from "./scene.js";
 import BackgroundLayer from "../layers/background.layer.js";
 import DashboardLayer from "../layers/dashboard.layer.js";
 import EntitiesLayer from "../layers/entities.layer.js";

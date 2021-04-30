@@ -40,7 +40,7 @@ export default class SceneFactory {
 		}
 
 		// scene.killOnExit= sheet.killOnExit ? true : false;
-		gc.screen.canvas.style.cursor= sheet.showCursor ? "default" : "none";
+		gc.viewport.canvas.style.cursor= sheet.showCursor ? "default" : "none";
 	
 		return scene;		
 	}

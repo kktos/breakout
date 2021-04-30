@@ -14,7 +14,11 @@ BODY {
 	font: 12px "PressStart2P";
 }
 CANVAS {
-	margin: auto;
+	position: fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
 }
 INPUT {
 	background: black;
@@ -37,6 +41,23 @@ SELECT {
 	display: grid;
 	grid-auto-flow: row;
 	color: #ffff07;
+}
+#log {
+	color: black;
+    font-size: 1.5vh;
+    font-family: monospace;
+    overflow-y: scroll;
+    position: fixed;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    height: 25vh;
+    background: #ffffffba;
+    padding: 5px;
+	visibility: hidden;
+}
+.err {
+	color:red;
 }
 .sep {
 	background-color: white;

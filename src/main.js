@@ -1,31 +1,39 @@
 import "./index.css";
-import Game from "./game.js";
+// import Game from "./game.js";
+
+const LOGLEVELS= ["LOG", "ERR"];
+const OUTPUT= document.getElementById("log");
+OUTPUT.innerHTML= "";
+function print(level, args) {
+	OUTPUT.innerHTML+= `<div class="${level==2?"err":""}">${LOGLEVELS[level-1]}:${args.join(" ")}</div>`;
+	con.log(...args);
+
+}
+const con= window.console;
+const console= {};
+console.log= (...args) => print(1, args);
+console.error= (...args) => print(2, args);
+window.console= console;
 
 const canvas= document.getElementById("game");
-// const ctx= canvas.getContext("2d");
-canvas.width= 600;
-canvas.height= 600;
+canvas.width= window.innerWidth;
+canvas.height= window.innerHeight;
 
-/*
-function clear() {
-	ctx.fillStyle= "black";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+console.log('TEST 6');
+
+try {
+	import(
+		/* webpackPrefetch: true */
+		"./game.js"
+	)
+		.then(m=>m.default)
+		.then(Game => {
+			const game= new Game(canvas);
+			game.start();
+		})
+		.catch(err => console.error("IMPORT",err))
 }
-
-const bootstrap= () => {
-	document.removeEventListener("click", bootstrap);
-	const game= new Game(canvas);
-	game.start();	
+catch(e) {
+	console.error("EXCEPTION");
+	console.error(e);
 }
-
-document.addEventListener("click", bootstrap);
-
-clear();
-ctx.fillStyle= "#ffffff";
-ctx.font = '36px sans-serif';
-ctx.fillText("CLICK TO START", canvas.width/2 - 150, canvas.height/2);
-
-*/
-
-const game= new Game(canvas);
-game.start();

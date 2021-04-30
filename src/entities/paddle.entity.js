@@ -1,10 +1,10 @@
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
 import LaserTrait from "../traits/powerups/laser.trait.js";
 import EnlargeTrait from "../traits/powerups/enlarge.trait.js";
 import DisruptionTrait from "../traits/powerups/disruption.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
-import MouseXTrait from "../traits/mouseX.trait.js";
+import MouseXTrait from "../traits/mousex.trait.js";
 import PaddleTrait from "../traits/paddle.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
 import SpawnerTrait from "../traits/spawner.trait.js";
@@ -50,7 +50,7 @@ export default class PaddleEntity extends Entity {
 		this.traits.get(PaddleTrait).revokePower(this);
 	}
 
-	render({keys, screen:{ctx}}) {
+	render({keys, viewport:{ctx}}) {
 		this.visible && this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
 		if(keys.isPressed("Control")) {
 			ctx.strokeStyle = 'red';

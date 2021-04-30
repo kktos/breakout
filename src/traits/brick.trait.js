@@ -1,4 +1,4 @@
-import Trait from './Trait.js';
+import Trait from './trait.js';
 import LevelScene from '../scene/level.scene.js';
 import AnimationTrait from './animation.trait.js';
 import PowerupEntity from '../entities/powerup.entity.js';
@@ -6,8 +6,8 @@ import KillableTrait from "../traits/killable.trait.js";
 
 export default class BrickTrait extends Trait {
 
-	static EVENT_BRICK_KILLED = Symbol('brickKilled');
-	static powerAfter= 10;
+	// static EVENT_BRICK_KILLED = Symbol('brickKilled');
+	// static powerAfter= 10;
 
 	constructor() {
 		super();
@@ -55,3 +55,6 @@ export default class BrickTrait extends Trait {
 	}
 	
 }
+
+BrickTrait.EVENT_BRICK_KILLED = Symbol('brickKilled');
+BrickTrait.powerAfter= 10;

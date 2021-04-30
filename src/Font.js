@@ -1,6 +1,6 @@
 import ENV from "./env.js";
 import {loadImage, loadJson} from './utils/loaders.util.js';
-import SpriteSheet from './Spritesheet.js';
+import SpriteSheet from './spritesheet.js';
 
 // const CHARS= ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.';
 export const Align= {

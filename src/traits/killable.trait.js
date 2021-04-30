@@ -1,8 +1,8 @@
-import Trait from './Trait.js';
+import Trait from './trait.js';
 import LevelScene from '../scene/level.scene.js';
 
 export default class KillableTrait extends Trait {
-	static EVENT_KILLED = Symbol('Killed');
+	// static EVENT_KILLED = Symbol('Killed');
 
 	constructor(removeAfter= 0) {
 		super();
@@ -32,3 +32,5 @@ export default class KillableTrait extends Trait {
     }
 
 }
+
+KillableTrait.EVENT_KILLED = Symbol('Killed');

@@ -1,10 +1,10 @@
 import BackgroundEntity from "../entities/background.entity.js";
-import Layer from "./Layer.js";
+import Layer from "./layer.js";
 
 export default class BackgroundLayer extends Layer {
 
-	static SPRITES= ["normal-0", "normal-1", "normal-2", "normal-3", "normal-4"];
-	static DARK_SPRITES= ["dark-0", "dark-1", "dark-2", "dark-3", "dark-4"];
+	// static SPRITES= ["normal-0", "normal-1", "normal-2", "normal-3", "normal-4"];
+	// static DARK_SPRITES= ["dark-0", "dark-1", "dark-2", "dark-3", "dark-4"];
 
 	constructor(gc, id, withShadows= false) {
 		super(gc);
@@ -16,7 +16,7 @@ export default class BackgroundLayer extends Layer {
 				break;
 
 			case "tile": {
-				const view= gc.screen.canvas;
+				const view= gc.viewport;
 				this.canvas= document.createElement('canvas');
 				this.canvas.width= view.width;
 				this.canvas.height= view.height;
@@ -30,7 +30,7 @@ export default class BackgroundLayer extends Layer {
 	}
 
 	setBackground(gc, id, withShadows) {
-		const view= gc.screen.canvas;
+		const view= gc.viewport;
 		const background= new BackgroundEntity(gc.resourceManager, BackgroundLayer.SPRITES[id]);
 		const s= background.size;	
 		const w= view.width / s.x;
@@ -54,11 +54,11 @@ export default class BackgroundLayer extends Layer {
 		}
 	}
 
-	render({screen:{ctx, canvas}}) {
+	render({viewport:{ctx, width, height}}) {
 		switch(this.type) {
 			case "color":
 				ctx.fillStyle= this.id;
-				ctx.fillRect(0,0,canvas.width, canvas.height)
+				ctx.fillRect(0,0,width, height)
 				break;
 
 			case "tile": {
@@ -73,3 +73,6 @@ export default class BackgroundLayer extends Layer {
 		}
 	}
 }
+
+BackgroundLayer.SPRITES= ["normal-0", "normal-1", "normal-2", "normal-3", "normal-4"];
+BackgroundLayer.DARK_SPRITES= ["dark-0", "dark-1", "dark-2", "dark-3", "dark-4"];

@@ -1,5 +1,5 @@
 
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 
 export default class BackgroundEntity extends Entity {
 

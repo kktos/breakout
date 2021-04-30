@@ -1,20 +1,20 @@
 import ENV from "../env.js";
-import UILayer from "./UILayer.js";
+import UILayer from "./uilayer.js";
 import {ptInRect} from "../math.js";
 import BrickEntity from "../entities/brick.entity.js";
 import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
 import AlertUI from "../ui/alert.ui.js";
-import ChooseFileUI from "../ui/chooseFile.ui.js";
+import ChooseFileUI from "../ui/choosefile.ui.js";
 import BackgroundLayer from "./background.layer.js";
 import LocalDB from "../utils/storage.util.js";
-import EnterTextUI from "../ui/enterText.ui.js";
+import EnterTextUI from "../ui/entertext.ui.js";
 
 export default class EditorLayer extends UILayer {
 
 	constructor(gc, entities, templateSheet, bkgndLayer) {
 		super(gc);
 
-		this.width= gc.screen.canvas.width;
+		this.width= gc.viewport.canvas.width;
 		this.entities= entities;
 		this.font= gc.resourceManager.get("font", ENV.MAIN_FONT);
 
@@ -271,7 +271,7 @@ export default class EditorLayer extends UILayer {
 	}
 
 	render(gc) {
-		const ctx= gc.screen.ctx;
+		const ctx= gc.viewport.ctx;
 
 		ctx.fillStyle= "#000";
 		ctx.fillRect(0, 0, this.width, ENV.WALL_TOP);

@@ -1,9 +1,9 @@
-import Entity from "./Entity.js";
-import Anim from "../Anim.js";
+import Entity from "./entity.js";
+import Anim from "../anim.js";
 import SpawnerTrait from "../traits/spawner.trait.js";
 import TimerTrait from "../traits/timer.trait.js";
 import EnemyEntity from "./enemy.entity.js";
-import FollowPathTrait from "../traits/followPath.trait.js";
+import FollowPathTrait from "../traits/followpath.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 
 export default class EnemySpawner extends Entity {
@@ -24,7 +24,7 @@ export default class EnemySpawner extends Entity {
 			const door= new Entity(resourceMgr, x, y, "backgrounds");
 			door.isSolid= false;
 			door.setAnim("enemydoor");
-			door.render= function({screen:{ctx}}) {
+			door.render= function({viewport:{ctx}}) {
 				this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
 			};
 

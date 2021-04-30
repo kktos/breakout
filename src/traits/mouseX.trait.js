@@ -1,4 +1,4 @@
-import Trait from './Trait.js';
+import Trait from './trait.js';
 
 export default class MouseXTrait extends Trait {
 

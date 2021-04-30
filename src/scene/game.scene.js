@@ -1,4 +1,4 @@
-import Scene from "./Scene.js";
+import Scene from "./scene.js";
 import LocalDB from "../utils/storage.util.js";
 
 export default class GameScene extends Scene {
@@ -27,7 +27,7 @@ export default class GameScene extends Scene {
 		}
 		else {
 			LocalDB.updateRound(this.currentLevel);
-			this.events.emit(Scene.EVENT_COMPLETE, `./levels/${this.theme}/stage${this.currentLevel}`);
+			this.events.emit(Scene.EVENT_COMPLETE, `levels/${this.theme}/stage${this.currentLevel}`);
 		}
 	}
 }

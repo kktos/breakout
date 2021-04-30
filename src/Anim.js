@@ -1,8 +1,6 @@
-import EventEmitter from "./events/EventEmitter.js";
+import EventEmitter from "./events/eventemitter.js";
 
 export default class Anim {
-
-	static EVENT_END= Symbol("end");
 
 	constructor(name, sheet) {
 		this.name= name;
@@ -82,3 +80,5 @@ export default class Anim {
 	}
 
 }
+// static EVENT_END= Symbol("end");
+Anim.EVENT_END= Symbol("end");

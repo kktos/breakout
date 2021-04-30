@@ -1,13 +1,12 @@
 import ENV from "../env.js";
-import Events from "../events/Events.js";
+import Events from "../events/events.js";
 import {collideRect, COLLISION} from "../math.js";
-import LocalDB from "../utils/storage.util.js";
-import Scene from "./Scene.js";
-import TaskList from "../TaskList.js";
+import Scene from "./scene.js";
+import TaskList from "../tasklist.js";
 import BallEntity from "../entities/ball.entity.js";
 import PaddleEntity from "../entities/paddle.entity.js";
 import SpawnerEntity from "../entities/enemyspawner.entity.js";
-import Trait from "../traits/Trait.js";
+import Trait from "../traits/trait.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
@@ -17,13 +16,13 @@ import DashboardLayer from "../layers/dashboard.layer.js";
 
 export default class LevelScene extends Scene {
 
-	static TASK_REMOVE_ENTITY= Symbol('removeEntity');
-	static TASK_ADD_ENTITY= Symbol('addEntity');
-	static TASK_RESET= Symbol('reset');
+	// static TASK_REMOVE_ENTITY= Symbol('removeEntity');
+	// static TASK_ADD_ENTITY= Symbol('addEntity');
+	// static TASK_RESET= Symbol('reset');
 
-	static STATE_STARTING= Symbol('starting');
-	static STATE_RUNNING= Symbol('running');
-	static STATE_ENDING= Symbol('ending');
+	// static STATE_STARTING= Symbol('starting');
+	// static STATE_RUNNING= Symbol('running');
+	// static STATE_ENDING= Symbol('ending');
 
 	constructor(gc, name, {background, bricks}) {
 		super(gc, name);
@@ -200,3 +199,11 @@ export default class LevelScene extends Scene {
 		}
 	}
 }
+
+LevelScene.TASK_REMOVE_ENTITY= Symbol('removeEntity');
+LevelScene.TASK_ADD_ENTITY= Symbol('addEntity');
+LevelScene.TASK_RESET= Symbol('reset');
+
+LevelScene.STATE_STARTING= Symbol('starting');
+LevelScene.STATE_RUNNING= Symbol('running');
+LevelScene.STATE_ENDING= Symbol('ending');

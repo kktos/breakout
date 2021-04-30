@@ -1,4 +1,4 @@
-import Trait from '../Trait.js';
+import Trait from '../trait.js';
 import BallEntity from "../../entities/ball.entity.js";
 import SpawnerTrait from "../spawner.trait.js";
 

@@ -1,7 +1,7 @@
-import Entity from "./Entity.js";
+import Entity from "./entity.js";
 import ENV from "../env.js";
 import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBoxTrait from "../traits/boundingBox.trait.js";
+import BoundingBoxTrait from "../traits/boundingbox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 
@@ -22,7 +22,7 @@ export default class BallEntity extends Entity {
 		this.addTrait(new KillableTrait());
 	}
 
-	render({keys, screen:{ctx}}) {
+	render({keys, viewport:{ctx}}) {
 		const centerX= this.pos.x + this.center;
 		const centerY= this.pos.y + this.center;
 		ctx.fillStyle= "white";

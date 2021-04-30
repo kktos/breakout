@@ -2,7 +2,7 @@ const path= require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	mode: 'production',
+	mode: 'development',
 	entry: './src/main.js',
 	devtool: 'source-map',
 
@@ -14,8 +14,10 @@ module.exports = {
 
 	output: {
 		filename: 'main.js',
+		chunkFilename: '[name].[chunkhash].js',
 		path: path.resolve(__dirname, 'dist'),
 		clean: true,
+		// publicPath: "/",
 	},
 
 	module: {
@@ -33,7 +35,7 @@ module.exports = {
 			type: 'asset/resource',
 		  },
 		  {
-			test: /\.ogg$/i,
+			test: /\.(ogg|mp3)$/i,
 			use: [
 			  {
 				loader: 'file-loader',

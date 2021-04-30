@@ -1,5 +1,5 @@
-import Trait from './Trait.js';
-import Anim from '../Anim.js';
+import Trait from './trait.js';
+import Anim from '../anim.js';
 
 export default class AnimationTrait extends Trait {
 

@@ -1,5 +1,5 @@
-import UILayer from "./UILayer.js";
-import {Align} from "../Font.js";
+import UILayer from "./uilayer.js";
+import {Align} from "../font.js";
 import BackgroundLayer from "./background.layer.js";
 import ENV from "../env.js";
 
@@ -10,8 +10,8 @@ export default class DebuggerLayer extends UILayer {
 
 		this.rezMgr= gc.resourceManager;
 		
-		this.width= gc.screen.canvas.width;
-		this.height= gc.screen.canvas.height;
+		this.width= gc.viewport.canvas.width;
+		this.height= gc.viewport.canvas.height;
 		
 		this.font= this.rezMgr.get("font", ENV.MAIN_FONT);
 		this.bkgndLayer= bkgndLayer;
@@ -146,7 +146,7 @@ export default class DebuggerLayer extends UILayer {
 	}
 
 	render(gc) {
-		const {tick, screen:{ctx}}= gc;
+		const {tick, viewport:{ctx}}= gc;
 		
 		let text;
 		let line= 0;

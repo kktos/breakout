@@ -35,6 +35,9 @@ const ENV= {
 
 	WALL_TOP: 50,
 
+	VIEWPORT_WIDTH: 600,
+	VIEWPORT_HEIGHT: 600,
+
 	FPS: 1/60
 };
 
