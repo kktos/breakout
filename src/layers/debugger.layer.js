@@ -10,8 +10,8 @@ export default class DebuggerLayer extends UILayer {
 
 		this.rezMgr= gc.resourceManager;
 		
-		this.width= gc.viewport.canvas.width;
-		this.height= gc.viewport.canvas.height;
+		this.width= gc.viewport.width;
+		this.height= gc.viewport.height;
 		
 		this.font= this.rezMgr.get("font", ENV.MAIN_FONT);
 		this.bkgndLayer= bkgndLayer;
@@ -27,7 +27,7 @@ export default class DebuggerLayer extends UILayer {
 		list= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
-				<img id="btnBack" class="btn light-shadow" src="./assets/images/left-arrow.png"/>
+				<div id="btnBack" class="btn light-shadow icn icn-left-arrow"></div>
 				<div class="vcenter hright">
 					BACKGROUND
 					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>

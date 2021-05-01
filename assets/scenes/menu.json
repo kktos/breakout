@@ -41,7 +41,7 @@
 
 		{
 			"type": "sprite",
-			"pos": [15, 50],
+			"pos": [15, 82],
 			"range": [9, 1],
 			"sprite": "bricks:standard-0",
 			"zoom": 2
@@ -49,31 +49,16 @@
 
 		{
 			"type": "sprite",
-			"pos": [15, 82],
-			"range": [2, 1],
-			"sprite": "bricks:standard-1",
-			"zoom": 2
-		},
-		{
-			"type": "sprite",
-			"pos": [462, 82],
-			"range": [2, 1],
-			"sprite": "bricks:standard-1",
-			"zoom": 2
-		},
-
-		{
-			"type": "sprite",
 			"pos": [15, 114],
 			"range": [2, 1],
-			"sprite": "bricks:standard-2",
+			"sprite": "bricks:standard-1",
 			"zoom": 2
 		},
 		{
 			"type": "sprite",
 			"pos": [462, 114],
 			"range": [2, 1],
-			"sprite": "bricks:standard-2",
+			"sprite": "bricks:standard-1",
 			"zoom": 2
 		},
 
@@ -81,12 +66,27 @@
 			"type": "sprite",
 			"pos": [15, 146],
 			"range": [2, 1],
-			"sprite": "bricks:standard-3",
+			"sprite": "bricks:standard-2",
 			"zoom": 2
 		},
 		{
 			"type": "sprite",
 			"pos": [462, 146],
+			"range": [2, 1],
+			"sprite": "bricks:standard-2",
+			"zoom": 2
+		},
+
+		{
+			"type": "sprite",
+			"pos": [15, 178],
+			"range": [2, 1],
+			"sprite": "bricks:standard-3",
+			"zoom": 2
+		},
+		{
+			"type": "sprite",
+			"pos": [462, 178],
 			"range": [2, 1],
 			"sprite": "bricks:standard-3",
 			"zoom": 2
@@ -94,7 +94,7 @@
 
 		{
 			"type": "sprite",
-			"pos": [15, 178],
+			"pos": [15, 210],
 			"range": [9, 1],
 			"sprite": "bricks:standard-4",
 			"zoom": 2
@@ -102,15 +102,15 @@
 
 		{
 			"type": "text",
-			"pos": [300, 115],
+			"pos": [300, 146],
 			"size": 4,
 			"align": 2,
-			"color": "black",
+			"color": "#333333",
 			"text": "BREAK IT"
 		},
 		{
 			"type": "text",
-			"pos": [298, 113],
+			"pos": [298, 144],
 			"size": 4,
 			"align": 2,
 			"color": "#fff",
@@ -118,13 +118,13 @@
 		},
 		{
 			"type": "sprite",
-			"pos": [500, 100],
+			"pos": [500, 132],
 			"zoom": 2,
 			"sprite": "enemies:@portal"
 		},
 		{
 			"type": "sprite",
-			"pos": [50, 100],
+			"pos": [50, 132],
 			"zoom": 2,
 			"sprite": "enemies:@portal"
 		},
@@ -155,14 +155,14 @@
 		{
 			"type": "text",
 			"pos": [300, 10],
-			"size": 1,
+			"size": 2,
 			"align": 2,
 			"color": "#FF0000",
-			"text": "lisa & paul"
+			"text": "paulisa productions"
 		},
 		{
 			"type": "text",
-			"pos": [300, 25],
+			"pos": [300, 50],
 			"size": 1,
 			"align": 2,
 			"color": "#fff",

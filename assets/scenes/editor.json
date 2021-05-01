@@ -5,9 +5,9 @@
 	"killOnExit": true,
 	"showCursor": true,
 
-	"ui": [
-		{"btn": "back"}
-	],
+	"ui": {
+		"pos": "bottom"
+	},
 	"template": [
 		"##### ####### #####",
 		"##### ####### #####",

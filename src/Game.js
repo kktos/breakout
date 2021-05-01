@@ -129,9 +129,11 @@ export default class Game {
 				this.gc.keys.set(e.key, evt.type == "keydown");
 				break;
 	
+			case "click":
+				if(evt.x>this.gc.viewport.width - 10 && evt.y>this.gc.viewport.height - 10)
+					console.show();
 			case "mousedown":
 			case "mouseup":
-			case "click":
 			case "mousemove": {
 				this.gc.mouse.down= evt.type == "mousedown";
 				this.gc.mouse.x= evt.x;

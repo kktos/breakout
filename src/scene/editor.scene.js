@@ -6,7 +6,7 @@ import EditorLayer from "../layers/editor.layer.js";
 
 export default class EditorScene extends Scene {
 
-	constructor(gc, name, {background, template}) {
+	constructor(gc, name, {background, template, ui}) {
 		super(gc, name);
 
 		const bkgndLayer= new BackgroundLayer(gc, background);
@@ -15,7 +15,7 @@ export default class EditorScene extends Scene {
 		const entities= [];
 		this.addLayer(new EntitiesLayer(gc, entities));
 		this.addLayer(new DashboardLayer(gc));
-		this.receiver= new EditorLayer(gc, entities, template, bkgndLayer);
+		this.receiver= new EditorLayer(gc, entities, template, bkgndLayer, ui);
 		this.addLayer(this.receiver);
 
 	}

@@ -3,9 +3,10 @@
 	"name": "highscores",
 	"background": "#000",
 	"showCursor": true,
-	"ui": [
-		{"btn": "back"}
-	],
+	"ui": {
+		"pos": "top",
+		"transparent": true
+	},
 	"layout": [
 		{
 			"type": "text",

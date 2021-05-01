@@ -9,14 +9,18 @@ export default class UILayer extends Layer {
 		this.gc= gc;
 		this.ui= document.getElementById("ui");
 		if(layout) {
+			this.ui.className= layout.pos == "top" ? "top":"bottom";
+			this.ui.className+= layout.transparent ? " transparent":"";
 			this.ui.innerHTML= `
 				<div class="grid-column vcenter">
-					<img id="btnBack" class="btn light-shadow" src="./assets/images/left-arrow.png"/>
+					<div id="btnBack" class="btn light-shadow icn icn-left-arrow"></div>
 				</div>
 			`;
 			this.ui.querySelectorAll(".btn")
 				.forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));		
 		}
+		else
+			this.ui.className= "";
 	}	
 	
 	goBack() {
