@@ -8,7 +8,7 @@ BODY {
 	right: 0;
 	bottom: 0;
 	margin: 0;
-	font: 12px "PressStart2P";
+	font: 1em "PressStart2P";
 }
 CANVAS {
 	position: fixed;

@@ -18,6 +18,7 @@ export default class ExplosionTrait extends Trait {
 			const anim= entity.traits.get(AnimationTrait);
 			anim && anim.setAnim(entity, "explosion");
 			killable.removeAfter= Infinity;
+			// window.navigator.vibrate(200);
 			entity.audio
 				.play("explosion")
 				.then(() => killable.removeAfter= 0);

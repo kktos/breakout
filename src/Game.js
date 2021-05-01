@@ -2,15 +2,6 @@ import ENV from "./env.js";
 import ResourceManager from "./resourcemanager.js";
 import Director from "./scene/director.js";
 
-// let ResourceManager;
-
-// async function imports() {
-// 	return import("./resourcemanager.js")
-// 			.then(m=>{ResourceManager= m.default})
-// 			.catch(err => console.error("IMPORT",err))
-// }
-
-
 let lastTime= 0;
 let acc= 0;
 let inc= ENV.FPS;
@@ -98,15 +89,27 @@ export default class Game {
 	handleEvent(e) {
 		if(!e.isTrusted)
 			return;
-	
+
+		let x,y;
+
+		if(["touchstart", "touchend", "touchcancel", "touchmove"].includes(e.type)) {
+			let touch= e.touches[0] || e.changedTouches[0];
+			x= touch.pageX;
+			y= touch.pageY;
+		}
+
+		if(["mousedown", "mouseup", "mousemove", "click"].includes(e.type)) {
+			x= e.clientX;
+			y= e.clientY;	
+		}
+
 		const bbox= this.gc.viewport.bbox;
 		const evt= {
 			type: e.type,
 			buttons: e.buttons,
-			x: ((e.x - bbox.x) / this.gc.viewport.ratioWidth) | 0,
-			y: ((e.y - bbox.y) / this.gc.viewport.ratioHeight) | 0,
+			x: ((x - bbox.x) / this.gc.viewport.ratioWidth) | 0,
+			y: ((y - bbox.y) / this.gc.viewport.ratioHeight) | 0,
 			key: undefined
-	
 		};
 	
 		switch(e.type) {
@@ -130,7 +133,7 @@ export default class Game {
 				break;
 	
 			case "click":
-				if(evt.x>this.gc.viewport.width - 10 && evt.y>this.gc.viewport.height - 10)
+				if(evt.x>this.gc.viewport.width - 50 && evt.y>this.gc.viewport.height - 50)
 					console.show();
 			case "mousedown":
 			case "mouseup":
@@ -140,6 +143,30 @@ export default class Game {
 				this.gc.mouse.y= evt.y;
 				break;
 			}
+
+			case "touchmove": {
+				evt.type= "mousemove";
+				this.gc.mouse.x= evt.x;
+				this.gc.mouse.y= evt.y;
+				break;
+			}
+			case "touchstart": {
+				evt.type= "mousedown";
+				this.gc.mouse.x= evt.x;
+				this.gc.mouse.y= evt.y;
+				break;
+			}
+			case "touchcancel": {
+				evt.type= "mouseup";
+				this.gc.mouse.x= evt.x;
+				this.gc.mouse.y= evt.y;
+				break;
+			}
+
+			case "devicemotion":
+				console.log("devicemotion", e.rotationRate);
+				break;
+
 		}
 		this.coppola.handleEvent(this.gc, evt);
 	}
@@ -162,11 +189,12 @@ export default class Game {
 
 		[
 			"mousemove", "mousedown", "mouseup", "click",
+			"touchmove", "touchstart", "touchend", "touchcancel",
 			"keyup", "keydown",
 			"contextmenu",
 			"blur", "focus"
 		].forEach(type=> window.addEventListener(type, this));
-
+	
 		console.log("play()");
 		this.play();
 	}

@@ -1,9 +1,9 @@
 {
 	"ping": {
-		"sound0": "prout.ogg",
-		"sound": "ping.ogg"
+		"sound0": "prout.mp3",
+		"sound": "ping.mp3"
 	},
 	"ping2": {
-		"sound": "ping2.ogg"
+		"sound": "ping2.mp3"
 	}
 }

@@ -1,12 +1,12 @@
 {
 	"pong": {
-		"sound0": "tic.ogg",
-		"sound": "pong.ogg"
+		"sound0": "tic.mp3",
+		"sound": "pong.mp3"
 	},
 	"die": {
-		"sound": "die.ogg"
+		"sound": "die.mp3"
 	},
 	"explosion": {
-		"sound": "explosion.ogg"
+		"sound": "explosion.mp3"
 	}
 }

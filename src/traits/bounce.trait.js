@@ -34,42 +34,29 @@ export default class BounceTrait extends Trait {
 		// 	}
 		// }
 
-		// as the ball can be too fast, it could be trapped "inside" the paddle so we need to get it out !
 		if(contains(target, entity)) {
-			switch(side) {
-				case COLLISION.LEFT:
-					entity.left= target.right;
-					break;
-	
-				case COLLISION.RIGHT:
-					entity.right= target.left;
-					break;
-	
-				case COLLISION.TOP:
-					entity.top= target.bottom;
-					break;
-	
-				case COLLISION.BOTTOM:
-					entity.bottom= target.top;
-					break;
-			}
+			console.log("contains",target, entity);
 		}
 
 		switch(side) {
 			case COLLISION.LEFT:
 				entity.vel.x *= -1;
+				entity.left= target.right+1;
 				break;
 
 			case COLLISION.RIGHT:
 				entity.vel.x *= -1;
+				entity.right= target.left-1;
 				break;
 
 			case COLLISION.TOP:
 				entity.vel.y *= -1;
+				entity.top= target.bottom+1;
 				break;
 
 			case COLLISION.BOTTOM:
 				entity.vel.y *= -1;
+				entity.bottom= target.top-1;
 				break;
 		}
 	}

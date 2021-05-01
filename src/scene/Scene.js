@@ -8,8 +8,8 @@ export default class Scene {
 		this.name= name;
         this.events= new EventEmitter();
 		this.layers= [];
-		this.screenWidth= gc.viewport.canvas.width;
-		this.screenHeight= gc.viewport.canvas.height;
+		this.screenWidth= gc.viewport.width;
+		this.screenHeight= gc.viewport.height;
 		this.receiver= null;
 		this.isRunning= true;
 		this.killOnExit= true;
