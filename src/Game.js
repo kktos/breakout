@@ -90,6 +90,9 @@ export default class Game {
 		if(!e.isTrusted)
 			return;
 
+		if(e.srcElement.className == "overlay")
+			return;
+
 		let x,y;
 
 		if(["touchstart", "touchend", "touchcancel", "touchmove"].includes(e.type)) {

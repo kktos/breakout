@@ -2,5 +2,5 @@
 	"type": "game",
 	"name": "Arkanoid",
 	"theme": "arkanoid",
-	"rounds": 1
+	"rounds": 4
 }

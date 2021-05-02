@@ -7,7 +7,7 @@ import AlertUI from "../ui/alert.ui.js";
 import ChooseFileUI from "../ui/choosefile.ui.js";
 import BackgroundLayer from "./background.layer.js";
 import LocalDB from "../utils/storage.util.js";
-import EnterTextUI from "../ui/entertext.ui.js";
+import EnterLevelInfoUI from "../ui/entertext.ui.js";
 
 export default class EditorLayer extends UILayer {
 
@@ -50,9 +50,9 @@ export default class EditorLayer extends UILayer {
 	}
 
 	buildUI() {
-		let x= 100;
+		let x= 60;
 		let y= 10;
-		for(let idx= 0; idx < BrickEntity.TYPES.length-1; idx++) {
+		for(let idx= 0; idx < BrickEntity.TYPES.length; idx++) {
 			const left= x+idx*40;
 			const pts= BrickEntity.POINTS[idx];
 			this.buttons.push({
@@ -124,7 +124,7 @@ export default class EditorLayer extends UILayer {
 	}
 
 	save() {
-		EnterTextUI.run("Save level as :", (name) => {
+		EnterLevelInfoUI.run("Save level:", (name) => {
 			name= name.replace(/^\s+/, '').replace(/\s+$/, '');
 			if(name=="")
 				return;
@@ -162,11 +162,11 @@ export default class EditorLayer extends UILayer {
 	prevBrickType() {
 		this.selectedType--;
 		if(this.selectedType<0)
-			this.selectedType= BrickEntity.TYPES.length-2;
+			this.selectedType= BrickEntity.TYPES.length-1;
 	}
 
 	nextBrickType() {
-		this.selectedType= (this.selectedType+1) % (BrickEntity.TYPES.length-1);
+		this.selectedType= (this.selectedType+1) % (BrickEntity.TYPES.length);
 	}
 
 	onClickUIBtn(id) {
@@ -287,7 +287,7 @@ export default class EditorLayer extends UILayer {
 			this.font.print(ctx, btn.points, btn.left + (btn.right-btn.left)/2, btn.bottom+5);
 		});
 
-		this.paddlesSprites.draw("normal0-0", ctx, 300, 550);
+		this.paddlesSprites.draw("normal0-0", ctx, 270, 550);
 
 	}
 

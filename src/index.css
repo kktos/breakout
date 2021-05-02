@@ -188,6 +188,9 @@ DIV.btn {
 	font-size: 14px;
 	font-weight: bold;
 }
+.alert INPUT {
+	color: black;
+}
 .choose {
 	height: 50vh;
 	grid-gap: 10px;

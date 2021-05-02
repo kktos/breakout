@@ -1,16 +1,28 @@
 
-export default class EnterTextUI {
+export default class EnterLevelInfoUI {
 
 	static run(prompt, callback) {
 		const alertDiv= document.createElement("div");
 		alertDiv.className= "overlay";
 		alertDiv.innerHTML= `
 								<div class="alert">
-									${prompt}
-									<input id="name" type="text" autofocus style="text-align:left"/>
+									<div class="grid-column">
+										<div class="grid-row">
+											ROUND
+											<input id="round" type="number" autofocus/>
+										</div>
+										<div class="grid-row">
+											LEFT
+											<input name="side" type="radio" checked/>
+										</div>
+										<div class="grid-row">
+											RIGHT
+											<input name="side" type="radio"/>
+										</div>
+									</div>
 									<div class="grid-column">
 										<div id="no" class="btn black-shadow hvcenter">CANCEL</div>
-										<div id="yes" class="btn black-shadow hvcenter">OK</div>
+										<div id="yes" class="btn btn-blue black-shadow hvcenter">SAVE</div>
 									</div>
 								</div>`;
 		document.querySelector("BODY").appendChild(alertDiv);
