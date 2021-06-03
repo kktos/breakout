@@ -99,6 +99,11 @@ export default class DebuggerLayer extends UILayer {
 
 	handleEvent(gc, e) {
 		switch(e.type) {
+			case "joybuttondown":
+				if(e.CURSOR_LEFT)
+					this.goBack();
+				break;
+			
 			case "keydown":
 				switch(e.key) {
 					case "ArrowDown":

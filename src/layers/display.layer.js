@@ -19,7 +19,8 @@ export default class DisplayLayer extends UILayer {
 		this.time= 0;
 		this.blinkFlag= false;
 		this.isMouseEnabled= true;
-		this.wannaDisplayHitzones= false
+		this.wannaDisplayHitzones= false;
+		this.lastJoyTime= 0;
 
 		this.itemSelected= 0;
 
@@ -105,6 +106,19 @@ export default class DisplayLayer extends UILayer {
 		});
 	}
 
+	menuMoveUp() {
+		if(this.menu) {
+			this.itemSelected--;
+			if(this.itemSelected<0)
+				this.itemSelected= this.menu.items.length-1;
+		}
+	}
+
+	menuMoveDown() {
+		if(this.menu)
+			this.itemSelected= (this.itemSelected+1) % this.menu.items.length;
+	}
+
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "click":
@@ -113,6 +127,24 @@ export default class DisplayLayer extends UILayer {
 					if(menuIdx>=0)
 						this.exec(gc, menuIdx);
 				}
+				break;
+
+			// case "joyaxismove":
+			// 	if(e.timestamp - this.lastJoyTime < 200)
+			// 		return;
+			// 	this.lastJoyTime= e.timestamp;
+			// 	if(e.vertical < -0.1)
+			// 		return this.menuMoveUp();
+			// 	if(e.vertical > 0.1)
+			// 		return this.menuMoveDown();
+
+			case "joybuttondown":
+				if(e.X || e.TRIGGER_RIGHT)
+					return this.exec(gc);
+				if(e.CURSOR_UP)
+					return this.menuMoveUp();
+				if(e.CURSOR_DOWN)
+					return this.menuMoveDown();
 				break;
 
 			case "mousemove":
@@ -140,16 +172,11 @@ export default class DisplayLayer extends UILayer {
 
 					case "ArrowDown":
 					case "ArrowRight":
-						if(this.menu)
-							this.itemSelected= (this.itemSelected+1) % this.menu.items.length;
+						this.menuMoveDown();
 						break;
 					case "ArrowUp":
 					case "ArrowLeft":
-						if(this.menu) {
-							this.itemSelected--;
-							if(this.itemSelected<0)
-								this.itemSelected= this.menu.items.length-1;
-						}
+						this.menuMoveUp();
 						break;
 					case "Enter":
 						this.exec(gc);

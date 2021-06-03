@@ -169,14 +169,18 @@ export default class EditorLayer extends UILayer {
 		this.selectedType= (this.selectedType+1) % (BrickEntity.TYPES.length);
 	}
 
+	leave() {
+		if(this.isModified)
+			AlertUI.ask("Level was modified and not saved. Quit anyway ?", "QUIT", "NO", () => this.goBack());
+		else
+			this.goBack();
+	}
+
 	onClickUIBtn(id) {
 		switch(id) {
 
 			case "btnBack":
-				if(this.isModified)
-					AlertUI.ask("Level was modified and not saved. Quit anyway ?", "QUIT", "NO", () => this.goBack());
-				else
-					this.goBack();
+				this.leave();
 				break;
 
 			case "btnSave":
@@ -230,6 +234,11 @@ export default class EditorLayer extends UILayer {
 
 	handleEvent(gc, e) {
 		switch(e.type) {
+			case "joybuttondown":
+				if(e.CURSOR_LEFT)
+					this.leave();
+				break;
+
 			case "keydown":
 				switch(e.key) {
 					case "a":
