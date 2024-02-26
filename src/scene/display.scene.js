@@ -1,6 +1,6 @@
-import Scene from "./scene.js";
 import BackgroundLayer from "../layers/background.layer.js";
 import DisplayLayer from "../layers/display.layer.js";
+import Scene from "./Scene.js";
 
 export default class DisplayScene extends Scene {
 

@@ -9,7 +9,7 @@ export default class BackgroundLayer extends Layer {
 	constructor(gc, id, withShadows= false) {
 		super(gc);
 		this.id= id;
-		this.type= typeof id == "string" ? "color" : "tile";
+		this.type= typeof id === "string" ? "color" : "tile";
 
 		switch(this.type) {
 			case "color":
@@ -27,6 +27,12 @@ export default class BackgroundLayer extends Layer {
 			}
 		}
 
+	}
+
+	init(gc, scene) {
+		scene?.events.on(BackgroundLayer.EVENT_UPDATE_BKGND, (id, withShadows) => {
+			this.setBackground(gc, id, withShadows);
+		});
 	}
 
 	setBackground(gc, id, withShadows) {
@@ -76,3 +82,5 @@ export default class BackgroundLayer extends Layer {
 
 BackgroundLayer.SPRITES= ["normal-0", "normal-1", "normal-2", "normal-3", "normal-4"];
 BackgroundLayer.DARK_SPRITES= ["dark-0", "dark-1", "dark-2", "dark-3", "dark-4"];
+
+BackgroundLayer.EVENT_UPDATE_BKGND= Symbol('update background');

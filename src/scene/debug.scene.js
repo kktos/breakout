@@ -1,6 +1,6 @@
-import Scene from "./scene.js";
 import BackgroundLayer from "../layers/background.layer.js";
 import DebuggerLayer from "../layers/debugger.layer.js";
+import Scene from "./Scene.js";
 
 export default class DebugScene extends Scene {
 

@@ -25,7 +25,7 @@ const GP_BUTTONS= {
 
 let lastTime= 0;
 let acc= 0;
-let inc= ENV.FPS;
+const inc= ENV.FPS;
 
 class KeyMap {
 	constructor() {
@@ -43,7 +43,7 @@ class KeyMap {
 	}
 	
 	isPressed(key) {
-		return this.get(key) == true;
+		return this.get(key) === true;
 	}
 }
 
@@ -104,21 +104,23 @@ export default class Game {
 
 	play() {
 		const overlay= document.querySelector("#gamepaused");
-		overlay && overlay.remove();
+		overlay?.remove();
 		this.isRunning= true;
+		acc= inc;
+		lastTime= 0;
 		this.loop();
 	}
 
 	readGamepad() {
 		const gamepad= navigator.getGamepads()[this.gc.gamepad.id];
-		if(gamepad.timestamp == this.gc.gamepad.lastTime)
+		if(gamepad.timestamp === this.gc.gamepad.lastTime)
 			return;
 
 		this.gc.gamepad.lastTime= gamepad.timestamp;
 		const hMove= gamepad.axes[GP_STICKS_AXES.RIGHT_HORIZONTAL].toFixed(3);
 		const vMove= gamepad.axes[GP_STICKS_AXES.RIGHT_VERTICAL].toFixed(3);
 
-		if(hMove!=0 || vMove!=0)
+		if(hMove!==0 || vMove!==0)
 			setTimeout(() => {
 				// const bbox= this.gc.viewport.bbox;
 				// const w= bbox.width/2;
@@ -178,13 +180,14 @@ export default class Game {
 		if(!e.isTrusted)
 			return;
 
-		if(e.srcElement.className == "overlay")
+		if(e.srcElement.className === "overlay")
 			return;
 
-		let x,y;
+		let x;
+		let y;
 
 		if(["touchstart", "touchend", "touchcancel", "touchmove"].includes(e.type)) {
-			let touch= e.touches[0] || e.changedTouches[0];
+			const touch= e.touches[0] || e.changedTouches[0];
 			x= touch.pageX;
 			y= touch.pageY;
 		}
@@ -220,7 +223,7 @@ export default class Game {
 			case "keyup":
 			case "keydown":
 				evt.key= e.key;
-				this.gc.keys.set(e.key, evt.type == "keydown");
+				this.gc.keys.set(e.key, evt.type === "keydown");
 				break;
 	
 			case "click":
@@ -229,7 +232,7 @@ export default class Game {
 			case "mousedown":
 			case "mouseup":
 			case "mousemove": {
-				this.gc.mouse.down= evt.type == "mousedown";
+				this.gc.mouse.down= evt.type === "mousedown";
 				this.gc.mouse.x= evt.x;
 				this.gc.mouse.y= evt.y;
 				break;

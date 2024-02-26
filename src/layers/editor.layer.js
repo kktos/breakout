@@ -1,17 +1,17 @@
-import ENV from "../env.js";
-import UILayer from "./uilayer.js";
-import {ptInRect} from "../math.js";
 import BrickEntity from "../entities/brick.entity.js";
-import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
+import ENV from "../env.js";
+import {ptInRect} from "../math.js";
 import AlertUI from "../ui/alert.ui.js";
 import ChooseFileUI from "../ui/choosefile.ui.js";
-import BackgroundLayer from "./background.layer.js";
-import LocalDB from "../utils/storage.util.js";
 import EnterLevelInfoUI from "../ui/entertext.ui.js";
+import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
+import LocalDB from "../utils/storage.util.js";
+import BackgroundLayer from "./background.layer.js";
+import UILayer from "./uilayer.js";
 
 export default class EditorLayer extends UILayer {
 
-	constructor(gc, entities, templateSheet, bkgndLayer, ui) {
+	constructor(gc, entities, templateSheet, ui) {
 		super(gc, ui);
 
 		this.width= gc.viewport.canvas.width;
@@ -30,15 +30,16 @@ export default class EditorLayer extends UILayer {
 
 		this.templateSheet= templateSheet;
 
-		this.bkgndLayer= bkgndLayer;
 		this.bkgndIndex= 0;
+		this.updateBackground= () => {
+			gc.scene.events.emit(BackgroundLayer.EVENT_UPDATE_BKGND, this.bkgndIndex, true);
+		};
 
 		this.themeName= "user";
 		this.levelName= "";
 
 		this.buildUI();
 
-		bkgndLayer.setBackground(gc, this.bkgndIndex, true);
 		this.resetLevel();
 	}
 
@@ -50,8 +51,8 @@ export default class EditorLayer extends UILayer {
 	}
 
 	buildUI() {
-		let x= 60;
-		let y= 10;
+		const x= 60;
+		const y= 10;
 		for(let idx= 0; idx < BrickEntity.TYPES.length; idx++) {
 			const left= x+idx*40;
 			const pts= BrickEntity.POINTS[idx];
@@ -116,7 +117,8 @@ export default class EditorLayer extends UILayer {
 		this.entities.length= 0;
 		this.entities.push(...createBricks(this.gc, sheet.bricks, true));
 		this.bkgndIndex= sheet.background|0;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex, true);
+		this.updateBackground();
+		// this.bkgndLayer.setBackground(this.gc, this.bkgndIndex, true);
 		this.ui.querySelectorAll("INPUT")[0].value= sheet.name;
 		this.isModified= false;
 
@@ -126,7 +128,7 @@ export default class EditorLayer extends UILayer {
 	save() {
 		EnterLevelInfoUI.run("Save level:", (name) => {
 			name= name.replace(/^\s+/, '').replace(/\s+$/, '');
-			if(name=="")
+			if(name==="")
 				return;
 				
 			this.levelName= name;
@@ -146,11 +148,12 @@ export default class EditorLayer extends UILayer {
 
 	setBackground(bkgndIndex) {
 		this.bkgndIndex= bkgndIndex % BackgroundLayer.SPRITES.length;
-		this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
+		// this.bkgndLayer.setBackground(this.gc, this.bkgndIndex);
+		this.updateBackground();
 	}
 
 	updateBrickStats() {
-		const total= this.entities.filter(b=>b.type!="#").length;
+		const total= this.entities.filter(b=>b.type!=="#").length;
 		const breakable= this.entities.filter(b=>!["#","@","X"].includes(b.type)).length;
 		const points= this.entities.reduce((acc, curr)=>acc+curr.points|0,0);
 
@@ -207,7 +210,7 @@ export default class EditorLayer extends UILayer {
 	drawBrick(x, y, buttons) {
 		const target= this.entities.find(entity => ptInRect(x, y, entity));
 		if(target) {
-			target.setType(buttons==2?"#":this.buttons[this.selectedType].type);
+			target.setType(buttons===2?"#":this.buttons[this.selectedType].type);
 			this.isModified= true;
 			this.updateBrickStats();
 		}				
@@ -215,18 +218,18 @@ export default class EditorLayer extends UILayer {
 
 	// https://stackoverflow.com/questions/4672279/bresenham-algorithm-in-javascript
 	line({x:x0, y:y0}, {x:x1, y:y1}, buttons) {
-		var dx = Math.abs(x1 - x0);
-		var dy = Math.abs(y1 - y0);
-		var sx = (x0 < x1) ? 1 : -1;
-		var sy = (y0 < y1) ? 1 : -1;
-		var err = dx - dy;
+		const dx = Math.abs(x1 - x0);
+		const dy = Math.abs(y1 - y0);
+		const sx = (x0 < x1) ? 1 : -1;
+		const sy = (y0 < y1) ? 1 : -1;
+		let err = dx - dy;
 	 
 		while(true) {
 		   this.drawBrick(x0, y0, buttons);
 	 
 		//    if ((x0 === x1) && (y0 === y1)) break;
 		   if (Math.abs(x0 - x1) < 0.0001 && Math.abs(y0 - y1) < 0.0001) break;
-		   var e2 = 2*err;
+		   const e2 = 2*err;
 		   if (e2 > -dy) { err -= dy; x0  += sx; }
 		   if (e2 < dx) { err += dx; y0  += sy; }
 		}

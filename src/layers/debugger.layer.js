@@ -1,7 +1,7 @@
-import UILayer from "./uilayer.js";
+import ENV from "../env.js";
 import {Align} from "../font.js";
 import BackgroundLayer from "./background.layer.js";
-import ENV from "../env.js";
+import UILayer from "./uilayer.js";
 
 export default class DebuggerLayer extends UILayer {
 
@@ -24,7 +24,7 @@ export default class DebuggerLayer extends UILayer {
 	}
 
 	buildUI(list) {
-		list= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
+		const options= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
 		this.ui.innerHTML= `
 			<div class="grid-column vcenter">
 				<div id="btnBack" class="btn light-shadow icn icn-left-arrow"></div>
@@ -34,14 +34,22 @@ export default class DebuggerLayer extends UILayer {
 				</div>
 				<div class="vcenter hright">
 					SPRITESHEET
-					<select id="ss">${list}</select>
+					<select id="ss">${options}</select>
 				</div>
 			</div>
 			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
 			</div>
 		`;
-		this.ui.querySelectorAll(".btn").forEach((el) => el.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(el.id)));
-		this.ui.querySelectorAll("INPUT,SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+		const btnList= this.ui.querySelectorAll(".btn");
+		for (let idx = 0; idx < btnList.length; idx++) {
+			btnList[idx].addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(evt.target.id));			
+		}
+		// forEach((el) => el.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(el.id)));
+		const inputList= this.ui.querySelectorAll("INPUT,SELECT");
+		for (let idx = 0; idx < inputList.length; idx++) {
+			inputList[idx].addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target));			
+		}
+		// forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
 	}
 
 	onChangeUI(el) {

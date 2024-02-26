@@ -1,18 +1,24 @@
 import ENV from "../env.js";
-import {clone} from "../utils/object.util.js";
 import { ptInRect } from "../math.js";
+import Scene from "../scene/Scene.js";
+import {clone} from "../utils/object.util.js";
 import LocalDB from "../utils/storage.util.js";
 import UILayer from "./uilayer.js";
-import Scene from "../scene/scene.js";
+
+const loadSprite= ({resourceManager}, name) => {
+	const [sheet, sprite]= name.split(":");
+	const ss= resourceManager.get("sprite", sheet);
+	return { ss,sprite };
+}
 
 export default class DisplayLayer extends UILayer {
 
 	constructor(gc, layout, ui) {
 		super(gc, ui);
 
-		const rezMgr= gc.resourceManager;
-		this.paddleSprites= rezMgr.get("sprite", "paddles");
+		console.log("layout", layout);
 
+		const rezMgr= gc.resourceManager;
 		this.font= rezMgr.get("font", ENV.MAIN_FONT);
 
 		this.layout= layout;
@@ -26,13 +32,13 @@ export default class DisplayLayer extends UILayer {
 
 		this.initVars();
 
-		const menus= layout.filter(op => op.type=="menu");
+		const menus= layout.filter(op => op.type==="menu");
 		if(menus.length>1)
 			throw new Error("Only one menu is allowed per viewport");
 		
 		this.menu= menus.length>0 ? menus[0] : null;
 
-		this.prepareRendering();
+		this.prepareRendering(gc);
 	}
 
 	initVars() {
@@ -41,41 +47,53 @@ export default class DisplayLayer extends UILayer {
 		this.vars.set("player", LocalDB.currentPlayer());
 	}
 
-	prepareMenu(op) {
+	prepareMenu(gc, op) {
 		const menuItems= [];
 		for(let idx= 0; idx<op.items.length; idx++) {
 			const item= op.items[idx];
 			switch(item.type) {
-				default:
-				case "text":
-					menuItems.push(item);
-					break;
 				case "repeat":
 					this.repeat(item, (menuitem)=>menuItems.push(menuitem));
+					break;
+				// case "text":
+				default:
+					menuItems.push(item);
 					break;
 			}
 		}
 		op.items= menuItems;
+		op.selectionSprites= null;
+		if(op.selection) {
+			op.selectionSprites= {};
+			if(op.selection.left) {
+				op.selectionSprites.left= loadSprite(gc, op.selection.left);
+			}
+			if(op.selection.right) {
+				op.selectionSprites.right= loadSprite(gc, op.selection.right);
+			}
+		}
 	}
 
 	repeat(op, callback) {
 		for(let idx=0; idx<op.count; idx++) {
 			if(op.var)
 				this.vars.set(op.var, idx);
-			op.items.forEach(itemSource => {
-				const item= clone(itemSource);
+
+			for(let itemIdx=0; itemIdx<op.items.length; itemIdx++) {
+				const item= clone(op.items[itemIdx]);
 				if(Array.isArray(item.texts)) {
 					item.text= item.texts[idx];
-					delete item.texts;
+					// delete item.texts;
+					item.texts= null;
 				}
 				item.pos[0]+= idx*op.step.pos[0];
 				item.pos[1]+= idx*op.step.pos[1];
-				callback(item);
-			});
+				callback(item);				
+			}
 		}
 	}
 
-	prepareRendering() {
+	prepareRendering(gc) {
 		for(let idx= this.layout.length-1; idx>=0; idx--) {
 			const op= this.layout[idx];
 			switch(op.type) {
@@ -88,7 +106,7 @@ export default class DisplayLayer extends UILayer {
 					this.layout.splice(idx, 1);
 					break;
 				case "menu":
-					this.prepareMenu(op);
+					this.prepareMenu(gc, op);
 					break;
 			}
 		}
@@ -196,7 +214,7 @@ export default class DisplayLayer extends UILayer {
 			const [action, ...parms]= menuItem.action.split(":");
 			switch(action) {
 				case "updateHighscores": {
-					let name= this.vars.has(parms[0]) ? this.vars.get(parms[0]) : null;
+					const name= this.vars.has(parms[0]) ? this.vars.get(parms[0]) : null;
 					if(name) {
 						LocalDB.updateName(name);
 						LocalDB.updateHighscores();
@@ -235,19 +253,19 @@ export default class DisplayLayer extends UILayer {
 				return "";
 
 			let value= this.vars.get(name);
-			if(value == undefined)
+			if(value === undefined)
 				return "";
 
 			if(parms.length) {
 				if(parms[0].match(/^\$/))
 					parms[0]= this.vars.get(parms[0].substr(1));
 				value= value[parms[0]];
-				if(value == undefined)
+				if(value === undefined)
 					return "";
 				if(parms.length>1)
 					value= value[parms[1]];
 			}
-			return value != undefined ? value : "";
+			return value !== undefined ? value : "";
 		});
 	}
 
@@ -259,15 +277,16 @@ export default class DisplayLayer extends UILayer {
 		if(op.size)
 			this.font.size= op.size;
 		const text= this.eval(op.text);
-		return this.font.print(ctx, text==""? " ": text, op.pos[0], op.pos[1], op.color);
+		return this.font.print(ctx, text===""? " ": text, op.pos[0], op.pos[1], op.color);
 	}
 
 	renderSprite({resourceManager, tick, viewport:{ctx}}, op) {
-		const [sheet, sprite]= op.sprite.split(":");
-		const ss= resourceManager.get("sprite", sheet);
+		// const [sheet, sprite]= op.sprite.split(":");
+		// const ss= resourceManager.get("sprite", sheet);
+		const {ss, sprite}= loadSprite({resourceManager}, op.sprite);
 		const zoom= op.zoom || 1;
 		const [x, y]= op.pos;
-		const [countX, countY]= op.range || [1,1];
+		let [countX, countY]= op.range || [1,1];
 		if(countX<=0)
 			countX= 1;
 		if(countY<=0)
@@ -283,12 +302,12 @@ export default class DisplayLayer extends UILayer {
 		}
 	}
 
-	renderMenuText(gc, item, idx) {
+	renderMenuText(gc, menu, item, idx) {
 		const textRect= this.renderText(gc, {
-			color: idx==this.itemSelected?ENV.COLORS.DEFAULT_TEXT:ENV.COLORS.SELECTED_TEXT,
+			color: idx===this.itemSelected ? ENV.COLORS.DEFAULT_TEXT : ENV.COLORS.SELECTED_TEXT,
 			...item
 		});
-		if(idx==this.itemSelected) {
+		if(idx===this.itemSelected) {
 			const ctx= gc.viewport.ctx;
 			ctx.strokeStyle= ENV.COLORS.SELECT_RECT;
 			ctx.beginPath();
@@ -297,14 +316,20 @@ export default class DisplayLayer extends UILayer {
 			ctx.moveTo(textRect[0]-2, textRect[3]+2);
 			ctx.lineTo(textRect[2]+4, textRect[3]+2);
 			ctx.stroke();
-			this.paddleSprites.drawAnim("selectionL", ctx, textRect[0]-25, textRect[1]-2, gc.tick/100);
-			this.paddleSprites.drawAnim("selectionR", ctx, textRect[2]+4, textRect[1]-2, gc.tick/100);
+			if(menu.selectionSprites?.left) {
+				const {ss, sprite}= menu.selectionSprites.left;
+				ss.drawAnim(sprite, ctx, textRect[0]-25, textRect[1]-2, gc.tick/100);
+			}
+			if(menu.selectionSprites?.right) {
+				const {ss, sprite}= menu.selectionSprites.right;
+				ss.drawAnim(sprite, ctx, textRect[2]+4, textRect[1]-2, gc.tick/100);
+			}
 		}
 	}
 
-	renderMenu(gc, op) {
-		for(let idx= 0; idx<op.items.length; idx++)
-			this.renderMenuText(gc, op.items[idx], idx);
+	renderMenu(gc, menu) {
+		for(let idx= 0; idx<menu.items.length; idx++)
+			this.renderMenuText(gc, menu, menu.items[idx], idx);
 	}
 
 	render(gc) {
@@ -325,12 +350,14 @@ export default class DisplayLayer extends UILayer {
 					this.renderMenu(gc, op);
 					break;
 				default:
-					throw new Error("Unkown operation "+op.type);
+					throw new Error(`Unkown operation ${op.type}`);
 			}
 		}
 
 		if(this.wannaDisplayHitzones && this.menu) {
-			this.menu.items.forEach(item => {
+			const items= this.menu.items;
+			for (let idx = 0; idx < items.length; idx++) {
+				const item = items[idx];
 				if(item.align)
 					this.font.align= item.align;
 				if(item.size)
@@ -340,9 +367,20 @@ export default class DisplayLayer extends UILayer {
 				gc.viewport.ctx.strokeRect(r[0], r[1], r[2]-r[0], r[3]-r[1]);
 
 				gc.viewport.ctx.fillStyle="white";
-				gc.viewport.ctx.fillText(`X: ${this.gc.mouse.x} Y: ${this.gc.mouse.y}`,510,590);
-				
-			});			
+				gc.viewport.ctx.fillText(`X: ${this.gc.mouse.x} Y: ${this.gc.mouse.y}`,510,590);				
+			}
+
+			// this.menu.items.forEach(item => {
+			// 	if(item.align)
+			// 		this.font.align= item.align;
+			// 	if(item.size)
+			// 		this.font.size= item.size;
+			// 	const r= this.font.textRect(item.text, item.pos[0], item.pos[1]);
+			// 	gc.viewport.ctx.strokeStyle= "red";
+			// 	gc.viewport.ctx.strokeRect(r[0], r[1], r[2]-r[0], r[3]-r[1]);
+			// 	gc.viewport.ctx.fillStyle="white";
+			// 	gc.viewport.ctx.fillText(`X: ${this.gc.mouse.x} Y: ${this.gc.mouse.y}`,510,590);
+			// });			
 		}
 
 	}

@@ -1,0 +1,50 @@
+display "menu" {
+	background #000
+	showCursor
+	font "bubble-bobble"
+
+	layout {
+		align 2
+		size 3
+
+		menu {
+			selection {
+				left "paddles:selectionL"
+				right "paddles:selectionR"
+			},
+			items {
+				text "play" at:300,300 scene:"theme"
+				text "highscores" at:300,360 scene:"highscores"
+				text "level editor" at:300,420 scene:"editor"
+				text "debug" at:300,480 scene:"debug"
+			}
+		}
+
+		zoom 2
+		sprite "bricks:standard-0" at:15,82 range:9,1
+		sprite "bricks:standard-1" at:15,114 range:2,1
+		sprite "bricks:standard-1" at:462,114 range:2,1
+		sprite "bricks:standard-2" at:15,146 range:2,1
+		sprite "bricks:standard-2" at:462,146 range:2,1
+		sprite "bricks:standard-3" at:15,178 range:2,1
+		sprite "bricks:standard-3" at:462,178 range:2,1
+		sprite "bricks:standard-4" at:15,210 range:9,1
+
+		color #fff
+
+		size 4
+		text "BREAK IT" at:300,146 color:#333333
+		text "BREAK IT" at:298,144
+
+		sprite "enemies:@portal" at:500,132
+		sprite "enemies:@portal" at:50,132
+
+		size 1
+		text "code by kktos" at:300,570
+		text "heavily inspired by pomle" at:300,580
+		text "all sprites found on the web" at:300,590
+		text "present" at:300,50
+		text "paulisa productions" at:300,10 color:#ff0000 size:2
+
+	}
+}

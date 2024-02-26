@@ -1,5 +1,5 @@
-import Scene from "./scene.js";
 import LocalDB from "../utils/storage.util.js";
+import Scene from "./Scene.js";
 
 export default class GameScene extends Scene {
 

@@ -6,14 +6,14 @@ const ENV= {
 
 	MAIN_FONT: "bubble-bobble",
 
-	SCENES_PATH: `scenes/`,
+	SCENES_PATH: "scenes/",
 	LEVELS_DIR: "/levels/",
-	SOUNDS_PATH: `sounds/`,
+	SOUNDS_PATH: "sounds/",
 	VOLUME: 50,
 
-	SPRITESHEETS_PATH: `spritesheets/`,
-	IMAGES_PATH: `images/`,
-	FONTS_PATH: `fonts/`,
+	SPRITESHEETS_PATH: "spritesheets/",
+	IMAGES_PATH: "images/",
+	FONTS_PATH: "fonts/",
 
 	COLORS: {
 		DEFAULT_TEXT: "white",

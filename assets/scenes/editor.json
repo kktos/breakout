@@ -1,7 +1,7 @@
 {
 	"type": "editor",
 	"name": "editor",
-	"background": 2,
+	"background": 0,
 	"killOnExit": true,
 	"showCursor": true,
 

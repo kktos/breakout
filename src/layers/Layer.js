@@ -1,10 +1,10 @@
 
 export default class Layer {
 	
-	constructor(gc) {
-	}	
+	// biome-ignore lint/complexity/noUselessConstructor: <explanation>
+	constructor(gc) {}	
 	
-	render(dt) {
+	init(gc, scene) {}
 
-	}
+	render(dt) {}
 }

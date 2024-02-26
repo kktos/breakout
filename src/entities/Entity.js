@@ -129,7 +129,9 @@ export default class Entity {
 	}
 
     finalize() {
-        this.traits.forEach(trait => trait.finalize(this));
+        // this.traits.forEach(trait => trait.finalize(this));
+		for(let idx= 0; idx<this.traits.length; idx++)
+			this.traits[idx].finalize(this);
         this.events.clear();
     }
 

@@ -16,7 +16,10 @@ export default class Scene {
 		this.next= null;
 	}
 
-	init(gc) {}
+	init(gc) {
+		for(let idx=0; idx<this.layers.length; idx++)
+			this.layers[idx].init?.(gc, this);
+	}
 
 	addLayer(layer) {
 		this.layers.push(layer);

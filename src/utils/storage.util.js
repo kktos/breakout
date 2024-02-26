@@ -1,9 +1,10 @@
 import ENV from "../env.js";
 
-export default class LocalDB {
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+export  default class LocalDB {
 
 	static keys() {
-		let keys= [];
+		const keys= [];
 		for(let idx= 0; idx < localStorage.length; idx++)
 			keys.push(localStorage.key(idx));
 		return keys;
@@ -11,7 +12,7 @@ export default class LocalDB {
 
 	static levels(theme) {
 		let keys= LocalDB.keys();
-		const re= new RegExp("^\./levels/"+theme+"/");
+		const re= new RegExp(`^\./levels/${theme}/`);
 		keys= keys.filter(key => key.match(re)).sort();
 		return keys.map(key => ({key, name: key.replace(/^\.\/levels\//,'')}));
 	}

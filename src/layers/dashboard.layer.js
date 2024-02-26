@@ -1,11 +1,11 @@
+import WallEntity from "../entities/wall.entity.js";
 import ENV from "../env.js";
 import {Align} from "../font.js";
-import Layer from "./layer.js";
-import WallEntity from "../entities/wall.entity.js";
-import PlayerTrait from "../traits/player.trait.js";
 import Level from "../scene/level.scene.js";
+import PlayerTrait from "../traits/player.trait.js";
+import Layer from "./layer.js";
 
-let flipflop= true;
+const flipflop= true;
 export default class DashboardLayer extends Layer {
 	
 	constructor(gc) {

@@ -1,13 +1,14 @@
 import ENV from "../env.js";
 import {loadJson} from "../utils/loaders.util.js";
-import LevelScene from "./level.scene.js";
+import LocalDB from "../utils/storage.util.js";
+import DebugScene from "./debug.scene.js";
 import DisplayScene from "./display.scene.js";
 import EditorScene from "./editor.scene.js";
-import DebugScene from "./debug.scene.js";
 import GameScene from "./game.scene.js";
-import LocalDB from "../utils/storage.util.js";
+import LevelScene from "./level.scene.js";
 
-export default class SceneFactory {
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+export  default class SceneFactory {
 
 	static async load(gc, name) {
 		let sheet= null;
@@ -36,7 +37,7 @@ export default class SceneFactory {
 				scene= new GameScene(gc, sheet.name, sheet);
 				break;
 			default:
-				throw new Error("Uknown Scene type: "+sheet.type);
+				throw new Error(`Uknown Scene type: ${sheet.type}`);
 		}
 
 		// scene.killOnExit= sheet.killOnExit ? true : false;

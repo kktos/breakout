@@ -1,18 +1,18 @@
+import BallEntity from "../entities/ball.entity.js";
+import SpawnerEntity from "../entities/enemyspawner.entity.js";
+import PaddleEntity from "../entities/paddle.entity.js";
 import ENV from "../env.js";
 import Events from "../events/events.js";
-import {collideRect, COLLISION} from "../math.js";
-import Scene from "./scene.js";
-import TaskList from "../tasklist.js";
-import BallEntity from "../entities/ball.entity.js";
-import PaddleEntity from "../entities/paddle.entity.js";
-import SpawnerEntity from "../entities/enemyspawner.entity.js";
-import Trait from "../traits/trait.js";
-import StickyTrait from "../traits/powerups/sticky.trait.js";
-import PlayerTrait from "../traits/player.trait.js";
-import KillableTrait from "../traits/killable.trait.js";
 import BackgroundLayer from "../layers/background.layer.js";
-import EntitiesLayer from "../layers/entities.layer.js";
 import DashboardLayer from "../layers/dashboard.layer.js";
+import EntitiesLayer from "../layers/entities.layer.js";
+import {COLLISION,collideRect } from "../math.js";
+import TaskList from "../tasklist.js";
+import KillableTrait from "../traits/killable.trait.js";
+import PlayerTrait from "../traits/player.trait.js";
+import StickyTrait from "../traits/powerups/sticky.trait.js";
+import Trait from "../traits/trait.js";
+import Scene from "./Scene.js";
 
 export default class LevelScene extends Scene {
 
@@ -50,7 +50,7 @@ export default class LevelScene extends Scene {
 	newPlayer(gc) {
 		if(this.paddle) {
 			const idx= this.entities.indexOf(this.paddle);
-			if(idx != -1)
+			if(idx !== -1)
 				this.entities.splice(idx, 1);
 		}
 
@@ -59,7 +59,7 @@ export default class LevelScene extends Scene {
 		const trait= new Trait();
 		trait
 			.on(PlayerTrait.EVENT_PLAYER_KILLED, async (lives) => {
-				if(lives==0) {
+				if(lives===0) {
 					this.state= LevelScene.STATE_ENDING;
 					this.audio
 						.play("game_over")
@@ -70,7 +70,7 @@ export default class LevelScene extends Scene {
 					this.reset(gc);
 			})
 			.on(KillableTrait.EVENT_KILLED, async (entity) => {
-				if(entity.class == "BrickEntity")
+				if(entity.class === "BrickEntity")
 					this.breakableCount--;
 
 				if(this.breakableCount<=0)
@@ -82,7 +82,7 @@ export default class LevelScene extends Scene {
 	}
 
 	findBall() {
-		return this.entities.find(e=>e.class=="BallEntity");
+		return this.entities.find(e=>e.class==="BallEntity");
 	}
 
 	init(gc) {
@@ -91,7 +91,7 @@ export default class LevelScene extends Scene {
 			.play("new_level")
 			.then(() => this.reset(gc));
 
-		this.breakableCount= this.entities.filter(entity => (entity.class == "BrickEntity") && (entity.breakable) ).length;
+		this.breakableCount= this.entities.filter(entity => (entity.class === "BrickEntity") && (entity.breakable) ).length;
 	}
 
 	reset(gc) {
@@ -116,7 +116,7 @@ export default class LevelScene extends Scene {
 		this.tasks
 			.onTask(LevelScene.TASK_REMOVE_ENTITY, (entity) => {
 				const idx= this.entities.indexOf(entity);
-				if(idx != -1)
+				if(idx !== -1)
 					this.entities.splice(idx, 1);			
 			});
 
@@ -188,7 +188,7 @@ export default class LevelScene extends Scene {
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "keydown": {
-				if(e.key=="r")
+				if(e.key==="r")
 					this.newPlayer(gc);
 				break;
 			}

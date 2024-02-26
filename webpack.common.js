@@ -33,12 +33,12 @@ module.exports = {
 			type: 'asset/resource',
 		  },
 		  {
+			test: /\.script\.txt$/i,
+			type: 'asset/source',
+		  },
+		  {
 			test: /\.(ogg|mp3)$/i,
-			use: [
-			  {
-				loader: 'file-loader',
-			  },
-			],
+			type: 'asset/resource',
 		  },		  		  
 		],
 	  },	

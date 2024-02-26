@@ -7,6 +7,10 @@
 	"layout": [
 		{
 			"type": "menu",
+			"selection": {
+				"left": "paddles:selectionL",
+				"right": "paddles:selectionR"
+			},
 			"items": [
 				{
 					"text": "play",
@@ -97,7 +101,8 @@
 			"pos": [15, 210],
 			"range": [9, 1],
 			"sprite": "bricks:standard-4",
-			"zoom": 2
+			"zoom": 2,
+			"code" : "sprite 'bricks:standard-4' at(15, 210) range(9,1) zoom(2)"
 		},
 
 		{
@@ -106,7 +111,8 @@
 			"size": 4,
 			"align": 2,
 			"color": "#333333",
-			"text": "BREAK IT"
+			"text": "BREAK IT",
+			"code" : "text 'BREAK IT' at(300, 146) color(#333333) align(2) size(4)"
 		},
 		{
 			"type": "text",

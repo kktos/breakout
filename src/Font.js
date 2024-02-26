@@ -1,6 +1,6 @@
 import ENV from "./env.js";
-import {loadImage, loadJson} from './utils/loaders.util.js';
 import SpriteSheet from './spritesheet.js';
+import {loadImage, loadJson} from './utils/loaders.util.js';
 
 // const CHARS= ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.';
 export const Align= {
@@ -17,7 +17,7 @@ function loadFont(sheet) {
             const offsetY= sheet.offsetY|0;
             const gapX= sheet.gapX|0;
             const rowLen= image.width;
-            for (let [index, char] of [...sheet.charset].entries()) {
+            for (const [index, char] of [...sheet.charset].entries()) {
                 const x= offsetX + index * (sheet.width+gapX) % rowLen;
                 const y= offsetY + Math.floor(index * (sheet.width+gapX) / rowLen) * sheet.width;
                 fontSprite.define(char, x, y, sheet.width, sheet.height);

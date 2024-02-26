@@ -1,5 +1,5 @@
-import Scene from './scene.js';
-import SceneFactory from './scene.factory.js';
+import SceneFactory from './Scene.factory.js';
+import Scene from './Scene.js';
 
 export default class Director {
     constructor(gc) {
@@ -54,7 +54,7 @@ export default class Director {
 
     run(name) {
         this.pauseScene();
-        const sceneIdx= this.scenes.findIndex(scene => scene.name == name);
+        const sceneIdx= this.scenes.findIndex(scene => scene.name === name);
         if(sceneIdx>=0) {
             this.sceneIndex= sceneIdx;
             if(this.currentScene) {

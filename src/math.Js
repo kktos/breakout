@@ -14,6 +14,12 @@ export const COLLISION = {
 	BOTTOM: Symbol("bottom"),
 };
 
+/*
+
+URGENT -> READ THIS TO FIX COLLISION
+https://ailef.tech/2022/11/12/creating-a-2d-physics-engine-from-scratch-in-javascript/
+
+*/
 function collideRect1(r1, r2){
 	const dx= (r1.pos.x + r1.size.x/2)-(r2.pos.x + r2.size.x/2);
 	const dy= (r1.pos.y + r1.size.y/2)-(r2.pos.y + r2.size.y/2);
