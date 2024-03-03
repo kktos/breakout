@@ -15,7 +15,7 @@ export default class Anim {
 			const framesDef= sheet.frames;
 			const [from, to]= framesDef.range;
 			for(let idx= from; idx<=to; idx++)
-				this.frames.push(framesDef.name+"-"+idx);
+				this.frames.push(`${framesDef.name}-${idx}`);
 		}
 		this.loopInitialValue= this.loop;
 		this.reset();
@@ -57,11 +57,11 @@ export default class Anim {
 			return this.frames[this.frameIdx];
 	
 		const heartbeat= Math.floor(time / this.len) % this.frames.length;
-		if(this.lastHearbeat != heartbeat) {
+		if(this.lastHearbeat !== heartbeat) {
 			this.lastHearbeat= heartbeat;
 			this.frameIdx+= this.step;
 			if(this.step>0) {
-				if(this.frameIdx == this.frames.length) {
+				if(this.frameIdx === this.frames.length) {
 					this.loop--;
 					this.frameIdx= this.loop ? 0 : this.frameIdx-1;
 				}		

@@ -6,8 +6,8 @@ import ChooseFileUI from "../ui/choosefile.ui.js";
 import EnterLevelInfoUI from "../ui/entertext.ui.js";
 import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
 import LocalDB from "../utils/storage.util.js";
+import UILayer from "./UILayer.js";
 import BackgroundLayer from "./background.layer.js";
-import UILayer from "./uilayer.js";
 
 export default class EditorLayer extends UILayer {
 
@@ -45,7 +45,7 @@ export default class EditorLayer extends UILayer {
 
 	resetLevel() {
 		this.entities.length= 0;
-		this.entities.push(...createBricks(this.gc, this.templateSheet));
+		this.entities.push(...createBricks(this.gc, {bricksDef: this.templateSheet}));
 		this.isModified= false;
 		this.updateBrickStats();
 	}
@@ -115,7 +115,7 @@ export default class EditorLayer extends UILayer {
 	load(name) {
 		const sheet= LocalDB.loadResource(name);
 		this.entities.length= 0;
-		this.entities.push(...createBricks(this.gc, sheet.bricks, true));
+		this.entities.push(...createBricks(this.gc, {brickDef: sheet.bricks, isTemplateMode: true}));
 		this.bkgndIndex= sheet.background|0;
 		this.updateBackground();
 		// this.bkgndLayer.setBackground(this.gc, this.bkgndIndex, true);

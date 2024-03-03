@@ -1,5 +1,6 @@
 import ENV from "../env.js";
-import {loadJson} from "../utils/loaders.util.js";
+import { compileScript } from "../script/compiler.js";
+import { loadJson } from "../utils/loaders.util.js";
 import LocalDB from "../utils/storage.util.js";
 import DebugScene from "./debug.scene.js";
 import DisplayScene from "./display.scene.js";
@@ -16,8 +17,16 @@ export  default class SceneFactory {
 		console.log("SceneFactory.load", name);
 
 		sheet= LocalDB.loadResource(name);
-		if(!sheet)
-			sheet= await loadJson(`${ENV.SCENES_PATH}${name}.json`);
+		if(!sheet) {
+			try {
+				const scriptText= await loadJson(`${ENV.SCENES_PATH}${name}.script`);
+				sheet= compileScript(scriptText);
+			}
+			catch(e) {
+				console.error(e.message);
+				sheet= await loadJson(`${ENV.SCENES_PATH}${name}.json`);
+			}
+		}
 
 		let scene;
 		switch(sheet.type) {

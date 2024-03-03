@@ -1,7 +1,7 @@
-import {loadJson} from "./utils/loaders.util.js";
-import SpriteSheet from "./spritesheet.js";
 import Audio from "./audio.js";
 import Font from "./font.js";
+import SpriteSheet from "./spritesheet.js";
+import {loadJson} from "./utils/loaders.util.js";
 
 function loadSpritesheets(mgr, sheets) {
 	return sheets.map(filename => SpriteSheet.load(filename)
@@ -34,26 +34,27 @@ export default class ResourceManager {
 		const sheet= await loadJson("resources.json");
 
 		const jobs= [];
-		const kinds= Object.keys(sheet);
-		kinds.forEach(kind => {
+		let resource;
+		for (const [kind, value] of Object.entries(sheet)) {
 			switch(kind) {
 				case "spritesheets":
-					jobs.push(...loadSpritesheets(this, sheet.spritesheets));
+					resource= loadSpritesheets(this, value);
 					break;
 				case "audiosheets":
-					jobs.push(...loadAudiosheets(this, sheet.audiosheets));
+					resource= loadAudiosheets(this, value);
 					break;
 				case "fonts":
-					jobs.push(...loadFonts(this, sheet.fonts));
+					resource= loadFonts(this, value);
 					break;
 			}
-		});
+			jobs.push(...resource);
+		}
 		
 		return Promise.all(jobs);
 	}
 
 	add(kind, name, rez) {
-		const id= (kind+":"+name).replace(/\.json/,'');
+		const id= (`${kind}:${name}`).replace(/\.json/,'');
 		if(this.cache.has(id))
 			throw new Error(`Duplicate resource ${id}!`);
 		console.log(`ResourceManager.add(${id})`);
@@ -61,7 +62,7 @@ export default class ResourceManager {
 	}
 
 	get(kind, name= null) {
-		const id= name ? kind+":"+name : kind;
+		const id= name ? `${kind}:${name}` : kind;
 		if(!this.cache.has(id))
 			throw new Error(`Unable to find resource ${id}!`);
 
@@ -69,7 +70,7 @@ export default class ResourceManager {
 	}
 
 	byKind(kind) {
-		const re= new RegExp("^"+kind+":");
+		const re= new RegExp(`^${kind}:`);
 		return [...this.cache.keys()].filter(k => k.match(re));
 	}
 

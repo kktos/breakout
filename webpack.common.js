@@ -33,7 +33,7 @@ module.exports = {
 			type: 'asset/resource',
 		  },
 		  {
-			test: /\.script\.txt$/i,
+			test: /\.script(?:\.txt)?$/i,
 			type: 'asset/source',
 		  },
 		  {

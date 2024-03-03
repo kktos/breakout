@@ -1,0 +1,37 @@
+display "highscores" {
+	background #000
+	showCursor
+	font "bubble-bobble"
+
+	ui {
+		pos "top"
+		background transparent
+	}
+
+	layout {
+		align 2
+		text "highscores" at:300,15 size:4
+		text "BEST 10" at:300,100 size:3
+
+		size 3
+		align 3
+		color #b21db7
+		text "SCORE" at:250,150
+		text "LEVEL" at:450,150
+		text "NAME" at:580,150
+
+		set "positions" [
+			"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"
+		]
+
+		for "idx" 0,10 {
+			step 0,40
+			items {
+				text "%positions.$idx%" at:90,190
+				text "%highscores.$idx.score%" at:250,190
+				text "%highscores.$idx.round%" at:450,190
+				text "%highscores.$idx.name%" at:580,190
+			}
+		}
+	}
+}

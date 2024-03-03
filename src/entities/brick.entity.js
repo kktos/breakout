@@ -1,8 +1,8 @@
 
-import Entity from "./entity.js";
-import BrickTrait from "../traits/brick.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
+import BrickTrait from "../traits/brick.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
+import Entity from "./entity.js";
 
 export default class BrickEntity extends Entity {
 
@@ -36,7 +36,7 @@ export default class BrickEntity extends Entity {
 		
 		const idx= BrickEntity.TYPES.indexOf(type);
 		if(idx<0)
-			throw new Error("Unknown Brick Type "+type);
+			throw new Error(`Unknown Brick Type ${type}`);
 
 		this.points= BrickEntity.POINTS[idx];
 		this.currSprite= BrickEntity.SPRITES[idx];
@@ -67,6 +67,9 @@ export default class BrickEntity extends Entity {
 
 	render({viewport:{ctx}}) {
 		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		// ctx.fillStyle="#fff";
+		// ctx.font= "7px";
+		// ctx.fillText(`${this.pos.x},${this.pos.y}`, this.pos.x, this.pos.y+16);
 	}	
 }
 

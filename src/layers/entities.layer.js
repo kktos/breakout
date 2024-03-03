@@ -1,5 +1,5 @@
-import Layer from "./layer.js";
 import {createBricks} from "../utils/bricks.util.js";
+import Layer from "./layer.js";
 
 export default class EntitiesLayer extends Layer {
 
@@ -7,7 +7,7 @@ export default class EntitiesLayer extends Layer {
 		super(gc);
 
 		if(sheet)
-			entities.push(...createBricks(gc, sheet));
+			entities.push(...createBricks(gc, {brickDef: sheet}));
 		this.entities= entities;
 	}
 

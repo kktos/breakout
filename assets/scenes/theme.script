@@ -1,0 +1,26 @@
+display "theme" {
+	background 0
+	showCursor
+	font "bubble-bobble"
+
+	layout {
+		size 4
+		align 2
+
+		text "CHOOSE A THEME" at:298,113 color:#fff
+
+		size 3
+		menu {
+			selection {
+				left "paddles:selectionL"
+				right "paddles:selectionR"
+			}
+			items {
+				text "Arkanoid levels" at:300,300 action:{ goto("game_arkanoid") }
+				text "Arkanoid 2 levels" at:300,360 action:{ goto("game_arkanoid2") }
+				text "User levels" at:300,420 action:{ goto("game_user") }
+			}
+		}
+
+	}
+}

@@ -48,7 +48,7 @@ function collideRect2(r1, r2){
 	return intersectSide(intersect(r1, r2));
 }
 
-export let collideRect= collideRect1;
+export const collideRect= collideRect1;
 
 // window.TOGGLE= () => {
 // 	if(collideRect == collideRect2) {
@@ -77,7 +77,15 @@ function boundingRect(r1, r2) {
 	bbox.width= bbox.right - bbox.left;
 	bbox.height= bbox.bottom - bbox.top;
 	return bbox;
-  }
+}
+
+export function growRect(bbox, x, y) {
+	const left= bbox.left - x;
+	const top= bbox.top - y;
+	const right= bbox.right + x;
+	const bottom= bbox.bottom + y;
+	return {x: left, y: top, width: right-left, height: bottom-top};
+}
 
 function intersectSide(intersection) {
 	if(!intersection) {

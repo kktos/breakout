@@ -44,10 +44,17 @@ OPTION {
 	right:0;
 	height: 200px;
 	display: grid;
-	grid-auto-flow: row;
+	grid-template: 	"header" auto
+					"content" 1fr;
 	color: #ffff07;
 	background-color: #000000a8;
 	padding: 0px 30px;
+}
+.header {
+	grid-area: header;
+}
+.content {
+	grid-area: content;
 }
 #ui.top {
 	visibility: visible;
@@ -105,17 +112,15 @@ OPTION {
 	background-color: white;
 	width: 2px;
 }
-.w50 {
-	width: 50px;
-}
-.w75 {
-	width: 50px;
-}
-.w150 {
-	width: 150px;
-}
+
 .btn {
 	cursor: pointer;
+	display: grid;
+	grid-auto-flow: column;
+	align-items: center;
+}
+.btn:hover {
+	background-color: rgba(0, 0, 0, 50%);
 }
 DIV.btn {
 	display: grid;
@@ -154,6 +159,9 @@ DIV.btn {
 }
 .hright {
 	justify-self: right;
+}
+.hcenter {
+	justify-self: center;
 }
 .grid-column {
 	display: grid;
@@ -220,23 +228,49 @@ DIV.btn.icn {
 	padding: 0;
 	min-width: auto;
 }
+
 .icn-left-arrow {
 	background: url(/assets/images/left-arrow.png);
     width: 50px;
-    height: 50px;	
+	aspect-ratio: 1;
+}
+.icn-up-arrow {
+	background: url(/assets/images/left-arrow.png);
+    width: 50px;
+	aspect-ratio: 1;
+	rotate: 90deg;
+}
+.icn-down-arrow {
+	background: url(/assets/images/left-arrow.png);
+    width: 50px;
+	aspect-ratio: 1;
+	rotate: -90deg;
 }
 .icn-trash {
 	background: url(/assets/images/trash.png);
     width: 50px;
-    height: 50px;	
+	aspect-ratio: 1;
 }
 .icn-load {
 	background: url(/assets/images/load.png);
     width: 50px;
-    height: 50px;	
+	aspect-ratio: 1;
 }
 .icn-save {
 	background: url(/assets/images/save.png);
     width: 50px;
-    height: 50px;	
+	aspect-ratio: 1;
 }
+
+/* should be at the end */
+.w10 { width: 10px; }
+.w20 { width: 20px; }
+.w30 { width: 30px; }
+.w40 { width: 40px; }
+.w50 { width: 50px; }
+.w75 { width: 50px; }
+.w150 {	width: 150px; }
+
+.z50 {	zoom: .5; }
+.z100 {	zoom: 1; }
+.z200 {	zoom: 2; }

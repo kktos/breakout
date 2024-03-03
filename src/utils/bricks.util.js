@@ -1,9 +1,9 @@
-import ENV from '../env.js';
 import BrickEntity from "../entities/brick.entity.js";
+import ENV from '../env.js';
 
 const perRow= ENV.BRICKS_PER_ROW;
 
-export function createBricks({resourceManager}, bricksDef, templateMode= false) {
+export function createBricks({resourceManager}, {pos= {x:ENV.BRICK_LEFT, y:ENV.BRICK_TOP}, bricksDef, isTemplateMode= false}) {
 	const entities= [];
 	const bricks= bricksDef.join("");
 
@@ -20,21 +20,23 @@ export function createBricks({resourceManager}, bricksDef, templateMode= false) 
 	let row= 0;
 	let idx= -1;
 	let type;
+
+	// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 	while(type= getNextBrick()) {
 	
 		idx++;
 
-		if(type == "-") {
-			if(templateMode)
+		if(type === "-") {
+			if(isTemplateMode)
 				type= "#";
 			else
 				continue;
 		}
 
-		row= ((idx/perRow)|0)*17;
-		col= ((idx)%perRow) * 33;
+		row= ((idx/perRow)|0) * 17;
+		col= (idx % perRow) * 33;
 	
-		const brick= new BrickEntity(resourceManager, ENV.BRICK_LEFT + col, ENV.BRICK_TOP + row, type);
+		const brick= new BrickEntity(resourceManager, pos.x + col, pos.y + row, type);
 		entities.push(brick);
 
 	}

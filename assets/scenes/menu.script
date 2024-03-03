@@ -7,16 +7,23 @@ display "menu" {
 		align 2
 		size 3
 
+		color white
+
 		menu {
 			selection {
 				left "paddles:selectionL"
 				right "paddles:selectionR"
-			},
+				color yellow
+				background #faee005e
+			}
 			items {
-				text "play" at:300,300 scene:"theme"
-				text "highscores" at:300,360 scene:"highscores"
-				text "level editor" at:300,420 scene:"editor"
-				text "debug" at:300,480 scene:"debug"
+				text "play" at:300,300 action:{print("theme")}
+				text "highscores" at:300,360 action:{goto("highscores")}
+				text "level editor" at:300,420 action:{goto("editor")}
+				text "OLD" at:100,420 action:{goto("editor_old")}
+				text "DEBUG" at:300,480 action:{goto("debug")}
+				text "OLD" at:180,480 action:{goto("debug_old")}
+				text "input" at:300,510 action:{goto("input_name")}
 			}
 		}
 

@@ -6,6 +6,12 @@
 
 	"layout": [
 		{
+			"type": "set",
+			"name": "playerName",
+			"value": ""
+		},
+
+		{
 			"type": "text",
 			"pos": [300, 0],
 			"size": 3,
@@ -68,12 +74,34 @@
 		},
 
 		{
+			"type": "set",
+			"name": "letters_1",
+			"value": ["A", "B", "C", "D", "E", "F", "G", "H"]
+		},
+		{
+			"type": "set",
+			"name": "letters_2",
+			"value": ["I", "J", "K", "L", "M", "N", "O", "P"]
+		},
+		{
+			"type": "set",
+			"name": "letters_3",
+			"value": ["Q", "R", "S", "T", "U", "V", "W", "X"]
+		},
+		{
+			"type": "set",
+			"name": "letters_4",
+			"value": ["Y", "Z", " ", ".", "!", "?", "[", "]"]
+		},
+
+		{
 			"type": "menu",
 			"items": [
 
 				{
 					"type":"repeat",
 					"count": 8,
+					"var": "idx",
 					"step": {
 						"pos": [52,0]
 					},
@@ -84,7 +112,7 @@
 							"size": 3,
 							"align": 1,
 							"color": "#F784F7",
-							"texts": ["A", "B", "C", "D", "E", "F", "G", "H"],
+							"text": "%letters_1.$idx%",
 							"action": "concat:playerName:3"
 						}
 					]
@@ -93,6 +121,7 @@
 				{
 					"type":"repeat",
 					"count": 8,
+					"var": "idx",
 					"step": {
 						"pos": [52,0]
 					},
@@ -103,7 +132,7 @@
 							"size": 3,
 							"align": 1,
 							"color": "#F784F7",
-							"texts": ["I", "J", "K", "L", "M", "N", "O", "P"],
+							"text": "%letters_2.$idx%",
 							"action": "concat:playerName:3"
 						}
 					]
@@ -111,6 +140,7 @@
 				{
 					"type":"repeat",
 					"count": 8,
+					"var": "idx",
 					"step": {
 						"pos": [52,0]
 					},
@@ -121,7 +151,7 @@
 							"size": 3,
 							"align": 1,
 							"color": "#F784F7",
-							"texts": ["Q", "R", "S", "T", "U", "V", "W", "X"],
+							"text": "%letters_3.$idx%",
 							"action": "concat:playerName:3"
 						}
 					]
@@ -129,6 +159,7 @@
 				{
 					"type":"repeat",
 					"count": 8,
+					"var": "idx",
 					"step": {
 						"pos": [52,0]
 					},
@@ -139,7 +170,7 @@
 							"size": 3,
 							"align": 1,
 							"color": "#F784F7",
-							"texts": ["Y", "Z", " ", ".", "!", "?", "[", "]"],
+							"text": "%letters_4.$idx%",
 							"action": "concat:playerName:3"
 						}
 					]

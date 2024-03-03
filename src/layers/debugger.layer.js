@@ -1,7 +1,7 @@
 import ENV from "../env.js";
 import {Align} from "../font.js";
+import UILayer from "./UILayer.js";
 import BackgroundLayer from "./background.layer.js";
-import UILayer from "./uilayer.js";
 
 export default class DebuggerLayer extends UILayer {
 
@@ -20,36 +20,24 @@ export default class DebuggerLayer extends UILayer {
 
 		this.setSpritesheet(0);
 
+		this.setBackground(0);
 		this.buildUI(this.spritesheetList);
 	}
 
 	buildUI(list) {
 		const options= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
-		this.ui.innerHTML= `
-			<div class="grid-column vcenter">
-				<div id="btnBack" class="btn light-shadow icn icn-left-arrow"></div>
-				<div class="vcenter hright">
-					BACKGROUND
-					<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>
-				</div>
-				<div class="vcenter hright">
-					SPRITESHEET
-					<select id="ss">${options}</select>
-				</div>
+		const html= `
+			<div class="vcenter hcenter">
+				BACKGROUND
+				<input id="bkgndIndex" type="number" class="w50" value="${this.bkgndIndex}" min="0" max="${BackgroundLayer.SPRITES.length-1}"/>
 			</div>
-			<div class="grid-column" style="grid-template-columns:auto auto 1fr">
+			<div class="vcenter hcenter">
+				SPRITESHEET
+				<select id="ss">${options}</select>
 			</div>
 		`;
-		const btnList= this.ui.querySelectorAll(".btn");
-		for (let idx = 0; idx < btnList.length; idx++) {
-			btnList[idx].addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(evt.target.id));			
-		}
-		// forEach((el) => el.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(el.id)));
-		const inputList= this.ui.querySelectorAll("INPUT,SELECT");
-		for (let idx = 0; idx < inputList.length; idx++) {
-			inputList[idx].addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target));			
-		}
-		// forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+
+		this.setContent(html);
 	}
 
 	onChangeUI(el) {
@@ -63,13 +51,13 @@ export default class DebuggerLayer extends UILayer {
 		}
 	}
 
-	onClickUIBtn(id) {
-		switch(id) {
-			case "btnBack":
-				this.goBack();
-				break;
-		}
-	}
+	// onClickUIBtn(id) {
+	// 	switch(id) {
+	// 		case "btnBack":
+	// 			this.goBack();
+	// 			break;
+	// 	}
+	// }
 
 	setBackground(bkgndIndex) {
 		this.bkgndIndex= bkgndIndex % BackgroundLayer.SPRITES.length;

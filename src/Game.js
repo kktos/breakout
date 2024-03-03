@@ -1,6 +1,7 @@
 import ENV from "./env.js";
 import ResourceManager from "./resourcemanager.js";
 import Director from "./scene/director.js";
+import { createViewport } from "./utils/canvas.utils.js";
 
 const GP_STICKS_AXES= {
 	LEFT_HORIZONTAL: 0,
@@ -53,15 +54,7 @@ export default class Game {
 		this.coppola= null;
 
 		this.gc= {
-			viewport: {
-				width: ENV.VIEWPORT_WIDTH,
-				height: ENV.VIEWPORT_HEIGHT,
-				canvas,
-				bbox: canvas.getBoundingClientRect(),
-				ctx: canvas.getContext("2d"),
-				ratioWidth: canvas.width / ENV.VIEWPORT_WIDTH,
-				ratioHeight: canvas.height / ENV.VIEWPORT_HEIGHT,
-			},
+			viewport: createViewport(canvas),
 
 			resourceManager: null,
 

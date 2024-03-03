@@ -5,7 +5,7 @@
 	"showCursor": true,
 	"ui": {
 		"pos": "top",
-		"transparent": true
+		"background": "transparent"
 	},
 	"layout": [
 		{
@@ -50,6 +50,12 @@
 		},
 
 		{
+			"type": "set",
+			"name": "positions",
+			"value": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"]
+		},
+
+		{
 			"type":"repeat",
 			"count": 10,
 			"var": "idx",
@@ -62,7 +68,7 @@
 					"pos": [90, 190],
 					"size": 3,
 					"align": 3,
-					"texts": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"]
+					"text": "%positions.$idx%"
 				},
 				{
 					"type": "text",

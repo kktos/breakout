@@ -1,16 +1,16 @@
-import ENV from "./env.js";
-import {loadImage, loadJson} from "./utils/loaders.util.js";
-import createSpriteSheet from "./utils/createspritesheet.util.js";
 import Anim from "./anim.js";
+import ENV from "./env.js";
+import createSpriteSheet from "./utils/createspritesheet.util.js";
+import {loadImage, loadJson} from "./utils/loaders.util.js";
 
 export default class SpriteSheet {
 
 	static load(filename) {
 		let sheet;
 		return loadJson(ENV.SPRITESHEETS_PATH+filename)
-				.then(s => sheet= s)
+				.then(s => {sheet= s})
 				.then(() => loadImage(sheet.img))
-				.then((img) =>createSpriteSheet(filename, sheet, img));
+				.then(img => createSpriteSheet(filename, sheet, img));
 	}
 
 	constructor(img) {
@@ -52,7 +52,8 @@ export default class SpriteSheet {
 		ctx.imageSmoothingEnabled= false;
 
 		{
-			let width= 0, height= 0;
+			let width= 0;
+			let height= 0;
 			spriteDef.forEach(([offsets, name]) => {
 				const [col, row, countX, countY]= offsets;
 				if(name) {
@@ -75,8 +76,10 @@ export default class SpriteSheet {
 			canvas.height = height;
 		}
 
-		let width= 0, height= 0;
-		let dx= 0, dy= 0;
+		let width= 0;
+		let height= 0;
+		let dx= 0;
+		let dy= 0;
 
 		spriteDef.forEach(([offsets, name]) => {
 			const [col, row, countX, countY]= offsets;

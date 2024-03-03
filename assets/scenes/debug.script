@@ -1,0 +1,47 @@
+
+display "debug" {
+	background 0
+	showCursor
+	// killOnExit
+	font "bubble-bobble"
+
+	ui {
+		pos "bottom"
+		background #808000A0
+	}
+
+	layout {
+
+		size 2
+
+		set "parms" [
+			"IDX", "NAME",
+			"FRAMES", "LOOP", "SPEED",
+			"WIDTH", "HEIGHT"
+		]
+		set "values" [
+			"%currAnim%", "%names.$currAnim%",
+			"%anim.frames.length%", "%anim.loopInitialValue%", "%anim.len%",
+			"%frameSpriteSize.x%", "%frameSpriteSize.y%"
+		]
+
+		repeat count:7 var:idx step:{ at:0,18 } {
+			text "%parms.$idx%" at:100,18 align:3
+			text "%values.$idx%" at:110,18 align:1
+		}
+
+		color #777
+		rect at:300,0 width:1 height:600
+		rect at:0,300 width:600 height:1
+
+		color white
+		size 2
+		align 2
+		text "%frameSprite%" at:300,350
+
+		view "debug" type:DebugView at:250,250 width:100 height:100
+
+
+
+	}
+}

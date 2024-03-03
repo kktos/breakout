@@ -1,0 +1,50 @@
+display "editor" {
+	background 1
+	showCursor
+	font "bubble-bobble"
+
+	layers {
+		DashboardLayer
+	}
+
+	ui {
+		pos "bottom"
+		background #000000A0
+	}
+
+	layout {
+		set "points" [
+			"50", "60", "70", "80", "90", "100", "110", "120", "x50", "---", "---", "---"
+		]
+
+		size 1
+		align 2
+ 
+		color black
+		rect at:0,0 width:600 height:50
+
+		color white
+		menu {
+			selection {
+				background #0b94d6
+				// color red
+			}
+			items {
+
+				repeat count:12 var:idx step:{ at:40,0 } {
+
+					item action:{ bricks.selectBrickType($itemSelected) } {
+						text "%points.$idx%" at:60,30
+						sprite "bricks:%BrickEntity.SPRITES.$idx%" at:46,10
+					}
+
+				}
+
+			}
+		}
+
+		view "bricks" type:BrickView at:20,102 width:561 height:272
+		sprite "paddles:normal0-0" at:270,550
+
+	}
+}
