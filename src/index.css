@@ -261,6 +261,15 @@ DIV.btn.icn {
     width: 50px;
 	aspect-ratio: 1;
 }
+.icn-down-play {
+	background: url(/assets/images/play.svg);
+    width: 50px;
+	aspect-ratio: 1;
+}
+
+svg path{
+	fill: currentcolor;
+}
 
 /* should be at the end */
 .w10 { width: 10px; }

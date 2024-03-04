@@ -1,14 +1,14 @@
 
-import Entity from "./entity.js";
-import GravityTrait from "../traits/gravity.trait.js";
-import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBoxTrait from "../traits/boundingbox.trait.js";
-import BounceTrait from "../traits/bounce.trait.js";
-import KillableTrait from "../traits/killable.trait.js";
-import ExplosionTrait from "../traits/explosion.trait.js";
-import FollowPathTrait from "../traits/followpath.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
+import BounceTrait from "../traits/bounce.trait.js";
+import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import BreakTrait from "../traits/break.trait.js";
+import ExplosionTrait from "../traits/explosion.trait.js";
+import FollowPathTrait from "../traits/followPath.trait.js";
+import GravityTrait from "../traits/gravity.trait.js";
+import KillableTrait from "../traits/killable.trait.js";
+import VelocityTrait from "../traits/velocity.trait.js";
+import Entity from "./Entity.js";
 
 const TYPES= [
 	"3cubes",

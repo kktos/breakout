@@ -22,7 +22,5 @@ export function loadSound(name) {
 
 export function loadJson(url) {
     console.log(`loadJson(${url})`);
-	return import(
-        `/assets/${url}`
-    ).then(m => m.default);
+	return import(`/assets/${url}`).then(m => m.default);
 }

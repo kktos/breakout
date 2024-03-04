@@ -1,5 +1,5 @@
-import Trait from '../trait.js';
 import BallEntity from "../../entities/ball.entity.js";
+import Trait from '../Trait.js';
 import SpawnerTrait from "../spawner.trait.js";
 
 export default class DisruptionTrait extends Trait {

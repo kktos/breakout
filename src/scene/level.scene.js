@@ -8,10 +8,10 @@ import DashboardLayer from "../layers/dashboard.layer.js";
 import EntitiesLayer from "../layers/entities.layer.js";
 import {COLLISION,collideRect } from "../math.js";
 import TaskList from "../tasklist.js";
+import Trait from "../traits/Trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 import PlayerTrait from "../traits/player.trait.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
-import Trait from "../traits/trait.js";
 import Scene from "./Scene.js";
 
 export default class LevelScene extends Scene {
@@ -81,9 +81,9 @@ export default class LevelScene extends Scene {
 
 	}
 
-	findBall() {
-		return this.entities.find(e=>e.class==="BallEntity");
-	}
+	// findBall() {
+	// 	return this.entities.find(e=>e.class==="BallEntity");
+	// }
 
 	init(gc) {
 		this.newPlayer(gc);
@@ -95,6 +95,10 @@ export default class LevelScene extends Scene {
 	}
 
 	reset(gc) {
+		const ballIdx= this.entities.findIndex(e=>e.class==="BallEntity");
+		if(ballIdx)
+			this.entities.splice(ballIdx, 1);
+
 		const ball= new BallEntity(gc.resourceManager, 0, 0);
 		this.entities.push(ball);
 
@@ -137,19 +141,24 @@ export default class LevelScene extends Scene {
  	}
 
 	broadcast(name, ...args) {
-		this.entities.forEach(entity => entity.emit(name, ...args));
+		// this.entities.forEach(entity => entity.emit(name, ...args));
+		for (let idx = 0; idx < this.entities.length; idx++) {
+			this.entities[idx].emit(name, ...args);
+		}
 	}
 
 	collides(gc, target) {
-		this.entities.forEach(entity => {
-			if(target == entity)
+		for (let idx = 0; idx < this.entities.length; idx++) {
+			const entity= this.entities[idx];
+
+			if(target === entity)
 				return;
 
 			if(!(entity.size.x + entity.size.y) || !(target.size.x + target.size.y))
 				return;
 
 			let side= collideRect(entity, target);
-			if(side != COLLISION.NONE) {
+			if(side !== COLLISION.NONE) {
 				target.collides(gc, side, entity);
 				if(!entity.isFixed)
 					return;
@@ -172,16 +181,26 @@ export default class LevelScene extends Scene {
 				}
 				entity.collides(gc, side, target);
 			}
-		});
+		}
 	
 	}
 
 	update(gc) {
 		const entities= this.entities;
 		const movingOnes= entities.filter(entity => !entity.isFixed);
-		entities.forEach(entity => entity.update(gc));
-		movingOnes.forEach(entity => this.collides(gc, entity));
-        entities.forEach(entity => entity.finalize());
+
+		// entities.forEach(entity => entity.update(gc));
+		for (let idx = 0; idx < entities.length; idx++)
+			entities[idx].update(gc);
+
+		// movingOnes.forEach(entity => this.collides(gc, entity));
+		for (let idx = 0; idx < movingOnes.length; idx++)
+		movingOnes[idx].update(gc);
+
+		// entities.forEach(entity => entity.finalize());
+		for (let idx = 0; idx < entities.length; idx++)
+			entities[idx].finalize();
+
 		this.tasks.processTasks();
 	}
 
@@ -189,10 +208,12 @@ export default class LevelScene extends Scene {
 		switch(e.type) {
 			case "keydown": {
 				if(e.key==="r")
-					this.newPlayer(gc);
+					// this.newPlayer(gc);
+					this.reset(gc);
 				break;
 			}
 			case "click": {
+				// console.log("Level.handleEvent", "click", this.paddle);
 				this.paddle.emit(Events.EVENT_MOUSECLICK, gc, this.paddle.pos);
 				break;
 			}

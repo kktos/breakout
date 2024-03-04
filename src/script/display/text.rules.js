@@ -28,10 +28,11 @@ export function textRules(parser) {
 
 			$.ACTION(() => {
 				if(!isParm)
-					throw new TypeError(`Syntax Error. Missing : after property ${name}`);
+					options[name]= value;
+				else
+					result[name]= value;
 			});
 
-			result[name]= value;
 		});
 
 		if(isMenuItem) {

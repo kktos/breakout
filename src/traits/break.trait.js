@@ -1,4 +1,4 @@
-import Trait from './trait.js';
+import Trait from './Trait.js';
 import KillableTrait from "./killable.trait.js";
 
 export default class BreakTrait extends Trait {

@@ -1,32 +1,10 @@
+import ResourceManager from "./ResourceManager.js";
+import { Timer } from "./Timer.js";
+import { GAME_EVENTS } from "./constants/events.const.js";
+import { GP_BUTTONS, GP_STICKS_AXES } from "./constants/gamepad.const.js";
 import ENV from "./env.js";
-import ResourceManager from "./resourcemanager.js";
 import Director from "./scene/director.js";
 import { createViewport } from "./utils/canvas.utils.js";
-
-const GP_STICKS_AXES= {
-	LEFT_HORIZONTAL: 0,
-	LEFT_VERTICAL: 1,
-	RIGHT_HORIZONTAL: 2,
-	RIGHT_VERTICAL: 3
-};
-const GP_BUTTONS= {
-	X: 2,
-	Y: 3,
-	A: 0,
-	B: 1,
-	CURSOR_UP: 12,
-	CURSOR_DOWN: 13,
-	CURSOR_LEFT: 14,
-	CURSOR_RIGHT: 15,
-	TRIGGER_LEFT: 6,
-	TRIGGER_RIGHT: 7,
-	LEFT: 4,
-	RIGHT: 5
-};
-
-let lastTime= 0;
-let acc= 0;
-const inc= ENV.FPS;
 
 class KeyMap {
 	constructor() {
@@ -50,7 +28,6 @@ class KeyMap {
 
 export default class Game {
 	constructor(canvas) {
-		this.isRunning= false;
 		this.coppola= null;
 
 		this.gc= {
@@ -58,7 +35,7 @@ export default class Game {
 
 			resourceManager: null,
 
-			dt: inc,
+			dt: ENV.FPS,
 			tick: 0,
 
 			mouse: {x: 0, y: 0, down: false},
@@ -69,22 +46,19 @@ export default class Game {
 
 		this.gc.viewport.ctx.scale(this.gc.viewport.ratioWidth, this.gc.viewport.ratioHeight);
 
-	}
-
-	loop(dt= 0) {
-		acc+= (dt - lastTime) / 1000;
-		while(acc > inc) {
+		this.timer = new Timer(ENV.FPS);
+		this.timer.update = (deltaTime) => {
+			this.gc.tick++;
+			this.gc.deltaTime = deltaTime;
 			this.gc.gamepad && this.readGamepad();
 			this.coppola.update(this.gc);
-			this.gc.tick++;
-			acc-= inc;
-		}
-		lastTime= dt;
-		this.isRunning && requestAnimationFrame((dt)=> this.loop(dt));
+		};
+		
 	}
 
 	pause() {
-		this.isRunning= false;
+		this.timer.stop();
+
 		const overlay= document.createElement("div");
 		overlay.className= "overlay";
 		overlay.id= "gamepaused";
@@ -98,10 +72,8 @@ export default class Game {
 	play() {
 		const overlay= document.querySelector("#gamepaused");
 		overlay?.remove();
-		this.isRunning= true;
-		acc= inc;
-		lastTime= 0;
-		this.loop();
+
+		this.timer.start();
 	}
 
 	readGamepad() {
@@ -219,7 +191,8 @@ export default class Game {
 				this.gc.keys.set(e.key, evt.type === "keydown");
 				break;
 	
-			case "click":
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: <explanation>
+			case  "click":
 				if(evt.x>this.gc.viewport.width - 50 && evt.y>this.gc.viewport.height - 50)
 					console.show();
 			case "mousedown":
@@ -281,14 +254,9 @@ export default class Game {
 		this.coppola= new Director(this.gc);
         this.coppola.run("menu");
 
-		[
-			"mousemove", "mousedown", "mouseup", "click",
-			"touchmove", "touchstart", "touchend", "touchcancel",
-			"keyup", "keydown",
-			"contextmenu",
-			"blur", "focus",
-			"gamepadconnected", "gamepaddisconnected"
-		].forEach(type=> window.addEventListener(type, this));
+		for (let idx = 0; idx < GAME_EVENTS.length; idx++) {
+			window.addEventListener(GAME_EVENTS[idx], this);
+		}
 	
 		console.log("play()");
 		this.play();

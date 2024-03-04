@@ -1,6 +1,6 @@
-import Trait from './trait.js';
-import KillableTrait from "./killable.trait.js";
+import Trait from './Trait.js';
 import AnimationTrait from "./animation.trait.js";
+import KillableTrait from "./killable.trait.js";
 
 export default class ExplosionTrait extends Trait {
 

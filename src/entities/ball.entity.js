@@ -1,9 +1,9 @@
-import Entity from "./entity.js";
 import ENV from "../env.js";
-import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBoxTrait from "../traits/boundingbox.trait.js";
 import BounceTrait from "../traits/bounce.trait.js";
+import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
+import VelocityTrait from "../traits/velocity.trait.js";
+import Entity from "./Entity.js";
 
 export default class BallEntity extends Entity {
 	constructor(resourceMgr, x, y) {

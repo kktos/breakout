@@ -1,10 +1,10 @@
 
-import Entity from "./entity.js";
 import AnimationTrait from "../traits/animation.trait.js";
+import BoundingBoxTrait from "../traits/boundingBox.trait.js";
 import GravityTrait from "../traits/gravity.trait.js";
-import VelocityTrait from "../traits/velocity.trait.js";
-import BoundingBoxTrait from "../traits/boundingbox.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
+import VelocityTrait from "../traits/velocity.trait.js";
+import Entity from "./Entity.js";
 
 // src: https://strategywiki.org/wiki/Arkanoid/Getting_Started
 // src: https://strategywiki.org/wiki/Arkanoid:_Revenge_of_Doh/Getting_Started

@@ -2,7 +2,7 @@
 import AnimationTrait from "../traits/animation.trait.js";
 import BrickTrait from "../traits/brick.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
-import Entity from "./entity.js";
+import Entity from "./Entity.js";
 
 export default class BrickEntity extends Entity {
 

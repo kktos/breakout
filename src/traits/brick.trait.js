@@ -1,8 +1,8 @@
-import Trait from './trait.js';
-import LevelScene from '../scene/level.scene.js';
-import AnimationTrait from './animation.trait.js';
 import PowerupEntity from '../entities/powerup.entity.js';
+import LevelScene from '../scene/level.scene.js';
 import KillableTrait from "../traits/killable.trait.js";
+import Trait from './Trait.js';
+import AnimationTrait from './animation.trait.js';
 
 export default class BrickTrait extends Trait {
 

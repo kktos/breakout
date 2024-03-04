@@ -1,5 +1,5 @@
-import Trait from './trait.js';
 import LevelScene from "../scene/level.scene.js";
+import Trait from './Trait.js';
 
 export default class SpawnerTrait extends Trait {
 

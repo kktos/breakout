@@ -1,8 +1,8 @@
-import Trait from './trait.js';
-import KillableTrait from './killable.trait.js';
 import BallEntity from '../entities/ball.entity.js';
-import AnimationTrait from './animation.trait.js';
 import LocalDB from "../utils/storage.util.js";
+import Trait from './Trait.js';
+import AnimationTrait from './animation.trait.js';
+import KillableTrait from './killable.trait.js';
 
 export default class PlayerTrait extends Trait {
 

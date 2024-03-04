@@ -37,7 +37,7 @@ export default class DisplayLayer extends UILayer {
 		this.menu= menus.length>0 ? menus[0] : null;
 
 		this.views= this.layout.filter(op => op.type==="view");
-		initViews(gc);
+		initViews({gc, vars: this.vars, layer: this});
 
 		this.prepareRendering(gc);
 
@@ -47,12 +47,14 @@ export default class DisplayLayer extends UILayer {
 		this.vars= new Map();
 		this.vars.set("highscores", LocalDB.highscores());
 		this.vars.set("player", LocalDB.currentPlayer());
-		this.vars.set("itemSelected", this.itemSelected);
+		this.vars.set("itemIdxSelected", this.itemSelected);
+		this.vars.set("itemSelected", "");
 	}
 
 	selectMenuItem(idx) {
 		this.itemSelected= (idx<0 ? this.menu.items.length-1 : idx) % this.menu.items.length;
-		this.vars.set("itemSelected", this.itemSelected);
+		this.vars.set("itemIdxSelected", this.itemSelected);
+		this.vars.set("itemSelected", this.menu?.items[this.itemSelected]);
 	}
 
 	prepareMenu(gc, op) {
@@ -349,16 +351,22 @@ export default class DisplayLayer extends UILayer {
 					args.push(arg);
 					continue;
 				}
-				const matches = arg.match(/^"(.*)"$/);
-				if(matches) {
-					args.push(matches[1]);
+				const strMatches = arg.match(/^"(.*)"$/);
+				if(strMatches) {
+					args.push(strMatches[1]);
 					continue;
 				}
-				const varname= arg.replace(/^\$/,"");
-				if(!this.vars.has(varname))
-					throw new TypeError(`Unknown Variable "${varname}" !?!`);
 
-				args.push( this.vars.get(varname) );
+				const varMatches = arg.match(/^\$(.*)$/);
+				if(varMatches) {
+					const varname= varMatches[1];
+					if(!this.vars.has(varname))
+						throw new TypeError(`Unknown Variable "${varname}" !?!`);
+					args.push( this.vars.get(varname) );
+					continue;
+				}
+
+				args.push( arg );
 			}
 
 			let fn= fnCall.name.length === 1 ? views[SYSTEM] : null;

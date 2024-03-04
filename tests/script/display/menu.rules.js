@@ -90,7 +90,10 @@ export function menuRules(parser) {
 	});
 
 	$.RULE("layoutMenuSelectionSprite", () => {
-		const name= $.CONSUME(tokens.Identifier).image;
+		const name= $.OR([
+			{ ALT : () => $.CONSUME(tokens.Left).image },
+			{ ALT : () => $.CONSUME(tokens.Right).image	}
+		]);
 		const value= $.CONSUME(tokens.StringLiteral).payload;
 		return {name, value};
 	});

@@ -1,7 +1,7 @@
-import Trait from '../trait.js';
-import Events from "../../events/events.js";
 import BulletEntity from "../../entities/bullet.entity.js";
+import Events from "../../events/events.js";
 import LevelScene from "../../scene/level.scene.js";
+import Trait from '../Trait.js';
 import AnimationTrait from "../animation.trait.js";
 
 export default class LaserTrait extends Trait {

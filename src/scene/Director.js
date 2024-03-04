@@ -78,7 +78,9 @@ export default class Director {
 
 	}
     update(gc) {
-        this.currentScene && this.currentScene.isRunning && this.currentScene.update(gc);
-        this.currentScene && this.currentScene.isRunning && this.currentScene.render(gc);
+        if(!this.currentScene?.isRunning)
+            return;
+        this.currentScene.update(gc);
+        this.currentScene.render(gc);
     }
 }

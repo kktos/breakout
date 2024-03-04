@@ -33,7 +33,7 @@ display "editor" {
 
 				repeat count:12 var:idx step:{ at:40,0 } {
 
-					item action:{ bricks.selectBrickType($itemSelected) } {
+					item action:{ bricks.selectBrickType($itemIdxSelected) } {
 						text "%points.$idx%" at:60,30
 						sprite "bricks:%BrickEntity.SPRITES.$idx%" at:46,10
 					}

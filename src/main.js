@@ -10,7 +10,7 @@ canvas.height= window.innerHeight;
 try {
 	import(
 		/* webpackPrefetch: true */
-		"./game.js"
+		"./Game.js"
 	)
 		.then(m=>m.default)
 		.then(Game => {

@@ -8,6 +8,10 @@ import { spriteRules } from "./sprite.rules.js";
 import { textRules } from "./text.rules.js";
 import { viewRules } from "./view.rules.js";
 
+const NUMBER= 1;
+const ALIGN= 2;
+const COLOR= 3;
+
 export function layoutRules(parser) {
 	const  $ = parser;
 
@@ -64,21 +68,48 @@ export function layoutRules(parser) {
     });
 
     $.RULE("textSpriteProps", () => {
-		let isColor= false;
-		let isParm= false;
+		let propType= 0;
 		const name= $.OR([
-			{ ALT: () => $.CONSUME(tokens.Align) },
-			{ ALT: () => $.CONSUME(tokens.Size) },
-			{ ALT: () => $.CONSUME(tokens.Zoom) },
-			{ ALT: () => { const color= $.CONSUME(tokens.Color); isColor= true; return color; } },
+			{ ALT: () => { propType= ALIGN; return $.CONSUME(tokens.Align); } },
+			{ ALT: () => { propType= NUMBER; return $.CONSUME(tokens.Size); } },
+			{ ALT: () => { propType= NUMBER; return $.CONSUME(tokens.Zoom); } },
+			{ ALT: () => { propType= COLOR; return $.CONSUME(tokens.Color); } },
 		]).image;
 
+		let isParm= false;
 		$.OPTION(() => {
 			$.CONSUME(tokens.Colon);
 			isParm= true;
 		});
 
-		return { name, value: isColor ? $.SUBRULE(parser.htmlColor) : $.SUBRULE(parser.number), isParm };
+		let valueType= 0;
+		let value;
+		$.OR2([
+			{ ALT: () => { valueType= NUMBER; value= $.SUBRULE(parser.number); } },
+			{ ALT: () => { valueType= COLOR; value= $.SUBRULE(parser.htmlColor); } },
+			{ ALT: () => { valueType= ALIGN; $.CONSUME(tokens.Left); value= 1; } },
+			{ ALT: () => { valueType= ALIGN; $.CONSUME(tokens.Right); value= 3; } },
+			{ ALT: () => { valueType= ALIGN; $.CONSUME(tokens.Center); value= 2; } }
+		])
+
+		$.ACTION(() => {
+			switch(propType) {
+				case ALIGN:
+					if(valueType!==NUMBER && valueType !== ALIGN)
+						throw new TypeError(`Invalid value ${value} for ${name}`);
+					break;
+				case COLOR:
+					if(valueType!==COLOR)
+						throw new TypeError(`Invalid value ${value} for ${name}`);
+					break;
+				case NUMBER:
+					if(valueType!==NUMBER)
+						throw new TypeError(`Invalid value ${value} for ${name}`);
+					break;
+			}
+		});
+
+		return { name, value, isParm };
     });
 
 	$.RULE("parm_at", () => {

@@ -4,8 +4,10 @@ import LocalDB from "../../utils/storage.util.js";
 
 export class System {
 
-	constructor(gc) {
+	constructor({gc, vars, layer}) {
 		this.gc= gc;
+		this.vars= vars;
+		this.layer= layer;
 	}
 
 	goto(sceneName) {
@@ -20,16 +22,18 @@ export class System {
 	}
 	
 	concat(str, maxLen) {
-		let value= str;
+		let value= this.vars.get(str);
+		const text = this.vars.get("itemSelected").text;
 		if(maxLen) {
 			if(value.length >= maxLen)
 				value= "";
-			value += menuItem.text;
+			value += text;
 			value= value.substr(0, maxLen);
 		}
 		else
-			value+= menuItem.text
+			value+= text;
 		this.vars.set(str, value);
+
 	}
 	
 }

@@ -60,6 +60,10 @@ const tokenDefs= {
 	Height: {  pattern: "height", longer_alt: "Identifier"},
 	Type: {  pattern: "type", longer_alt: "Identifier"},
 
+	Left: {  pattern: "left", longer_alt: "Identifier"},
+	Right: {  pattern: "right", longer_alt: "Identifier"},
+	Center: {  pattern: "center", longer_alt: "Identifier"},
+
 	Set: {  pattern: "set", longer_alt: "Identifier"},
 	For: {  pattern: "for", longer_alt: "Identifier"},
 	Repeat: {  pattern: "repeat", longer_alt: "Identifier"},
@@ -127,6 +131,10 @@ export const tokenList = [
 	tokens.Width,
 	tokens.Height,
 	tokens.Type,
+
+	tokens.Left,
+	tokens.Right,
+	tokens.Center,
 	
 	tokens.Set,
 	tokens.For,

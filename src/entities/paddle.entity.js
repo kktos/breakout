@@ -1,18 +1,20 @@
-import Entity from "./entity.js";
-import StickyTrait from "../traits/powerups/sticky.trait.js";
-import LaserTrait from "../traits/powerups/laser.trait.js";
-import EnlargeTrait from "../traits/powerups/enlarge.trait.js";
-import DisruptionTrait from "../traits/powerups/disruption.trait.js";
-import PlayerTrait from "../traits/player.trait.js";
-import MouseXTrait from "../traits/mousex.trait.js";
-import PaddleTrait from "../traits/paddle.trait.js";
 import AnimationTrait from "../traits/animation.trait.js";
+import MouseXTrait from "../traits/mouseX.trait.js";
+import PaddleTrait from "../traits/paddle.trait.js";
+import PlayerTrait from "../traits/player.trait.js";
+import DisruptionTrait from "../traits/powerups/disruption.trait.js";
+import EnlargeTrait from "../traits/powerups/enlarge.trait.js";
+import LaserTrait from "../traits/powerups/laser.trait.js";
+import StickyTrait from "../traits/powerups/sticky.trait.js";
 import SpawnerTrait from "../traits/spawner.trait.js";
+import { clone } from "../utils/object.util.js";
+import Entity from "./Entity.js";
 export default class PaddleEntity extends Entity {
 
 	constructor(gc, x, y) {
 		super(gc.resourceManager, x, y, "paddles");
 
+		this.initialPos= {x,y};
 		this.mass= 2;
 		this.isFixed= false;
 		this.ballCount= 0;
@@ -34,6 +36,7 @@ export default class PaddleEntity extends Entity {
 	}
 
 	reset(gc) {
+		this.pos= clone(this.initialPos);
 		this.ballCount= 1;
 		this.visible= true;
 		const animTrait= this.traits.get(AnimationTrait);

@@ -11,6 +11,6 @@ export const views= {
 	DebugView : DebugView,
 };
 
-export function initViews(gc) {
-	views[SYSTEM]= new System(gc);
+export function initViews(ctx) {
+	views[SYSTEM]= new System(ctx);
 }

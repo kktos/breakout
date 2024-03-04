@@ -39,6 +39,27 @@ export class DebugView {
 						<div class="icn z50 icn-down-arrow"></div>
 						Next
 					</div>
+					<div id="btnPlayAnim" class="btn light-shadow">
+					<div class="icn z50 icn-down-play"></div>
+						Play
+					</div>
+				</div>
+				<div class="grid-column vcenter">
+					<div id="btnPlusAnim" class="btn light-shadow">
+						+
+					</div>
+					<div id="btnMinusAnim" class="btn light-shadow">
+						-
+					</div>
+					<div id="btnStepAnim" class="btn light-shadow">
+						S
+					</div>
+					<div id="btnAAnim" class="btn light-shadow">
+						A
+					</div>
+					<div id="btnZAnim" class="btn light-shadow">
+						Z
+					</div>
 				</div>
 			</div>
 			<div class="vcenter hcenter">
@@ -52,15 +73,30 @@ export class DebugView {
 
 	onClickUIBtn(id) {
 		switch(id) {
-		// 	case "btnBack":
-		// 		this.goBack();
-		// 		break;
 			case "btnPrevAnim":
 				this.prevAnim();
 				break;
 			case "btnNextAnim":
 				this.nextAnim();
 				break;
+			case "btnPlayAnim":
+				this.playAnim();
+				break;				
+			case "btnPlusAnim":
+				this.plusAnim();
+				break;				
+			case "btnMinusAnim":
+				this.minusAnim();
+				break;				
+			case "btnStepAnim":
+				this.sAnim();
+				break;				
+			case "btnAAnim":
+				this.zAnim();
+				break;				
+			case "btnZAnim":
+				this.zAnim();
+				break;				
 		}
 	}
 
@@ -98,6 +134,34 @@ export class DebugView {
 		if(this.currAnim < this.names.length-1)
 			this.currAnim++;
 		this.vars.set("currAnim", this.currAnim);
+	}
+	playAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		anim
+			.reset();
+	}
+	plusAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		anim.len= (anim.len*10 - 1)/10;
+		if(anim.len<=0)
+			anim.len= 0.1;
+	}
+	minusAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		anim.len= (anim.len*10 + 1)/10;		
+	}
+	sAnim() {
+		this.stepAnim= !this.stepAnim;
+	}
+	aAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		this.step--;
+		if(this.step<0)
+			this.step= anim.frames.length-1;
+	}
+	zAnim() {
+		const anim= this.animations.get(this.names[this.currAnim]);
+		this.step= (this.step +1) % anim.frames.length;
 	}
 
 	setSpritesheet(idx) {

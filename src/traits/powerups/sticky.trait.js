@@ -1,7 +1,7 @@
-import Trait from '../trait.js';
-import Events from "../../events/events.js";
-import BounceTrait from '../bounce.trait.js';
 import BallEntity from "../../entities/ball.entity.js";
+import Events from "../../events/events.js";
+import Trait from '../Trait.js';
+import BounceTrait from '../bounce.trait.js';
 
 export default class StickyTrait extends Trait {
 
@@ -12,8 +12,14 @@ export default class StickyTrait extends Trait {
 		this.gluedTo= null;
 		this.isTemporary= false;
 
+		console.log("StickyTrait onClick");
 		this.on(Events.EVENT_MOUSECLICK, () => {
+			console.log("!!! onClick");
 			this.free();
+		});
+
+		this.on("*", () => {
+			console.log("StickyTrait EVENT");
 		});
 	}
 

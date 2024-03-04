@@ -1,5 +1,5 @@
 import ENV from "../env.js";
-import Trait from './trait.js';
+import Trait from './Trait.js';
 
 export default class TimerTrait extends Trait {
 	// static EVENT_TIMER = Symbol('timer');

@@ -1,5 +1,5 @@
-import Trait from './trait.js';
 import {COLLISION, contains} from '../math.js';
+import Trait from './Trait.js';
 
 export default class BounceTrait extends Trait {
 

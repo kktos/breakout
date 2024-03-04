@@ -71,6 +71,7 @@ export default class Entity {
     }
 
 	emit(name, ...args) {
+		// console.log("Entity.emit", name, args);
 		this.events.emit(name, ...args);
 	}
 
@@ -129,7 +130,7 @@ export default class Entity {
 	}
 
     finalize() {
-        // this.traits.forEach(trait => trait.finalize(this));
+
 		for(let idx= 0; idx<this.traits.length; idx++)
 			this.traits[idx].finalize(this);
         this.events.clear();

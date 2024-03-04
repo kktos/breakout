@@ -1,6 +1,6 @@
-import Trait from './trait.js';
-import KillableTrait from "./killable.trait.js";
 import ENV from "../env.js";
+import Trait from './Trait.js';
+import KillableTrait from "./killable.trait.js";
 
 export default class BoundingBoxTrait extends Trait {
 

@@ -1,4 +1,4 @@
-import Trait from './trait.js';
+import Trait from './Trait.js';
 export default class VelocityTrait extends Trait {
     update(entity, {dt}) {
         if(entity.isFixed)

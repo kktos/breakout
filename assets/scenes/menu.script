@@ -4,7 +4,7 @@ display "menu" {
 	font "bubble-bobble"
 
 	layout {
-		align 2
+		align center
 		size 3
 
 		color white
@@ -17,12 +17,12 @@ display "menu" {
 				background #faee005e
 			}
 			items {
-				text "play" at:300,300 action:{print("theme")}
+				text "play" at:300,300 action:{goto("theme")}
 				text "highscores" at:300,360 action:{goto("highscores")}
 				text "level editor" at:300,420 action:{goto("editor")}
 				text "OLD" at:100,420 action:{goto("editor_old")}
 				text "DEBUG" at:300,480 action:{goto("debug")}
-				text "OLD" at:180,480 action:{goto("debug_old")}
+				// text "OLD" at:180,480 action:{goto("debug_old")}
 				text "input" at:300,510 action:{goto("input_name")}
 			}
 		}
@@ -43,8 +43,9 @@ display "menu" {
 		text "BREAK IT" at:300,146 color:#333333
 		text "BREAK IT" at:298,144
 
-		sprite "enemies:@portal" at:500,132
-		sprite "enemies:@portal" at:50,132
+		zoom 0
+		sprite "enemies:@portal" at:500,32
+		sprite "enemies:@portal" at:50,32
 
 		size 1
 		text "code by kktos" at:300,570

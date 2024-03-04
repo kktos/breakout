@@ -1,8 +1,8 @@
 
-import Entity from "./entity.js";
+import Trait from "../traits/Trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 import VelocityTrait from "../traits/velocity.trait.js";
-import Trait from "../traits/trait.js";
+import Entity from "./Entity.js";
 
 export default class BulletEntity extends Entity {
 

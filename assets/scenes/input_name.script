@@ -67,8 +67,8 @@ display "input name" {
 				}
 
 				text "OK" at:300,550 action: { 
-					updateHighscores(playerName)
-					goTo("highscores")
+					updateHighscores($playerName)
+					goto("highscores")
 				}
 			}
 		}

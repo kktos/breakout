@@ -7,17 +7,18 @@ export default class EntitiesLayer extends Layer {
 		super(gc);
 
 		if(sheet)
-			entities.push(...createBricks(gc, {brickDef: sheet}));
+			entities.push(...createBricks(gc, {bricksDef: sheet}));
 		this.entities= entities;
 	}
 
 	render(gc) {
-		this.entities.forEach(entity => entity.render(gc));
+		for (let idx = 0; idx < this.entities.length; idx++)
+			this.entities[idx].render(gc)
 		
 		const ctx= gc.viewport.ctx;
 		ctx.fillStyle="#fff";
 		ctx.font= "10px";
-		ctx.fillText((gc.scene?gc.scene.breakableCount|0:"-") +"/"+ this.entities.length,600-60,600-10);
+		ctx.fillText(`${gc.scene?gc.scene.breakableCount|0:"-"}/${this.entities.length}`,600-60,600-10);
 	}
 
 }
