@@ -10,7 +10,7 @@ export default class SpriteSheet {
 		return loadJson(ENV.SPRITESHEETS_PATH+filename)
 				.then(s => {sheet= s})
 				.then(() => loadImage(sheet.img))
-				.then(img => createSpriteSheet(filename, sheet, img));
+				.then(img => createSpriteSheet(sheet, img));
 	}
 
 	constructor(img) {
@@ -54,8 +54,10 @@ export default class SpriteSheet {
 		{
 			let width= 0;
 			let height= 0;
-			spriteDef.forEach(([offsets, name]) => {
-				const [col, row, countX, countY]= offsets;
+			// spriteDef.forEach(([offsets, name]) => {
+			for (let idx = 0; idx < spriteDef.length; idx++) {
+				const [[col, row, countX, countY], name] = spriteDef[idx];
+				// const [col, row, countX, countY]= offsets;
 				if(name) {
 					const s= this.spriteSize(name);
 					if(countY)
@@ -70,7 +72,7 @@ export default class SpriteSheet {
 					height+= row;
 					width+= col;
 				}
-			});
+			}
 	
 			canvas.width = width;
 			canvas.height = height;
@@ -81,8 +83,10 @@ export default class SpriteSheet {
 		let dx= 0;
 		let dy= 0;
 
-		spriteDef.forEach(([offsets, name]) => {
-			const [col, row, countX, countY]= offsets;
+		// spriteDef.forEach(([offsets, name]) => {
+		// 	const [col, row, countX, countY]= offsets;
+		for (let idx = 0; idx < spriteDef.length; idx++) {
+			const [[col, row, countX, countY], name] = spriteDef[idx];
 			let s;
 			if(name) {
 				s= this.spriteSize(name);
@@ -126,7 +130,7 @@ export default class SpriteSheet {
 					this.sprites.get(name)[0],
 					0, 0, s.x, s.y,
 					dx, dy, s.x, s.y);			
-		});
+		}
 
         this.sprites.set(name, [canvas]);
 	}

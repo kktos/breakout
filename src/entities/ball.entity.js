@@ -9,7 +9,8 @@ export default class BallEntity extends Entity {
 	constructor(resourceMgr, x, y) {
 		super(resourceMgr, x, y);
 		
-		this.size= {x: ENV.BALL_RADIUS*2+5, y: ENV.BALL_RADIUS*2+5};
+		// this.size= {x: ENV.BALL_RADIUS*2+5, y: ENV.BALL_RADIUS*2+5};
+		this.size= {x: ENV.BALL_RADIUS*2, y: ENV.BALL_RADIUS*2};
 		this.vel= {x: 0, y: -360};
 		this.mass= 10;
 		this.radius= ENV.BALL_RADIUS;
@@ -23,8 +24,8 @@ export default class BallEntity extends Entity {
 	}
 
 	render({keys, viewport:{ctx}}) {
-		const centerX= this.pos.x + this.center;
-		const centerY= this.pos.y + this.center;
+		const centerX= this.left + this.center;
+		const centerY= this.top + this.center;
 		ctx.fillStyle= "white";
 		ctx.beginPath();
 		ctx.arc(centerX, centerY, this.radius, 0, Math.PI*2);
@@ -32,7 +33,7 @@ export default class BallEntity extends Entity {
 
 		if(keys.isPressed("Control")) {
 			ctx.strokeStyle = 'red';
-			ctx.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+			ctx.strokeRect(this.left, this.top, this.size.x, this.size.y);
 		}
 
 		// ctx.font = '14px sans-serif';

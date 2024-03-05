@@ -13,7 +13,7 @@ export default class WallEntity extends Entity {
 	update() {}
 
 	draw(ctx) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 	}
 
 }

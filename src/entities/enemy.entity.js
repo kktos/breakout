@@ -28,7 +28,7 @@ export default class EnemyEntity extends Entity {
 		super(resourceMgr, x, y, "enemies");
 
 		this.audio= resourceMgr.get("audio", "paddle");
-		this.vel= {x: 0, y: 10};
+		this.vel= {x: 0, y: 0};
 		this.speed= 0;
 		this.mass= 0.05;
 		this.isFixed= false;
@@ -58,7 +58,7 @@ export default class EnemyEntity extends Entity {
 	}
 
 	render({viewport:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 		// this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
 		// ctx.fillText(`${this.vel.x} ${this.vel.y}`,300,600-20);
 	}	

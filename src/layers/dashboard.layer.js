@@ -5,7 +5,7 @@ import Level from "../scene/level.scene.js";
 import PlayerTrait from "../traits/player.trait.js";
 import Layer from "./layer.js";
 
-const flipflop= true;
+let flipflop= true;
 export default class DashboardLayer extends Layer {
 	
 	constructor(gc) {
@@ -23,10 +23,10 @@ export default class DashboardLayer extends Layer {
 		this.walls= [];
 		this.walls.push(
 			new WallEntity(rezMgr, "wallTop", 0, ENV.WALL_TOP),
-			new WallEntity(rezMgr, "wallLeft", 0, ENV.WALL_TOP),
+			new WallEntity(rezMgr, "wallLeft", 2, ENV.WALL_TOP),
 			new WallEntity(rezMgr, "wallRight", 0, ENV.WALL_TOP)
 		);
-		this.walls[2].pos.x= this.width - this.walls[2].size.x;
+		this.walls[2].left= this.width - this.walls[2].size.x - 2;
 
 		this.font= rezMgr.get("font", ENV.MAIN_FONT);
 
@@ -37,24 +37,25 @@ export default class DashboardLayer extends Layer {
 		ctx.fillStyle= "#000";
 		ctx.fillRect(0, 0, this.width, ENV.WALL_TOP);
 
-        const playerTrait= paddle ? paddle.traits.get(PlayerTrait) : {highscore:0,score:0,lives:3};
+        const playerTrait= paddle?.traits.get(PlayerTrait);
+        const playerInfo= { highscore:playerTrait?.highscore??0, score:playerTrait?.score??0, lives:playerTrait?.lives??3 };
 
 		this.font.size= 3;
 		this.font.align= Align.Center;
 		this.font.print(ctx, "HIGH SCORE", this.width/2, 1, "red");
-		this.font.print(ctx, playerTrait.highscore, this.width/2, 28);
+		this.font.print(ctx, playerInfo.highscore, this.width/2, 28);
 
 		this.font.align= Align.Left;
-		// if(!(tick%50))
-		// 	flipflop= !flipflop;
+		if(!(tick % 28))
+			flipflop= !flipflop;
 		if(flipflop)
 			this.font.print(ctx, "1UP", this.width/8, 1, "red");
-		this.font.print(ctx, playerTrait.score, this.width/8, 28);
+		this.font.print(ctx, playerInfo.score, this.width/8, 28);
 
 		for(let idx= 0; idx<this.walls.length; idx++)
 			this.walls[idx].draw(ctx);
 
-		for(let idx= 0; idx<playerTrait.lives; idx++)
+		for(let idx= 0; idx<playerInfo.lives; idx++)
 			this.spritesheet.draw("life", ctx, 20+(idx*this.lifeW), this.lifeY);		
 
 		switch(state) {

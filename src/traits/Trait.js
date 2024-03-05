@@ -10,18 +10,12 @@ export default class Trait {
 	}
 
 	on(name, callback, count = Infinity) {
-
-		console.log("Trait.on", name, callback);
-
         this.listeners.push({name, callback, count});
 		return this;
     }
 
     finalize(entity) {
         this.listeners= this.listeners.filter(listener => {
-
-			console.log("Trait.finalize", entity);
-
 			entity.events.process(listener.name, listener.callback);
             return --listener.count;
         });

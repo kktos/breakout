@@ -1,3 +1,4 @@
+import Entity from "../entities/Entity.js";
 import BallEntity from "../entities/ball.entity.js";
 import SpawnerEntity from "../entities/enemyspawner.entity.js";
 import PaddleEntity from "../entities/paddle.entity.js";
@@ -42,7 +43,11 @@ export default class LevelScene extends Scene {
 		const spawner= new SpawnerEntity(gc.resourceManager, 300, 550);
 		this.entities.push(spawner);
 	
-		this.addLayer(new BackgroundLayer(gc, background));
+		// const thing= new Entity(gc.resourceManager, 300, 100);
+		// thing.size= {x:20,y:20};
+		// this.entities.push(thing);
+
+		this.addLayer(new BackgroundLayer(gc, background, true));
 		this.addLayer(new EntitiesLayer(gc, this.entities, bricks));
 		this.addLayer(new DashboardLayer(gc));
 	}
@@ -96,7 +101,7 @@ export default class LevelScene extends Scene {
 
 	reset(gc) {
 		const ballIdx= this.entities.findIndex(e=>e.class==="BallEntity");
-		if(ballIdx)
+		if(ballIdx>=0)
 			this.entities.splice(ballIdx, 1);
 
 		const ball= new BallEntity(gc.resourceManager, 0, 0);
@@ -152,16 +157,20 @@ export default class LevelScene extends Scene {
 			const entity= this.entities[idx];
 
 			if(target === entity)
-				return;
+				continue;
+
+			// if(target.class === "BallEntity")
+			// 	console.log("Level.collides", this.entities.length, idx, entity.class, entity.size, target.size);
 
 			if(!(entity.size.x + entity.size.y) || !(target.size.x + target.size.y))
-				return;
+				continue;
 
 			let side= collideRect(entity, target);
+
 			if(side !== COLLISION.NONE) {
 				target.collides(gc, side, entity);
 				if(!entity.isFixed)
-					return;
+					continue;
 				switch(side) {
 					case COLLISION.LEFT:
 						side= COLLISION.RIGHT;
@@ -195,7 +204,7 @@ export default class LevelScene extends Scene {
 
 		// movingOnes.forEach(entity => this.collides(gc, entity));
 		for (let idx = 0; idx < movingOnes.length; idx++)
-		movingOnes[idx].update(gc);
+			this.collides(gc, movingOnes[idx]);
 
 		// entities.forEach(entity => entity.finalize());
 		for (let idx = 0; idx < entities.length; idx++)

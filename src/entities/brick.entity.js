@@ -66,7 +66,7 @@ export default class BrickEntity extends Entity {
 	}
 
 	render({viewport:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 		// ctx.fillStyle="#fff";
 		// ctx.font= "7px";
 		// ctx.fillText(`${this.pos.x},${this.pos.y}`, this.pos.x, this.pos.y+16);

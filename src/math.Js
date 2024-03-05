@@ -1,4 +1,8 @@
 
+export function getRandom(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 export function intersectRect(r1, r2) {
 	return !(r2.left > r1.right || 
 			r2.right < r1.left || 
@@ -21,8 +25,8 @@ https://ailef.tech/2022/11/12/creating-a-2d-physics-engine-from-scratch-in-javas
 
 */
 function collideRect1(r1, r2){
-	const dx= (r1.pos.x + r1.size.x/2)-(r2.pos.x + r2.size.x/2);
-	const dy= (r1.pos.y + r1.size.y/2)-(r2.pos.y + r2.size.y/2);
+	const dx= (r1.left + r1.size.x/2)-(r2.left + r2.size.x/2);
+	const dy= (r1.top + r1.size.y/2)-(r2.top + r2.size.y/2);
 	const width= (r1.size.x + r2.size.x)/2;
 	const height= (r1.size.y + r2.size.y)/2;
 	const crossWidth= width * dy;
@@ -97,12 +101,14 @@ function intersectSide(intersection) {
 				return COLLISION.RIGHT;
 			}
 			return COLLISION.LEFT;
-		} else {
-			if (intersection.y < 0) {
-				return COLLISION.BOTTOM;
-			}
-			return COLLISION.TOP;
-		}
+		} 
+
+    if (intersection.y < 0) {
+      return COLLISION.BOTTOM;
+    }
+
+    return COLLISION.TOP;
+		
 	}
 	return COLLISION.NONE;
 }
@@ -114,8 +120,8 @@ function intersect(r1, r2) {
     if (
       totalBoundingBox.width < r1.width + r2.width &&
       totalBoundingBox.height < r1.height + r2.height &&
-	  !(totalBoundingBox.width == r1.width && totalBoundingBox.height == r1.height) &&
-	  !(totalBoundingBox.width == r2.width && totalBoundingBox.height == r2.height)
+	  !(totalBoundingBox.width === r1.width && totalBoundingBox.height === r1.height) &&
+	  !(totalBoundingBox.width === r2.width && totalBoundingBox.height === r2.height)
     ) {
       // collision
       let overlapX = 0;

@@ -7,7 +7,6 @@ import EnlargeTrait from "../traits/powerups/enlarge.trait.js";
 import LaserTrait from "../traits/powerups/laser.trait.js";
 import StickyTrait from "../traits/powerups/sticky.trait.js";
 import SpawnerTrait from "../traits/spawner.trait.js";
-import { clone } from "../utils/object.util.js";
 import Entity from "./Entity.js";
 export default class PaddleEntity extends Entity {
 
@@ -36,28 +35,32 @@ export default class PaddleEntity extends Entity {
 	}
 
 	reset(gc) {
-		this.pos= clone(this.initialPos);
+		this.left= this.initialPos.x;
+		this.top= this.initialPos.y;
 		this.ballCount= 1;
 		this.visible= true;
 		const animTrait= this.traits.get(AnimationTrait);
-		this.pos.y-= 8;
-		animTrait
-			.setAnim(this, "beamup")
-			.start()
-			.then(() => {
-				this.pos.y+= 8;
-				animTrait.setAnim(this, "normal0");
-				// force narrow bounding box to avoid collision tunneling with the tiny ball
-				this.size.y= 9;
-			});
-		this.traits.get(PaddleTrait).revokePower(this);
+		this.top-= 8;
+		animTrait.setAnim(this, "normal0");
+		console.log("PaddleEntity.reset");
+		
+		// animTrait
+		// 	.setAnim(this, "beamup")
+		// 	.start()
+		// 	.then(() => {
+		// 		this.top+= 8;
+		// 		animTrait.setAnim(this, "normal0");
+		// 		// force narrow bounding box to avoid collision tunneling with the tiny ball
+		// 		this.size.y= 9;
+		// 	});
+		// this.traits.get(PaddleTrait).revokePower(this);
 	}
 
 	render({keys, viewport:{ctx}}) {
-		this.visible && this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.visible && this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 		if(keys.isPressed("Control")) {
 			ctx.strokeStyle = 'red';
-			ctx.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+			ctx.strokeRect(this.left, this.top, this.size.x, this.size.y);
 		}
 	}	
 }

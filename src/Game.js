@@ -46,7 +46,7 @@ export default class Game {
 
 		this.gc.viewport.ctx.scale(this.gc.viewport.ratioWidth, this.gc.viewport.ratioHeight);
 
-		this.timer = new Timer(ENV.FPS);
+		this.timer = new Timer(this.gc.dt);
 		this.timer.update = (deltaTime) => {
 			this.gc.tick++;
 			this.gc.deltaTime = deltaTime;
@@ -111,34 +111,35 @@ export default class Game {
 
 			}, 0);
 
-		if(	gamepad.buttons[GP_BUTTONS.X].pressed ||
-			gamepad.buttons[GP_BUTTONS.Y].pressed ||
-			gamepad.buttons[GP_BUTTONS.A].pressed ||
-			gamepad.buttons[GP_BUTTONS.B].pressed ||
-			gamepad.buttons[GP_BUTTONS.CURSOR_UP].pressed ||
-			gamepad.buttons[GP_BUTTONS.CURSOR_DOWN].pressed ||
-			gamepad.buttons[GP_BUTTONS.CURSOR_LEFT].pressed ||
-			gamepad.buttons[GP_BUTTONS.CURSOR_RIGHT].pressed ||
-			gamepad.buttons[GP_BUTTONS.TRIGGER_LEFT].pressed ||
-			gamepad.buttons[GP_BUTTONS.TRIGGER_RIGHT].pressed
-			)
-			setTimeout(() => {
-				const evt= {
-					type: "joybuttondown",
-					timestamp: gamepad.timestamp,
-					X: gamepad.buttons[GP_BUTTONS.X].pressed,
-					Y: gamepad.buttons[GP_BUTTONS.Y].pressed,
-					A: gamepad.buttons[GP_BUTTONS.A].pressed,
-					B: gamepad.buttons[GP_BUTTONS.B].pressed,
-					CURSOR_UP: gamepad.buttons[GP_BUTTONS.CURSOR_UP].pressed,
-					CURSOR_DOWN: gamepad.buttons[GP_BUTTONS.CURSOR_DOWN].pressed,
-					CURSOR_LEFT: gamepad.buttons[GP_BUTTONS.CURSOR_LEFT].pressed,
-					CURSOR_RIGHT: gamepad.buttons[GP_BUTTONS.CURSOR_RIGHT].pressed,
-					TRIGGER_LEFT: gamepad.buttons[GP_BUTTONS.TRIGGER_LEFT].pressed,
-					TRIGGER_RIGHT: gamepad.buttons[GP_BUTTONS.TRIGGER_RIGHT].pressed
-				};				
-				this.coppola.handleEvent(this.gc, evt);
-			}, 0);			
+		// if(	gamepad.buttons[GP_BUTTONS.X].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.Y].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.A].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.B].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.CURSOR_UP].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.CURSOR_DOWN].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.CURSOR_LEFT].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.CURSOR_RIGHT].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.TRIGGER_LEFT].pressed ||
+		// 	gamepad.buttons[GP_BUTTONS.TRIGGER_RIGHT].pressed
+		// 	)
+		const buttons= gamepad.buttons;
+		setTimeout(() => {
+			const evt= {
+				type: "joybuttondown",
+				timestamp: gamepad.timestamp,
+				X: buttons[GP_BUTTONS.X].pressed,
+				Y: buttons[GP_BUTTONS.Y].pressed,
+				A: buttons[GP_BUTTONS.A].pressed,
+				B: buttons[GP_BUTTONS.B].pressed,
+				CURSOR_UP: buttons[GP_BUTTONS.CURSOR_UP].pressed,
+				CURSOR_DOWN: buttons[GP_BUTTONS.CURSOR_DOWN].pressed,
+				CURSOR_LEFT: buttons[GP_BUTTONS.CURSOR_LEFT].pressed,
+				CURSOR_RIGHT: buttons[GP_BUTTONS.CURSOR_RIGHT].pressed,
+				TRIGGER_LEFT: buttons[GP_BUTTONS.TRIGGER_LEFT].pressed,
+				TRIGGER_RIGHT: buttons[GP_BUTTONS.TRIGGER_RIGHT].pressed
+			};				
+			this.coppola.handleEvent(this.gc, evt);
+		}, 0);			
 	}
 
 	handleEvent(e) {

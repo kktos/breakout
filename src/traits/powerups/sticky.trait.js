@@ -12,14 +12,8 @@ export default class StickyTrait extends Trait {
 		this.gluedTo= null;
 		this.isTemporary= false;
 
-		console.log("StickyTrait onClick");
 		this.on(Events.EVENT_MOUSECLICK, () => {
-			console.log("!!! onClick");
 			this.free();
-		});
-
-		this.on("*", () => {
-			console.log("StickyTrait EVENT");
 		});
 	}
 
@@ -55,8 +49,8 @@ export default class StickyTrait extends Trait {
 	}
 
 	follow(magnet, entity) {
-		entity.pos.x= magnet.left + (magnet.right - magnet.left)/2 - (entity.right-entity.left)/2;
-		entity.pos.y= magnet.pos.y - entity.size.y - 1;
+		entity.left= magnet.left + (magnet.right - magnet.left)/2 - (entity.right-entity.left)/2;
+		entity.top= magnet.top - entity.size.y - 1;
 	}
 
 	update(entity) {

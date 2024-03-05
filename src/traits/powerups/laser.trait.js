@@ -19,13 +19,13 @@ export default class LaserTrait extends Trait {
 
 	activate(entity) {
 		const animTrait= entity.traits.get(AnimationTrait);
-		animTrait && animTrait.setAnim(entity, "gun");
+		animTrait?.setAnim(entity, "gun");
 		this.isActive= true;
 	}
 
 	deactivate(entity) {
 		const animTrait= entity.traits.get(AnimationTrait);
-		animTrait && animTrait.setAnim(entity, "normal0");
+		animTrait?.setAnim(entity, "normal0");
 		this.isActive= false;
 	}
 

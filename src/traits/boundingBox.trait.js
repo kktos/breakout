@@ -14,17 +14,17 @@ export default class BoundingBoxTrait extends Trait {
 		}
 
 		if(entity.left < bbox.x) {
-			entity.pos.x= bbox.x;
+			entity.left= bbox.x;
 			entity.vel.x *= -1;
 		}
 		if(entity.right > bbox.dx) {
-			entity.pos.x= bbox.dx - entity.size.x;
+			entity.left= bbox.dx - entity.size.x;
 			entity.vel.x *= -1;
 		}
 
-		if(entity.pos.y < bbox.y) {
+		if(entity.top < bbox.y) {
 			entity.vel.y*= -1;
-			entity.pos.y= bbox.y;
+			entity.top= bbox.y;
 		}
 
     }

@@ -135,7 +135,15 @@
 
 	},
 	"animations": {
-		"enemydoor": {
+		"enemyDoorLeft": {
+			"len": 0.2,
+			"loop": 1,
+			"frames": {
+				"name": "enemydoor",
+				"range": [0, 5]
+			}
+		},
+		"enemyDoorRight": {
 			"len": 0.2,
 			"loop": 1,
 			"frames": {

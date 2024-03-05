@@ -1,5 +1,6 @@
 import LocalDB from "../utils/storage.util.js";
-export default class ChooseFileUI {
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+export  default class ChooseFileUI {
 
 
 	static runDialog(files, callback) {
@@ -22,14 +23,14 @@ export default class ChooseFileUI {
 
 		const closeDialog= (withBtn) => {
 			document.querySelector("BODY").removeChild(div);
-			if(withBtn=="yes")
+			if(withBtn==="yes")
 				callback(selected.attributes.getNamedItem("key").value);
 		}
 
 		const btnEventsHandler= (evt) => {
 			if(!evt.isTrusted)
 				return;
-			if(evt.target.id == "yes" && !selected)
+			if(evt.target.id === "yes" && !selected)
 				return;
 			closeDialog(evt.target.id);
 		}

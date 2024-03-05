@@ -75,6 +75,6 @@ export default class PowerupEntity extends Entity {
 	}
 
 	render({viewport:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 	}	
 }

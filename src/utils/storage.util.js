@@ -31,7 +31,7 @@ export  default class LocalDB {
 			lives: localStorage.getItem("player:lives")|0,
 			name: localStorage.getItem("player:name"),
 			round: localStorage.getItem("player:round")|0,
-			highscore: localStorage.getItem("player:highscore")|0
+			highscore: LocalDB.highscore() //localStorage.getItem("player:highscore")|0
 		}
 	}
 
@@ -56,7 +56,13 @@ export  default class LocalDB {
 	}
 
 	static highscores() {
-		return JSON.parse(localStorage.getItem("player:highscores")) || [];;
+		return JSON.parse(localStorage.getItem("player:highscores")) || [];
+	}
+
+	static highscore() {
+		const scores= LocalDB.highscores();
+		scores?.sort((a,b) => a.score < b.score ? 1:-1);
+		return scores?.[0].score ?? 0;
 	}
 
 	static isPlayerScoreGoodEnough() {

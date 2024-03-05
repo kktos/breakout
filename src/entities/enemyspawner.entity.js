@@ -1,4 +1,5 @@
 import Anim from "../anim.js";
+import { getRandom } from "../math.js";
 import FollowPathTrait from "../traits/followPath.trait.js";
 import KillableTrait from "../traits/killable.trait.js";
 import SpawnerTrait from "../traits/spawner.trait.js";
@@ -20,43 +21,44 @@ export default class EnemySpawner extends Entity {
 			entity.class === "EnemyEntity" && this.count--;
 		});
 
-		const doors= [[160,50], [384,50]].map(([x,y]) => {
-			const door= new Entity(resourceMgr, x, y, "backgrounds");
-			door.isSolid= false;
-			door.setAnim("enemydoor");
-			door.render= function({viewport:{ctx}}) {
-				this.spritesheet.drawAnim(this.currSprite, ctx, this.pos.x, this.pos.y, this.lifetime);
-			};
-
-			return door;
-		});
-		
-		const doorAnim= doors[0].spritesheet.animations.get("enemydoor");
-		const open= (anim)=> {
+		const onDoorOpen= (anim, x, y)=> {
 			if(anim.step<0)
 				return;
-
-			const enemy= new EnemyEntity(resourceMgr, (this.count%2) ? 160 : 384, 50);
+			const enemy= new EnemyEntity(resourceMgr, x, y);
 			const followPath= enemy.traits.get(FollowPathTrait);
 			followPath
-				.whenAt(160, 100)
-				.setVel(-30, 20);
+				.whenAt(x, y+50)
+				.setVel(-getRandom(30,60), getRandom(20,60));
 
 			spawner.spawn(enemy);
-
 			anim.backwards();
 		};
-		doorAnim.events.on(Anim.EVENT_END, open);
-		doorAnim.pause();
+
+		const createDoor= (x, y, animName)=> {
+			const door= new Entity(resourceMgr, x, y, "backgrounds");
+			door.isSolid= false;
+			const anim= door.setAnim(animName, { paused: true });
+			door.render= function({viewport:{ctx}}) {
+				this.spritesheet.drawAnim(this.currSprite, ctx, this.left, this.top, this.lifetime);
+			};
+
+			anim.events.on(Anim.EVENT_END, () => onDoorOpen(anim, x, y));
+
+			return { entity:door, anim };
+		};
+
+		const doorLeft= createDoor(160, 50, "enemyDoorLeft");
+		const doorRight= createDoor(384, 50, "enemyDoorRight");
 
 		spawner.on(TimerTrait.EVENT_TIMER, (id) => {
 			if(this.count===this.max)
 				return;
-			doorAnim.reset();
+			[doorLeft, doorRight].at(this.count%2).anim.reset();
 			this.count++;
 		});
 
-		doors.forEach((door) => spawner.spawn(door));
+		spawner.spawn(doorLeft.entity);
+		spawner.spawn(doorRight.entity);
 
 		this.addTrait(new TimerTrait("spawn", 5000));
 		this.addTrait(spawner);

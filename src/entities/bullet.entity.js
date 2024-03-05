@@ -29,7 +29,7 @@ export default class BulletEntity extends Entity {
 		}
 		deathOnTop.update= (entity, {scene}) => {
 			const bbox= scene.bbox;
-			if(entity.pos.y < bbox.y) {
+			if(entity.top < bbox.y) {
 				if(entity.traits.has(KillableTrait))
 					entity.traits.get(KillableTrait).kill();				
 			}
@@ -39,6 +39,6 @@ export default class BulletEntity extends Entity {
 	}
 
 	render({viewport:{ctx}}) {
-		this.spritesheet.draw(this.currSprite, ctx, this.pos.x, this.pos.y);
+		this.spritesheet.draw(this.currSprite, ctx, this.left, this.top);
 	}	
 }

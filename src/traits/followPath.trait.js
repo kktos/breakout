@@ -12,11 +12,11 @@ export default class FollowPathTrait extends Trait {
 			return;
 
 		// entity.vel.y+= scene.gravity * entity.mass * dt;
-		entity.pos.x+= 0 * dt;
-		entity.pos.y+= 50 * dt;
+		entity.left+= 0 * dt;
+		entity.top+= 50 * dt;
 	
         // if((entity.pos.x == this.to.x) && (entity.pos.y == this.to.y)) {
-        if(entity.pos.y >= this.to.y) {
+        if(entity.top >= this.to.y) {
 			entity.vel.x= this.vel.x;
 			entity.vel.y= this.vel.y;
 			this.to= this.vel= null;

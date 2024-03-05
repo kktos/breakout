@@ -9,9 +9,7 @@ export default class BrickTrait extends Trait {
 	// static EVENT_BRICK_KILLED = Symbol('brickKilled');
 	// static powerAfter= 10;
 
-	constructor() {
-		super();
-	}
+	// constructor() { super(); }
 
 	resetPowerTimer() {
 		BrickTrait.powerAfter= Math.random()*20|0 + 1;
@@ -26,7 +24,8 @@ export default class BrickTrait extends Trait {
 		switch(entity.type) {
 			case "x":
 			case "X":
-			case "@":
+			// biome-ignore lint/suspicious/noFallthroughSwitchClause: <explanation>
+			case  "@":
 				entity.data--;
 				if(entity.data>0) {
 					entity.audio.play("ping2");
@@ -46,7 +45,7 @@ export default class BrickTrait extends Trait {
 
 				if(BrickTrait.powerAfter <=0) {
 					this.resetPowerTimer();
-					const powerup= new PowerupEntity(resourceManager, entity.pos.x, entity.pos.y);
+					const powerup= new PowerupEntity(resourceManager, entity.left, entity.top);
 					scene.addTask(LevelScene.TASK_ADD_ENTITY, powerup);
 				}
 		
