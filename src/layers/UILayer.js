@@ -46,6 +46,7 @@ export default class UILayer extends Layer {
 	}
 
 	goBack() {
+		this.destroy();
 		this.ui.innerHTML= "";
 		this.gc.scene.events.emit(Scene.EVENT_COMPLETE, "menu");
 	}
@@ -58,5 +59,6 @@ export default class UILayer extends Layer {
 		}
 	}
 
+	destroy() {}
 	render(dt) {}
 }

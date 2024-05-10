@@ -82,7 +82,7 @@ export default class SpriteSheet {
 		let height= 0;
 		let dx= 0;
 		let dy= 0;
-
+	
 		// spriteDef.forEach(([offsets, name]) => {
 		// 	const [col, row, countX, countY]= offsets;
 		for (let idx = 0; idx < spriteDef.length; idx++) {
@@ -105,7 +105,7 @@ export default class SpriteSheet {
 			} else {
 				height+= row;
 				width+= col;
-				return;
+				continue;
 			}
 
 			if(countY>1) {

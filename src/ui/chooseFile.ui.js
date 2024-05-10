@@ -34,7 +34,10 @@ export  default class ChooseFileUI {
 				return;
 			closeDialog(evt.target.id);
 		}
-		buttons.forEach((btn) => btn.addEventListener("click", btnEventsHandler));
+		// buttons.forEach((btn) => btn.addEventListener("click", btnEventsHandler));
+		for (let idx = 0; idx < buttons.length; idx++) {
+			buttons[idx].addEventListener("click", btnEventsHandler);
+		}
 		
 		const selectItemHandler= (evt) => {
 			if(!evt.isTrusted)
@@ -50,8 +53,13 @@ export  default class ChooseFileUI {
 				return;
 			closeDialog("yes");
 		}
-		items.forEach((item) => item.addEventListener("click", selectItemHandler));
-		items.forEach((item) => item.addEventListener("dblclick", chooseItemHandler));
+		// items.forEach((item) => item.addEventListener("click", selectItemHandler));
+		// items.forEach((item) => item.addEventListener("dblclick", chooseItemHandler));
+		for (let idx = 0; idx < items.length; idx++) {
+			const item = items[idx];
+			item.addEventListener("click", selectItemHandler);
+			item.addEventListener("dblclick", chooseItemHandler);
+		}
 	}
 
 	static choose(theme, callback) {

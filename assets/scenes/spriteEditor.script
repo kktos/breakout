@@ -1,0 +1,19 @@
+display "editor" {
+	background #222222
+	showCursor
+	font "bubble-bobble"
+
+	ui {
+		pos "bottom"
+		background #777777A0
+	}
+
+	layout {
+
+		// color white
+		// rect at:50,400 width:100 height:50
+
+		view "editor" type:SpriteEditorView at:500,0 width:100 height:510
+
+	}
+}

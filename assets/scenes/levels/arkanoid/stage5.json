@@ -1,0 +1,24 @@
+{
+	"bricks": [
+	  "-----y-----y-----",
+	  "-----y-----y-----",
+	  "------y---y------",
+	  "------y---y------",
+	  "-----xxxxxxx-----",
+	  "-----xxxxxxx-----",
+	  "----xxrxxxrxx----",
+	  "----xxrxxxrxx----",
+	  "---xxxxxxxxxxx---",
+	  "---xxxxxxxxxxx---",
+	  "---xxxxxxxxxxx---",
+	  "---x-xxxxxxx-x---",
+	  "---x-x-----x-x---",
+	  "---x-x-----x-x---",
+	  "------xx-xx------",
+	  "------xx-xx------"
+	],
+	"background": 0,
+	"name": "stage 5",
+	"next": "stage6",
+	"type": "level"
+  }

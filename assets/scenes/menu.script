@@ -23,7 +23,8 @@ display "menu" {
 				text "OLD" at:100,420 action:{goto("editor_old")}
 				text "DEBUG" at:300,480 action:{goto("debug")}
 				// text "OLD" at:180,480 action:{goto("debug_old")}
-				text "input" at:300,510 action:{goto("input_name")}
+				// text "input" at:300,510 action:{goto("input_name")}
+				text "SpriteEditor" at:300,530 action:{goto("spriteEditor")}
 			}
 		}
 

@@ -3,23 +3,23 @@
     "next": "stage4",
 
     "bricks": [
-        "GGGGGGGGGGGGGGG",
-        "---------------",
-        "gggXXXXXXXXXXXX",
-        "---------------",
-        "rrrrrrrrrrrrrrr",
-        "---------------",
-        "XXXXXXXXXXXXggg",
-        "---------------",
-        "ppppppppppppppp",
-        "---------------",
-        "BBBXXXXXXXXXXXX",
-        "---------------",
-        "bbbbbbbbbbbbbbb",
-        "---------------",
-        "XXXXXXXXXXXXbbb",
-        "---------------"
+        "GGGGGGGGGGGGGGGGG",
+        "-----------------",
+        "gggXXXXXXXXXXXXXX",
+        "-----------------",
+        "rrrrrrrrrrrrrrrrr",
+        "-----------------",
+        "XXXXXXXXXXXXggggg",
+        "-----------------",
+        "ppppppppppppppppp",
+        "-----------------",
+        "BBBXXXXXXXXXXXXXX",
+        "-----------------",
+        "bbbbbbbbbbbbbbbbb",
+        "-----------------",
+        "XXXXXXXXXXXXbbbbb",
+        "------------------"
     ],
     "background": 3,
-    "name": "stage3"
+    "name": "stage 3"
 }

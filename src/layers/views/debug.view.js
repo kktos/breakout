@@ -25,6 +25,9 @@ export class DebugView {
 
 	}
  
+	destroy() {
+	}
+
 	buildUI(layer, list) {
 		const options= list.map((item, idx) => `<option value="${idx}">${item.replace(/^[^:]+:/,"")}</option>`);
 		const html= `

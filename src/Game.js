@@ -3,7 +3,7 @@ import { Timer } from "./Timer.js";
 import { GAME_EVENTS } from "./constants/events.const.js";
 import { GP_BUTTONS, GP_STICKS_AXES } from "./constants/gamepad.const.js";
 import ENV from "./env.js";
-import Director from "./scene/director.js";
+import Director from "./scene/Director.js";
 import { createViewport } from "./utils/canvas.utils.js";
 
 class KeyMap {
@@ -41,7 +41,9 @@ export default class Game {
 			mouse: {x: 0, y: 0, down: false},
 			gamepad: null,
 			keys: new KeyMap(),
-			scene: null
+			scene: null,
+
+			wannaPauseOnBlur: true
 		};
 
 		this.gc.viewport.ctx.scale(this.gc.viewport.ratioWidth, this.gc.viewport.ratioHeight);
@@ -148,7 +150,7 @@ export default class Game {
 
 		if(e.srcElement.className === "overlay")
 			return;
-
+	
 		let x;
 		let y;
 
@@ -169,21 +171,33 @@ export default class Game {
 			buttons: e.buttons,
 			x: ((x - bbox.x) / this.gc.viewport.ratioWidth) | 0,
 			y: ((y - bbox.y) / this.gc.viewport.ratioHeight) | 0,
-			key: undefined
+			key: undefined,
+			// wheel event data
+			deltaX: 0,
+			deltaY: 0,
+			deltaZ: 0
 		};
 	
 		switch(e.type) {
 	
+			case "wheel":
+				evt.deltaX= e.deltaX;
+				evt.deltaY= e.deltaY;
+				evt.deltaZ= e.deltaZ;
+				break;
+
 			case "contextmenu":
 				e.preventDefault();
 				return;
 	
 			case "focus":
-				this.play();
+				if(this.gc.wannaPauseOnBlur)
+					this.play();
 				return;
 	
 			case "blur":
-				this.pause();
+				if(this.gc.wannaPauseOnBlur)
+					this.pause();
 				return;
 	
 			case "keyup":
@@ -199,6 +213,8 @@ export default class Game {
 			case "mousedown":
 			case "mouseup":
 			case "mousemove": {
+				if(e.target.id !== "game")
+					return;
 				this.gc.mouse.down= evt.type === "mousedown";
 				this.gc.mouse.x= evt.x;
 				this.gc.mouse.y= evt.y;

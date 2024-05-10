@@ -1,6 +1,6 @@
+import SpriteSheet from "./Spritesheet.js";
 import Audio from "./audio.js";
 import Font from "./font.js";
-import SpriteSheet from "./spritesheet.js";
 import {loadJson} from "./utils/loaders.util.js";
 
 function loadSpritesheets(mgr, sheets) {

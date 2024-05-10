@@ -52,6 +52,8 @@ export class BrickView {
 		this.selectedBrick= "#";
 	}
 
+	destroy() {}
+
 	selectBrickType(typeIdx) {
 		this.selectedBrick= BrickTypes[typeIdx];
 	}

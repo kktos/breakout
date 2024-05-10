@@ -1,0 +1,24 @@
+{
+	"bricks": [
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-XoXoXoXoX-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--B-r-G-b-G-r-B--",
+	  "--o-o-X-o-X-o-o--",
+	  "--B-r-o-b-G-r-B--",
+	  "-----------------",
+	  "-----------------",
+	  "-----------------",
+	  "-----------------"
+	],
+	"background": 0,
+	"name": "stage 6",
+	"next": "stage7",
+	"type": "level"
+  }

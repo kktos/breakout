@@ -1,5 +1,5 @@
+import SpriteSheet from './Spritesheet.js';
 import ENV from "./env.js";
-import SpriteSheet from './spritesheet.js';
 import {loadImage, loadJson} from './utils/loaders.util.js';
 
 // const CHARS= ' 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ©!-×.';

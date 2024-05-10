@@ -5,6 +5,7 @@ import AlertUI from "../ui/alert.ui.js";
 import ChooseFileUI from "../ui/choosefile.ui.js";
 import EnterLevelInfoUI from "../ui/entertext.ui.js";
 import {createBricks, stringifyBricks} from "../utils/bricks.util.js";
+import { saveFileAs } from "../utils/loaders.util.js";
 import LocalDB from "../utils/storage.util.js";
 import UILayer from "./UILayer.js";
 import BackgroundLayer from "./background.layer.js";
@@ -82,6 +83,10 @@ export default class EditorLayer extends UILayer {
 				<div id="btnNew" class="btn light-shadow icn icn-trash"></div>
 				<div id="btnLoad" class="btn light-shadow icn icn-load"></div>
 				<div id="btnSave" class="btn light-shadow icn icn-save"></div>
+				<div id="btnExport" class="btn light-shadow">
+					<div class="icn z50 icn-save"></div>
+					Export
+				</div>
 			</div>
 			<div class="grid-column vcenter" style="grid-template-rows: 30px; justify-content: space-evenly">
 				<div class="grid-row">
@@ -93,8 +98,17 @@ export default class EditorLayer extends UILayer {
 				<div class="grid-row">POINTS<input id="points" readonly class="w150" type="text" value="0"/></div>
 			</div>
 		`;
-		this.ui.querySelectorAll(".btn").forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));
-		this.ui.querySelectorAll("INPUT,SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+		// this.ui.querySelectorAll(".btn").forEach((btn) => btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id)));
+		const buttons = this.ui.querySelectorAll(".btn");
+		for (let idx = 0; idx < buttons.length; idx++) {
+			const btn= buttons[idx];
+			btn.addEventListener("click", evt => evt.isTrusted && this.onClickUIBtn(btn.id));
+		}
+		const inputs = this.ui.querySelectorAll("INPUT,SELECT");
+		// this.ui.querySelectorAll("INPUT,SELECT").forEach((el) => el.addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target)));
+		for (let idx = 0; idx < inputs.length; idx++) {
+			inputs[idx].addEventListener("change", evt => evt.isTrusted && this.onChangeUI(evt.target));
+		}
 	}
 
 	onChangeUI(el) {
@@ -127,11 +141,11 @@ export default class EditorLayer extends UILayer {
 
 	save() {
 		EnterLevelInfoUI.run("Save level:", (name) => {
-			name= name.replace(/^\s+/, '').replace(/\s+$/, '');
-			if(name==="")
+			const newName= name.trim();
+			if(newName==="")
 				return;
 				
-			this.levelName= name;
+			this.levelName= newName;
 			const sheet= {
 				bricks: stringifyBricks(this.entities),
 				background: this.bkgndIndex,
@@ -143,7 +157,23 @@ export default class EditorLayer extends UILayer {
 
 			this.ui.querySelectorAll("INPUT")[0].value= name;
 		});
+	}
 
+	export() {
+		EnterLevelInfoUI.run("Export level As:", (name) => {
+			const newName= name.trim();
+			if(newName==="")
+				return;
+				
+			const sheet= {
+				bricks: stringifyBricks(this.entities),
+				background: this.bkgndIndex,
+				name: `stage${newName}`,
+				next: "???",
+				type: "level"
+			};
+			saveFileAs(`${newName}.json`, sheet);
+		});
 	}
 
 	setBackground(bkgndIndex) {
@@ -189,6 +219,9 @@ export default class EditorLayer extends UILayer {
 			case "btnSave":
 				if(this.isModified)
 					this.save();
+				break;
+			case "btnExport":
+				this.export();
 				break;
 
 			case "btnLoad":

@@ -16,6 +16,8 @@ export  default class SceneFactory {
 
 		console.log("SceneFactory.load", name);
 
+		gc.wannaPauseOnBlur= true;
+
 		sheet= LocalDB.loadResource(name);
 		if(!sheet) {
 			try {

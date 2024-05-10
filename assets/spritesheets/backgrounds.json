@@ -94,7 +94,6 @@
 			"scale": 2,
 			"rect": [0,8,16,48]
 		},
-
 		"wallLeft":{
 			"sprites":[
 				[[0,0,0,1], "topleft"],
@@ -132,7 +131,6 @@
 				[[0,0,10,0], "h"]
 			]
 		}
-
 	},
 	"animations": {
 		"enemyDoorLeft": {

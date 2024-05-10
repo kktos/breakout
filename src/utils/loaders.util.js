@@ -24,3 +24,11 @@ export function loadJson(url) {
     console.log(`loadJson(${url})`);
 	return import(`/assets/${url}`).then(m => m.default);
 }
+
+export function saveFileAs(filename, data) {
+    const blob = new Blob([JSON.stringify(data, null, 2)]);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+};

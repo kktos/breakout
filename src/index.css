@@ -17,6 +17,9 @@ CANVAS {
 	right:0;
 	bottom:0;
 }
+#game {
+	image-rendering: pixelated;
+}
 INPUT {
 	background: transparent;
 	color: white;
@@ -173,6 +176,10 @@ DIV.btn {
 	justify-items: center;
     gap: 5px;
 }
+.gap-5 { gap: 5px; }
+.gap-10 { gap: 10px; }
+.gap-20 { gap: 20px; }
+
 .overlay {
 	position: fixed;
 	top: 0;
@@ -266,6 +273,10 @@ DIV.btn.icn {
     width: 50px;
 	aspect-ratio: 1;
 }
+.icn-close {
+	background: url(/assets/images/close.svg);
+	aspect-ratio: 1;
+}
 
 svg path{
 	fill: currentcolor;
@@ -283,3 +294,9 @@ svg path{
 .z50 {	zoom: .5; }
 .z100 {	zoom: 1; }
 .z200 {	zoom: 2; }
+
+.scroll { overflow: scroll; }
+.scroll-x { overflow-x: scroll; }
+.scroll-y { overflow-y: scroll; }
+
+.fixed { position: fixed; }

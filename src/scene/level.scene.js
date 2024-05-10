@@ -216,9 +216,14 @@ export default class LevelScene extends Scene {
 	handleEvent(gc, e) {
 		switch(e.type) {
 			case "keydown": {
-				if(e.key==="r")
-					// this.newPlayer(gc);
-					this.reset(gc);
+				switch(e.key) {
+					case "r":
+						this.reset(gc);
+						break;
+					case "n":
+						this.events.emit(Scene.EVENT_COMPLETE, -1);
+						break;
+				}
 				break;
 			}
 			case "click": {

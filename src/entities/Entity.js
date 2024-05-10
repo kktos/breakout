@@ -76,8 +76,9 @@ export default class Entity {
 	}
 
 	setSprite(name) {
-		if(!this.spritesheet || !this.spritesheet.has(name))
+		if(!this.spritesheet || !this.spritesheet.has(name)) {
 			throw new Error(`no sprite ${name}`);
+		}
 
 		this.currSprite= name;
 		this.size= this.spritesheet.spriteSize(name);

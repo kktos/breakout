@@ -43,6 +43,13 @@ export default class DisplayLayer extends UILayer {
 
 	}
 
+	destroy() {
+		for(let idx= 0; idx<this.views.length; idx++) {
+			const view= this.views[idx];
+			view.component.destroy();
+		}
+	}
+
 	initVars() {
 		this.vars= new Map();
 		this.vars.set("highscores", LocalDB.highscores());
@@ -221,6 +228,10 @@ export default class DisplayLayer extends UILayer {
 			const canvas= document.createElement('canvas');
 			canvas.width= viewDesc.width;
 			canvas.height= viewDesc.height;
+			// canvas.style.left= `${viewDesc.pos[0]}px`;
+			// canvas.style.top= `${viewDesc.pos[1]}px`;
+			// canvas.style.right= `${viewDesc.pos[0]+viewDesc.width}px`;
+			// canvas.style.bottom= `${viewDesc.pos[1]+viewDesc.height}px`;
 			const ctx= {canvas, gc, vars: this.vars, layer: this};
 			viewDesc.component= new views[viewDesc.view](ctx);
 			viewDesc.canvas= canvas;
@@ -231,6 +242,7 @@ export default class DisplayLayer extends UILayer {
 				bottom: viewDesc.height + viewDesc.pos[1]
 			};
 			this.vars.set(viewDesc.name, viewDesc.component);
+			// const elm= document.body.appendChild(canvas);
 		}
 
 	}
@@ -315,16 +327,19 @@ export default class DisplayLayer extends UILayer {
 				}
 				break;
 		}
+
+		// console.log("DisplayLayer.handleEvent", e);
+
 		for(let idx= 0; idx<this.views.length; idx++) {
 			const view= this.views[idx];
 
-			if(["mousemove", "mouseup","mousedown", "click"].includes(e.type)) {
-				if(!ptInRect(e.x, e.y, view.bbox)) {
-					continue;
-				}
-			}
+			// if(["mousemove", "mouseup","mousedown", "click"].includes(e.type)) {
+			// 	if(!ptInRect(e.x, e.y, view.bbox)) {
+			// 		continue;
+			// 	}
+			// }
 
-			const localEvent= {...e, x: e.x-view.pos[0], y: e.y-view.pos[1]};
+			const localEvent= {...e, pageX: e.x, pageY: e.y, x: e.x-view.pos[0], y: e.y-view.pos[1]};
 			view.component.handleEvent(gc, localEvent);
 		}
 	}
@@ -516,10 +531,15 @@ export default class DisplayLayer extends UILayer {
 	renderRect({viewport:{ctx}}, op) {
 		ctx.fillStyle= op.color;
 		ctx.fillRect(op.pos[0], op.pos[1], op.width, op.height);
+		// ctx.strokeStyle= op.color;
+		// ctx.strokeRect(op.pos[0], op.pos[1], op.width, op.height);
 	}
 
 	renderView(gc, op) {
 		op.component.render(gc);
+		// gc.viewport.ctx.imageSmoothingEnabled = false;
+		// gc.viewport.ctx.globalAlpha= 1;
+		// gc.viewport.ctx.globalCompositeOperation = "source-over";
 		gc.viewport.ctx.drawImage(op.canvas, op.pos[0], op.pos[1]);
 	}
 
